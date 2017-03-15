@@ -38,7 +38,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "CityNexus\\CityNexus\\": "packages/citynexus/CityNexus/src",
+            "CityNexus\\CityNexus\\": "packages/citynexus/CityNexus/src"
         }
     },
     "autoload-dev": {
