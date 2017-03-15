@@ -149,10 +149,9 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        CityNexus\CityNexus\PackageServiceProvider::class,
-        CityNexus\PropertyMgr\PropertySync::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        CityNexus\CityNexus\PackageServiceProvider::class,
     ],
 
     /*

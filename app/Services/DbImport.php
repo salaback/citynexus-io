@@ -11,7 +11,6 @@ namespace App\Services;
 
 use App\Jobs\ImportDb;
 use CityNexus\CityNexus\Property;
-use CityNexus\PropertyMgr\PropertySync;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\DB;
 
@@ -20,10 +19,6 @@ class DbImport
 
     use DispatchesJobs;
 
-    public function __construct()
-    {
-        $this->propertySync = new PropertySync();
-    }
     public function importProperties($source, $target_schema)
     {
 
