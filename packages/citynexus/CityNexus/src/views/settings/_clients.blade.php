@@ -13,7 +13,7 @@
     		<tr>
     			<td>{{$client->name}}</td>
                 <td>{{$client->domain}}</td>
-                <td>{{$client->migrated_at->diffForHumans()}}</td>
+                <td>@if(isset($client->migrated_at)){{$client->migrated_at->diffForHumans()}}@endif()</td>
                 <td>
                     <button onclick="resetDb({{$client->id}})" class="btn btn-primary btn-sm">Reset DB</button>
                     <button onclick="importId = {{$client->id}}; $('#importDb').modal('show')" class="btn btn-primary btn-sm">Import DB</button>
