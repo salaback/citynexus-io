@@ -16,7 +16,13 @@ class TableBuilder
 {
     public function create($table)
     {
-        $table_name = 'tabler_' . $this->cleanName($table->table_title);
+        if(isset($table->table_name))
+        {
+            $table_name = $table->table_name;
+        }
+        else{
+            $table_name = 'tabler_' . $this->cleanName($table->table_title);
+        }
 
         $fields = json_decode($table->scheme);
 

@@ -38,6 +38,7 @@ Route::post('admin/client/import-db/', 'ClientController@importDb')->name('admin
 Route::get('admin/client/migrate-db/{id}', 'ClientController@migrateDb')->name('admin.client.migrateDb');
 Route::get('admin/client/config/{id}', 'ClientController@config')->name('admin.client.config');
 Route::post('admin/client/config/{id}', 'ClientController@postConfig');
+Route::post('admin/client/import-table', 'ClientController@importTable');
 
 
 Route::get('test', function(){

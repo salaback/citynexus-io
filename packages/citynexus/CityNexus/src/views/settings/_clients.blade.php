@@ -16,7 +16,7 @@
                 <td>@if(isset($client->migrated_at)){{$client->migrated_at->diffForHumans()}}@endif()</td>
                 <td>
                     <button onclick="resetDb({{$client->id}})" class="btn btn-primary btn-sm">Reset DB</button>
-                    <button onclick="importId = {{$client->id}}; $('#importDb').modal('show')" class="btn btn-primary btn-sm">Import DB</button>
+                    <button onclick="$('#clientId').val({{$client->id}}); $('#importDb').modal('show')" class="btn btn-primary btn-sm">Import DB</button>
                     <button onclick="migrateDb({{$client->id}})" class="btn btn-primary btn-sm">Migrate DB</button>
                     <a href="{{route('admin.client.config', [$client->id])}}" class="btn btn-primary btn-sm">Config</a>
 
@@ -61,45 +61,46 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title" id="myModalLabel">Import from Database</h4>
             </div>
+            <form action="/admin/client/import-db/" method='post' class="form-horizontal">
             <div class="modal-body">
-                <div class="form-horizontal">
+                    {{csrf_field()}}
+                <input type="hidden" name="client_id" id="clientId">
                     <div class="form-group">
                     	<label for="dbHost" class="col-sm-2 control-label">DB Host</label>
                     	<div class="col-sm-10">
-                    		<input type="text" name="dbHost" id="dbHost" class="form-control" value="" title="" required="required" >
+                    		<input type="text" name="host" id="dbHost" class="form-control" value="" title="" required="required" >
                     	</div>
                     </div>
                     <div class="form-group">
                         <label for="dbName" class="col-sm-2 control-label">DB Name</label>
                         <div class="col-sm-10">
-                            <input type="text" name="dbName" id="dbName" class="form-control" value="" title="" required="required" >
+                            <input type="text" name="database" id="dbName" class="form-control" value="" title="" required="required" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="dbUser" class="col-sm-2 control-label">DB Username</label>
                         <div class="col-sm-10">
-                            <input type="text" name="dbUser" id="dbUser" class="form-control" value="" title="" required="required" >
+                            <input type="text" name="username" id="dbUser" class="form-control" value="" title="" required="required" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="dbPassword" class="col-sm-2 control-label">DB Password</label>
                         <div class="col-sm-10">
-                            <input type="password" name="dbPassword" id="dbPassword" class="form-control" value="" title="" required="required" >
+                            <input type="password" name="password" id="dbPassword" class="form-control" value="" title="" required="required" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="dbSchema" class="col-sm-2 control-label">DB Schema</label>
                         <div class="col-sm-10">
-                            <input type="text" name="dbSchema" id="dbSchema" class="form-control" value="" title="" required="required" >
+                            <input type="text" name="schema" id="dbSchema" class="form-control" value="" title="" required="required" >
                         </div>
                     </div>
-                </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="importDb()">Import Database</button>
+                <input type="submit" class="btn btn-primary waves-effect waves-light" value="Import Database">
             </div>
+            </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -130,25 +131,5 @@
         }
     }
 
-    var importDb = function()
-    {
-        $('#importDb').modal('hide');
-
-        $.ajax({
-            url: '/admin/client/import-db/',
-            type: 'POST',
-            data: {
-                _token: "{{csrf_token()}}",
-                import_id: importId,
-                host: $("#dbHost").val(),
-                name: $("#dbName").val(),
-                user: $("#dbUser").val(),
-                password: $("#dbPassword").val(),
-                schema: $("#dbSchema").val(),
-            }
-        }).done(function(){
-            Command: toastr["success"]('Database imported.');
-        });
-    }
 </script>
 @endpush

@@ -68,10 +68,13 @@ class ImportDbChunk extends Job implements SelfHandling, ShouldQueue
                 ->get();
         }
 
-
         $data = collect($data)->map(function($x){ return (array) $x; })->toArray();
 
-        DB::statement("SET search_path TO " . $this->target_schema . ',public');
+        config([
+            'database.default' => 'tenant',
+        ]);
+
+        DB::reconnect();
 
         DB::table($this->table)->insert($data);
 

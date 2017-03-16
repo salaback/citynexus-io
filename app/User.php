@@ -26,7 +26,6 @@ class User extends Model implements AuthenticatableContract,
     protected $connection = 'public';
 
 
-
     /**
      * The database table used by the model.
      *
@@ -91,4 +90,5 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasOne('\CityNexus\CityNexus\APISecret');
     }
+
 }

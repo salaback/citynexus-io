@@ -6,7 +6,10 @@ use App\Client;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use App\Services\MultiTenant;
+use App\User;
 use BackupManager\Manager;
+use CityNexus\CityNexus\TableBuilder;
+use Illuminate\Database\Schema\Blueprint;
 use CityNexus\CityNexus\Table;
 use Illuminate\Http\Request;
 
@@ -14,6 +17,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ClientController extends Controller
 {
@@ -111,100 +116,59 @@ class ClientController extends Controller
         return $multiTenant->migrate(Client::find($id));
     }
 
-    public function importDb(Request $request)
+    public function importDb(Request $request, MultiTenant $multiTenant)
     {
-        $client = Client::find($request->get('import_id'));
-
         $importDb = [
             'driver'   => 'pgsql',
-            'host'     => 'localhost',
-            'database' => 'homestead',
-            'username' => 'homestead',
-            'password' => 'secret',
+            'host'     => $request->get('host'),
+            'database' => $request->get('database'),
+            'username' => $request->get('username'),
+            'password' => $request->get('password'),
             'charset'  => 'utf8',
             'prefix'   => '',
-            'schema'   => 'public',
+            'schema'   => $request->get('schema'),
         ];
+
+        $client = Client::find($request->get('client_id'));
 
         config([
             'database.connections.import' => $importDb,
+            'database.connections.tenant.schema' => $client->schema
         ]);
 
-        Artisan::call("db:backup", ['database' => 'input', 'destination' => 'aws', 'destinationPath' => $client->schema, 'compression' => 'gzip']);
+        $existing = DB::connection('tenant')->table('information_schema.tables')->where('table_schema', '=', $client->schema)->get(['table_name']);
 
-        config(['database.connections.tenant.schema' => $client->schema]);
-
-        Artisan::call("db:restore", ['database' => 'tenant', 'destination' => 'aws', 'destinationPath' => $client->schema, 'compression' => 'gzip']);
-
-        return 'hello';
-
-    }
-    public function importDbOld(Request $request)
-    {
-//        $importDb = [
-//            'driver'   => 'pgsql',
-//            'host'     => $request->get('host'),
-//            'database' => $request->get('name'),
-//            'username' => $request->get('user'),
-//            'password' => $request->get('password'),
-//            'charset'  => 'utf8',
-//            'prefix'   => '',
-//            'schema'   => $request->get('schema'),
-//        ];
-
-        $importDb = [
-            'driver'   => 'pgsql',
-            'host'     => 'localhost',
-            'database' => 'homestead',
-            'username' => 'homestead',
-            'password' => 'secret',
-            'charset'  => 'utf8',
-            'prefix'   => '',
-            'schema'   => 'public',
-        ];
-
-        config([
-            'database.connections.import' => $importDb,
-        ]);
-
-        $client = Client::find($request->get('import_id'));
-
-        $import_tables = [
-            'api_keys',
-            'citynexus_api_requests',
-            'citynexus_api_secrets',
-            'citynexus_exports',
-            'citynexus_file_versions',
-            'citynexus_files',
-            'citynexus_images',
-            'citynexus_locations',
-            'citynexus_notes',
-            'citynexus_properties',
-            'citynexus_raw_addresses',
-            'citynexus_report_views',
-            'citynexus_reports',
-            'citynexus_scores',
-            'citynexus_searches',
-            'citynexus_tags',
-            'citynexus_tasks',
-            'citynexus_uploaders',
-            'citynexus_uploads',
-            'citynexus_user_groups',
-            'tabler_tables',
-            'users'
-        ];
-
-        foreach($import_tables as $table)
+        foreach($existing as $item)
         {
-            $this->dispatch(new ImportDb($table, $importDb, $client->schema));
+            $current[$item->table_name] = DB::connection('tenant')->table($item->table_name)->count();
         }
 
-        $tabler = new Table();
-        $tabler->setConnection('import');
-        $tables = $tabler->whereNotNull('scheme')->get();
-        foreach ($tables as $table) {
-            $this->dispatch(new ImportData($table, $importDb, $client->schema));
+        $new = DB::connection('import')->table('information_schema.tables')->where('table_schema', '=', $importDb['schema'])->get();
+        $datasets = DB::connection('import')->table('tabler_tables')->whereNull('deleted_at')->whereNotNull('table_name')->lists('table_name');
+
+        $datasets = array_flip($datasets);
+
+        foreach ($new as $item)
+        {
+            $results[$item->table_name] = DB::connection('import')->table($item->table_name)->count();
         }
+
+//        foreach($import_tables as $table)
+//        {
+//            dd(DB::table("citynexus_notes")->count());
+//            if(DB::table($table)->count() > 0)
+//            {
+//            }
+//        }
+//
+//        $tabler = new Table();
+//        $tabler->setConnection('import');
+//        $tables = $tabler->whereNotNull('scheme')->get();
+//        foreach ($tables as $table) {
+//            $this->dispatch(new ImportData($table, $importDb, $client->schema));
+//        }
+
+        return view('admin.clients.import', compact('importDb', 'results', 'client', 'current', 'datasets'));
     }
 
     public function config($id)
@@ -222,5 +186,93 @@ class ClientController extends Controller
         $client->save();
 
         return redirect('/');
+    }
+
+    public function importTable(Request $request, TableBuilder $tableBuilder)
+    {
+
+        $importDb = [
+            'driver' => 'pgsql',
+            'host' => $request->get('host'),
+            'database' => $request->get('database'),
+            'username' => $request->get('username'),
+            'password' => $request->get('password'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => $request->get('schema'),
+        ];
+
+        $client = Client::find($request->get('client_id'));
+
+        config([
+            'database.connections.import' => $importDb,
+            'database.connections.tenant.schema' => $client->schema
+        ]);
+
+        if($request->get('type') == 'users')
+        {
+            $data = DB::connection('import')->table('users')->whereNull('deleted_at')->get();
+
+            foreach($data as $user)
+            {
+                $memebership = \GuzzleHttp\json_decode($user->permissions, true);
+                $memebership['password'] = $user->password;
+                $memebership['title'] = $user->title;
+                $memebership['department'] = $user->department;
+
+                $nUser = User::firstOrNew(['email' => $user->email]);
+
+                $nUser->first_name = $user->first_name;
+                $nUser->last_name = $user->last_name;
+
+                if($nUser->memebership != null)
+                {
+                    $memeberships = $nUser->membership;
+                }
+                else
+                {
+                    $memeberships = [];
+                }
+
+                $memeberships[$client->domain] = $memebership;
+
+                $nUser->memberships = $memeberships;
+
+                $nUser->save();
+            }
+            return 'Migrated';
+        }
+        else
+        {
+            switch ($request->get('type')) {
+            case 'score':
+                Schema::connection('tenant')->create($request->get('table'), function (Blueprint $table) {
+                    $table->increments('id');
+                    $table->integer('property_id')->unsigned();
+                    $table->float('score')->nullable();
+                });
+                break;
+            case 'data_table':
+                config([
+                    'database.default' => 'tenant',
+                ]);
+
+                $tableModel = new Table();
+                $tableModel->setConnection('tenant');
+                $table = $tableModel->where('table_name', $request->get('table'))->first();
+
+                $tableBuilder->create($table);
+                break;
+        }
+
+            $data = DB::connection('import')->table($request->get('table'))->get();
+
+            $data = collect($data)->map(function ($x) {
+                return (array)$x;
+            })->toArray();
+
+            DB::connection('tenant')->table($request->get('table'))->insert($data);
+
+            return count($data);}
     }
 }

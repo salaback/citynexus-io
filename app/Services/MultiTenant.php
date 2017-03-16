@@ -43,7 +43,7 @@ class MultiTenant
         else
         {
             $client->name = $name;
-            $client->schema = strtolower(trim($subdomain)) .'_' . random_int(10000,99999);
+            $client->schema = strtolower(trim(str_replace('-', '_', $subdomain))) .'_' . random_int(10000,99999);
             $client->save();
             $this->createSchema($client->schema);
             $this->migrate($client);
@@ -116,6 +116,7 @@ class MultiTenant
 
     public function importDb($target_id, $source)
     {
+
         $importDb = [
             'driver'   => 'pgsql',
             'host'     => $source['host'],
@@ -162,33 +163,18 @@ class MultiTenant
             'users'
         ];
 
-        $import_tables = [
-            'citynexus_report_view',
-            'citynexus_settings',
-            'citynexus_tasks',
-            'citynexus_taskables',
-            'citynexus_widgets',
-            'property_tag',
-            'tabler_tables',
-        ];
-
-        $count = 0;
         foreach($import_tables as $table)
         {
-            $this->dispatch(new ImportDb($table, $source, $client->schema));
-            if($count == 6) {
-                dd($table);
+            if(DB::table($table)->count() > 0)
+            {
+                $this->dispatch(new ImportDb($table, $source, $client->schema));
             }
-            $count +=1;
         }
 
         $tabler = new Table();
 
         $tabler->setConnection('import');
         $tables = $tabler->whereNotNull('schema');
-
-        dd($tables);
-
 
         foreach ($tables as $table) {
             $this->dispatch(new ImportData($table, $source, $client->schema));
