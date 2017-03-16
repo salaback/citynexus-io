@@ -190,7 +190,7 @@ class ClientController extends Controller
 
     public function importTable(Request $request, TableBuilder $tableBuilder)
     {
-
+        set_time_limit(0);
         $importDb = [
             'driver' => 'pgsql',
             'host' => $request->get('host'),
