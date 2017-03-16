@@ -83,17 +83,18 @@ class MultiTenant
 
             DB::statement("SET search_path TO " . $client->schema . ',public');
 
-
             Artisan::call('migrate', ['--database' => 'tenant']);
             $client->migrated_at = Carbon::now();
             $client->save();
         }
+
         catch(\Exception $e)
+
         {
             return $e;
         }
 
-        return true;
+        return 'migrated';
 
     }
 

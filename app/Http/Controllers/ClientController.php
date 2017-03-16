@@ -57,7 +57,7 @@ class ClientController extends Controller
 
         $client = $multiTenant->createClient($request->get('name'), $request->get('domain'));
 
-        return redirect(route('admin.client.show', [$client->id]));
+        return redirect(route('admin.client.config', [$client->id]));
     }
 
     /**
