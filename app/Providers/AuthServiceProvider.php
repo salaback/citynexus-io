@@ -36,7 +36,6 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-
         // Dataset Permissions
         $gate->define('citynexus', function(User $user, $group, $method){
             return $user->allowed($group, $method);

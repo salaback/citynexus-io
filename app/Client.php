@@ -12,9 +12,15 @@ class Client extends Model
 
     protected $casts = [
         'active' => 'boolean',
-        'settings' => 'array'
+        'settings' => 'array',
+        'info' => 'array'
     ];
 
     protected $dates = ['migrated_at', 'created_at', 'updated_at'];
 
+
+    public function version()
+    {
+        return $this->belongsTo(Version::class);
+    }
 }

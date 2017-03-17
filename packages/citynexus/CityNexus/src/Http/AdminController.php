@@ -435,13 +435,13 @@ class AdminController extends Controller
         {
             $user = User::where('email', $email)->first();
 
-            if(isset($user->memberships[$_SERVER['HTTP_HOST']]))
-            {
-                $client = Client::where('domain', $_SERVER['HTTP_HOST'])->first();
+            $client = Client::where('domain', $_SERVER['HTTP_HOST'])->first();
 
+            if(isset($user->memberships[$client->schema]))
+            {
                 $app_key = config('app.key');
                 config(['app.key' => $client->settings['app_key']]);
-                if (Hash::check($request->get('password'), $user->memberships[$_SERVER['HTTP_HOST']]['password'])) {
+                if (Hash::check($request->get('password'), $user->memberships[$client->schema]['password'])) {
                     // Reapply key
                     config(['app.key' => $app_key]);
                     Auth::login($user);
