@@ -190,7 +190,6 @@ class ClientController extends Controller
 
     public function importTable(Request $request, TableBuilder $tableBuilder)
     {
-        set_time_limit(0);
         $importDb = [
             'driver' => 'pgsql',
             'host' => $request->get('host'),
@@ -260,8 +259,9 @@ class ClientController extends Controller
                 $tableModel = new Table();
                 $tableModel->setConnection('tenant');
                 $table = $tableModel->where('table_name', $request->get('table'))->first();
-
                 $tableBuilder->create($table);
+                $this->dispatch(new ImportDb($table,$importDb, $client->schmea));
+                return 'Migrated';
                 break;
         }
 

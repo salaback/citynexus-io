@@ -23,7 +23,7 @@
                                 <tr>
                                     <td>{{$table}}</td>
                                     <td>{{$count}}</td>
-                                    <td>@if(isset($current[$table])) {{$current[$table]}} @endif</td>
+                                    <td id="{{$table}}_count">@if(isset($current[$table])) {{$current[$table]}} @endif</td>
                                     <td>@if(!isset($current[$table]) || $count != $current[$table])
                                             <button class="btn btn-primary" id="{{$table}}_button"
                                                     @if(str_contains($table, ['citynexus_scores_']))
