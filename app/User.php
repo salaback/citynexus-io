@@ -78,7 +78,6 @@ class User extends Model implements AuthenticatableContract,
         }
         else
         {
-
             $widgets = json_decode(setting('globalDashboard'));
         }
 

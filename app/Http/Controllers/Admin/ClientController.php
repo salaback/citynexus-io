@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Client;
 use App\Jobs\ImportData;
@@ -22,6 +22,15 @@ use Illuminate\Support\Facades\Schema;
 
 class ClientController extends Controller
 {
+
+    public function __construct(Request $request)
+    {
+        if ($request->user()->cannot('citynexus', ['superAdmin', 'clientMgt'])) {
+            App::abort(403, 'Access denied');
+        }
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -185,7 +194,7 @@ class ClientController extends Controller
         $client->settings = $request->get('config');
         $client->save();
 
-        return redirect('/');
+        return redirect(action('Admin\AdminController@index'));
     }
 
     public function importTable(Request $request, TableBuilder $tableBuilder)
@@ -215,6 +224,7 @@ class ClientController extends Controller
             foreach($data as $user)
             {
                 $memebership = \GuzzleHttp\json_decode($user->permissions, true);
+
                 $memebership['password'] = $user->password;
                 $memebership['title'] = $user->title;
                 $memebership['department'] = $user->department;
@@ -224,21 +234,22 @@ class ClientController extends Controller
                 $nUser->first_name = $user->first_name;
                 $nUser->last_name = $user->last_name;
 
-                if($nUser->memebership != null)
+                if($nUser->memeberships != null)
                 {
-                    $memeberships = $nUser->membership;
+                    $memeberships = $nUser->memberships;
                 }
                 else
                 {
                     $memeberships = [];
                 }
 
-                $memeberships[$client->domain] = $memebership;
+                $memeberships[$client->schema] = $memebership;
 
                 $nUser->memberships = $memeberships;
 
                 $nUser->save();
             }
+
             return 'Migrated';
         }
         else
