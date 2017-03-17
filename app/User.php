@@ -58,14 +58,14 @@ class User extends Model implements AuthenticatableContract,
 
     public function allowed($set, $permission)
     {
-        $permissions = json_decode($this->permissions);
-        if(isset($permissions->$set->$permission) && $permissions->$set->$permission) return true;
+        $permissions = $this->getGroupPermissions();
+        if(isset($permissions[$set][$permission]) && $permissions[$set][$permission]) return true;
         else return false;
     }
     public function disallowed($set, $permission)
     {
-        $permissions = json_decode($this->permissions);
-        if(!isset($permissions->$set->$permission) or !$permissions->$set->$permission) return true;
+        $permissions = $this->getGroupPermissions();
+        if(!isset($permissions[$set][$permission]) && !$permissions[$set][$permission]) return true;
         else return false;
 
     }
@@ -89,6 +89,46 @@ class User extends Model implements AuthenticatableContract,
     public function api()
     {
         return $this->hasOne('\CityNexus\CityNexus\APISecret');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class);
+    }
+
+    public function getGroupPermissions()
+    {
+        $groups = $this->groups;
+
+        $permissions = [];
+
+        foreach($groups as $group) $permissions = $this->mergePermissions($group->permissions, $permissions);
+
+        return $permissions;
+    }
+
+    private function mergePermissions($new, $old)
+    {
+
+        foreach($new as $key => $value)
+        {
+            foreach($value as $k => $v)
+            {
+                if(isset($old[$key][$k]))
+                {
+                    if(!$v)
+                    {
+                        $old[$key][$k] = false;
+                    }
+                }
+                else
+                {
+                    $old[$key][$k] = $v;
+                }
+            }
+        }
+
+        return $old;
     }
 
 }

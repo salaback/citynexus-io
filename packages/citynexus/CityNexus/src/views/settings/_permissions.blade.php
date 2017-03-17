@@ -176,7 +176,7 @@
 
 ?>
 @if(isset($user))
-<input type="hidden" name="user_id" value="{{$user->id}}">
+<input type="hidden" id="user_id" name="user_id" value="{{$user->id}}">
 {{csrf_field()}}
 <div class="form-horizontal">
 <div class="form-group">
@@ -211,39 +211,32 @@
 </div>
 </div>
 
-    <h4>Edit Permissions</h4>
 @endif
 
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    {{--Data sets--}}
+<h4>Groups Membership</h4>
 
-    @foreach($permission_sets as $i)
-        <?php $group = $i['key']; ?>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#{{$i['key']}}" aria-expanded="true" aria-controls="collapseOne">
-                    {{$i['title']}}
-                </a>
-            </h4>
+<div class="list-group" id="user_groups">
+    @forelse($user->groups as $group)
+        <div class="list-group-item" >
+            @include('auth.user_group._group_snip')
         </div>
-        <div id="{{$i['key']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-                <div class="list-group">
-                        @foreach($i['permissions'] as $p)
-                        <?php $method = $p['key']; ?>
-                        <div class="list-group-item">
-                            <input type="checkbox" name="permissions[{{$i['key']}}][{{$p['key']}}]" value="true" class="{{$i['key']}}"
-                                   @if(isset($permissions->$group->$method)) checked @endif
-                            > <label for="">{{ $p['permission'] }}</label>
-                        </div>
-                    @endforeach
-                    <br><br>
-                    <button class="btn btn-sm" onclick="select('{{$i['key']}}')" id="{{$i['key']}}SelectAll"> Check All </button>
-                    <button class="btn btn-sm hidden" onclick="clearChecks('{{$i['key']}}')" id="{{$i['key']}}UnselectAll"> Uncheck All </button>
-                </div>
-            </div>
-        </div>
+    @empty
+        <div class="list-group-item disabled" id="noGroups">User isn't in any groups</div>
+    @endforelse
+</div>
+
+<div class="row">
+    <div class="col-xs-9">
+        <select name="group" id="group" class="form-control">
+            <option value="">Select One</option>
+            @foreach($groups as $group)
+                <option value="{{$group->id}}">{{$group->name}}</option>
+            @endforeach
+        </select>
     </div>
-
-    @endforeach
+    <div class="col-xs-3">
+        <button class="btn btn-primary" onclick="addToGroup()">
+            Add to Group
+        </button>
+    </div>
+</div>

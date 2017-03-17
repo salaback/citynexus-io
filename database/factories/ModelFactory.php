@@ -46,3 +46,10 @@ $factory->define(CityNexus\CityNexus\Table::class, function (Faker\Generator $fa
     ];
 });
 
+$factory->define(\App\UserGroup::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name . ' Group',
+        'permissions' => json_decode('{"datasets":{"view":"true","raw":"true","create":"true","upload":"true","edit":"true","delete":"true","export":"true","rollback":"true"},"scores":{"view":"true","raw":"true","create":"true","refresh":"true","edit":"true","delete":"true","upload":"true"},"reports":{"view":"true","create":"true","save":"true","score":"true"},"usersAdmin":{"create":"true","delete":"true","assign":"true"},"properties":{"view":"true","show":"true","merge":"true","edit":"true","create":"true"},"export":{"view":"true","create":"true"}}', true)
+    ];
+});
+

@@ -84,6 +84,53 @@
         })
     }
 
+    var addToGroup = function() {
+
+        event.preventDefault();
+
+        var groupId = $('#group').val();
+        var userId = $('#user_id').val();
+
+        if(!$("#" + groupId + '_snip').length > 0) {
+            $.ajax({
+                url: "{{action('Auth\UserGroupController@addUserToGroup')}}",
+                method: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    user_id: userId,
+                    group_id: groupId
+                }
+            }).success(function (data) {
+                $('#noGroups').remove();
+                $('#user_groups').append(data);
+            });
+        } else
+        {
+            Command: toastr["info"]('User already in group');
+        }
+    };
+
+    var removeFromGroup = function (groupId) {
+
+        event.preventDefault();
+
+        var userId = $('#user_id').val();
+
+        $.ajax({
+            url: "{{action('Auth\UserGroupController@removeUserFromGroup')}}",
+            method: "POST",
+            data: {
+                _token: "{{csrf_token()}}",
+                user_id: userId,
+                group_id: groupId
+            }
+        }).success(function(){
+            Command: toastr["info"]('User removed from group');
+            $('#' + groupId + '_snip').remove();
+        });
+    }
+
+
     function select( type  )
     {
         event.preventDefault();
