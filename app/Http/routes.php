@@ -40,6 +40,10 @@ Route::get('admin/client/config/{id}', 'ClientController@config')->name('admin.c
 Route::post('admin/client/config/{id}', 'ClientController@postConfig');
 Route::post('admin/client/import-table', 'ClientController@importTable');
 
+Route::resource('/auth/user-groups/', 'Auth\UserGroupController');
+Route::post('/auth/user-groups/add-user-to-group', 'Auth\UserGroupController@addUserToGroup');
+Route::post('/auth/user-groups/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup');
+
 
 Route::get('test', function(){
    return 'Hello';

@@ -261,7 +261,7 @@ class ClientController extends Controller
                 $table = $tableModel->where('table_name', $request->get('table'))->first();
                 $tableBuilder->create($table);
                 $this->dispatch(new ImportDb($table,$importDb, $client->schmea));
-                return 'Migrated';
+                return 'Queued.';
                 break;
         }
 

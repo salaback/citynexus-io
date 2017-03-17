@@ -82,6 +82,7 @@ class MultiTenant
             ]);
 
             Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);
+
             $client->migrated_at = Carbon::now();
             $client->save();
         }
@@ -89,6 +90,7 @@ class MultiTenant
         catch(\Exception $e)
 
         {
+
             return $e;
         }
 

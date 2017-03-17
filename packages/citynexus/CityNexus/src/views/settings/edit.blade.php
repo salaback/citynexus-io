@@ -32,6 +32,13 @@
                                 </a>
                             </li>
                             @endcan
+                            @can('citynexus', ['superAdmin', 'all'])
+                                <li role="presentation" class="">
+                                    <a href="#groups" role="tab" id="groups-tab" data-toggle="tab" aria-controls="groups" aria-expanded="false">
+                                        User Groups
+                                    </a>
+                                </li>
+                            @endcan
                             @can('citynexus', ['admin', 'edit'])
                             <li role="presentation" class="">
                                 <a href="#app_settings" role="tab" id="app_settings-tab" data-toggle="tab" aria-controls="users" aria-expanded="false">
@@ -46,6 +53,7 @@
                                     </a>
                                 </li>
                             @endcan
+
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div role="tabpanel" class="tab-pane fade active in" id="user" aria-labelledby="home-tab">
@@ -89,6 +97,16 @@
                                     </div>
                                 </div>
                             </div>
+                            @endcan
+
+                            @can('citynexus', ['superAdmin', 'all'])
+                                <div role="tabpanel" class="tab-pane fade" id="groups" aria-labelledby="groups-tab">
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            @include('citynexus::settings._groups')
+                                        </div>
+                                    </div>
+                                </div>
                             @endcan
 
                             @can('citynexus', ['admin', 'edit'])

@@ -5,6 +5,7 @@ namespace CityNexus\CityNexus\Http;
 use App\Client;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\UserGroup;
 use CityNexus\CityNexus\Property;
 use CityNexus\CityNexus\DatasetQuery;
 use CityNexus\CityNexus\GenerateScore;
@@ -32,6 +33,8 @@ class CitynexusSettingsController extends Controller
         $user_s = Setting::where('user_id', Auth::id());
         $user = Auth::getUser();
         $users = User::all()->sortBy('last_name');
+        $groups = UserGroup::all();
+
         if(Auth::user()->super_admin)
         {
             $clients = Client::all();
@@ -40,7 +43,7 @@ class CitynexusSettingsController extends Controller
             $clients = [];
         }
 
-        return view('citynexus::settings.edit', compact('app_s', 'user_s', 'users', 'user', 'clients'));
+        return view('citynexus::settings.edit', compact('app_s', 'user_s', 'users', 'user', 'clients', 'groups'));
 
     }
 
@@ -98,9 +101,9 @@ class CitynexusSettingsController extends Controller
     public function getUserSettings( $id)
     {
         $user = User::find($id);
-        $permissions = json_decode($user->permissions);
+        $groups = UserGroup::all();
 
-        return view('citynexus::settings._permissions', compact('permissions', 'user'));
+        return view('citynexus::settings._permissions', compact('groups', 'user'));
     }
 
     public function postSettingsUpdate(Request $request)
