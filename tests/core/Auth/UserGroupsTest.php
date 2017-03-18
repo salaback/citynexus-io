@@ -162,7 +162,7 @@ class UserGroupsTest extends TestCase
         $group2->users()->attach($user);
         $group3->users()->attach($user);
 
-        $old = ['test' => ['first' => false, 'second' => true]];
+         //final permissions ['test' => ['first' => false, 'second' => true]];
 
         $this->assertTrue($user->disallowed('test', 'first'));
 

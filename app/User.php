@@ -65,7 +65,7 @@ class User extends Model implements AuthenticatableContract,
     public function disallowed($set, $permission)
     {
         $permissions = $this->getGroupPermissions();
-        if(!isset($permissions[$set][$permission]) && !$permissions[$set][$permission]) return true;
+        if(isset($permissions[$set][$permission]) && !$permissions[$set][$permission]) return true;
         else return false;
 
     }

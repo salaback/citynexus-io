@@ -17,6 +17,7 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.scripts([
-        'main.js'
+        'main.js',
+        'bundles/vendorscripts.bundle.js'
     ]);
 });
