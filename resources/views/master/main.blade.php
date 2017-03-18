@@ -4,13 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>:: Oakleaf - Admin Dashboard ::</title>
+    <title>CityNexus | @yield('title')</title>
     <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
 
     <link rel="stylesheet" href="/assets/css/main.css">
+
+    @stack('style')
+
 </head>
 <body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
 
@@ -423,7 +426,9 @@
 <!--/ vendor javascripts -->
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
-<script src="/js/all.js"></script>
+
+@stack('scripts')
+
 <!--/ custom javascripts -->
 </body>
 </html>

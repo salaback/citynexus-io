@@ -40,16 +40,7 @@ class Authenticate
     {
 
         if ($this->auth->guest()) {
-            if ($request->ajax()) {
-                if ($request->getUri() == '/api-query/add-to') {
-                    return $next($request);
-                } else {
-                    return response('Unauthorized.', 401);
-                }
-            } else {
-
-                return redirect()->guest('auth/login');
-            }
+            return redirect()->guest('auth/login');
         }
 
         return $next($request);
