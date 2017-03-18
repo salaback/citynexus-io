@@ -137,9 +137,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         BackupManager\Laravel\Laravel5ServiceProvider::class,
-        Toin0u\Geocoder\GeocoderServiceProvider::class,
+        Geocoder\Laravel\Providers\GeocoderService::class,
         GrahamCampbell\Dropbox\DropboxServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider,
+        Illuminate\Notifications\NotificationServiceProvider::class,
 
 
 
@@ -204,8 +204,7 @@ return [
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class,
         'PSync'    => CityNexus\CityNexus\PropertySync::class,
-        'Dropbox' => GrahamCampbell\Dropbox\Facades\Dropbox::class,
-        'Notification' => Illuminate\Support\Facades\Notification::class,
+        'Dropbox' => GrahamCampbell\Dropbox\Facades\Dropbox::class
     ],
 
 ];
