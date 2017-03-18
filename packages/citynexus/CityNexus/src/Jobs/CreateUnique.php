@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class CreateUnique extends Job implements SelfHandling, ShouldQueue
+class CreateUnique extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     private $table;

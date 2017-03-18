@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class BackUpTable extends Job implements SelfHandling, ShouldQueue
+class BackUpTable extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
     private $table_name;

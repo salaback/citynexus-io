@@ -139,6 +139,7 @@ return [
         BackupManager\Laravel\Laravel5ServiceProvider::class,
         Toin0u\Geocoder\GeocoderServiceProvider::class,
         GrahamCampbell\Dropbox\DropboxServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider,
 
 
 
@@ -203,7 +204,8 @@ return [
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class,
         'PSync'    => CityNexus\CityNexus\PropertySync::class,
-        'Dropbox' => GrahamCampbell\Dropbox\Facades\Dropbox::class
+        'Dropbox' => GrahamCampbell\Dropbox\Facades\Dropbox::class,
+        'Notification' => Illuminate\Support\Facades\Notification::class,
     ],
 
 ];
