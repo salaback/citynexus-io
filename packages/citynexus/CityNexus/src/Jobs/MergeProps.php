@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 
-class MergeProps extends Job implements SelfHandling, ShouldQueue
+class MergeProps extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 

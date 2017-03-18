@@ -19,27 +19,5 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\DatasetPolicy',
     ];
 
-    /**
-     * Register any application authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate $gate
-     * @return void
-     */
-    public function boot(GateContract $gate)
-    {
-        parent::registerPolicies($gate);
 
-
-        $gate->before(function ($user) {
-            if ($user->super_admin) {
-                return true;
-            }
-        });
-
-        // Dataset Permissions
-        $gate->define('citynexus', function(User $user, $group, $method){
-            return $user->allowed($group, $method);
-        });
-
-    }
 }

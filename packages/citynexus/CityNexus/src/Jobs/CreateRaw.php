@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class CreateRaw extends Job implements SelfHandling, ShouldQueue
+class CreateRaw extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     private $ids;

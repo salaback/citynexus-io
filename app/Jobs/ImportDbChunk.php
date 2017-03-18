@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class ImportDbChunk extends Job implements SelfHandling, ShouldQueue
+class ImportDbChunk extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
 

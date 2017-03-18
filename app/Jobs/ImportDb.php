@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class ImportDb extends Job implements SelfHandling, ShouldQueue
+class ImportDb extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
