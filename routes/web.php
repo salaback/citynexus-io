@@ -28,12 +28,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/auth/user-groups/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup');
     Route::get('/admin', 'AdminController@index');
 
-    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::get('/', function (){
+        return view('app.index');
+    })->name('dashboard');
+
+    Route::resource('properties', 'PropertyController');
+
 });
 
-Route::group(['middleware' => 'auth'], function (){
-    Route::get('properties', 'NavigationController@properties');
-});
 
 Route::get('test', function(){
     return view('master.auth');

@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use CityNexus\CityNexus\Property;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Facades\Datatables;
 
-class PropertyController extends Controller
+class ApiPropertyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,15 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        return view('property.index');
+        $properties = Property::query();
+        return Datatables::of($properties)
+            ->addColumn('actions', function($property) {
+              return '<a href="' . route('properties.show', [$property->id]) . '" class="btn btn-raised btn-primary btn-sm">Profile</a>';
+            })
+            ->rawColumns(['actions'])
+            ->editColumn('street_name', '{{title_case($street_name)}}')
+            ->editColumn('unit', '{{title_case($unit)}}')
+            ->make(true);
     }
 
     /**
@@ -44,9 +53,9 @@ class PropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Property $property)
+    public function show($id)
     {
-        return view('property.show', compact('property'));
+        //
     }
 
     /**

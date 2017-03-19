@@ -8,6 +8,6 @@ class NavigationController extends Controller
 {
     public function properties()
     {
-        return view('properties.index');
+
     }
 }

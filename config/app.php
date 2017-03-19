@@ -153,6 +153,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         CityNexus\CityNexus\PackageServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*

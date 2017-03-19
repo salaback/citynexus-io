@@ -1,17 +1,16 @@
-@extends('master.vue')
+@extends('master.main')
 
-@section('content')
+@section('properties', 'Municipal Innovation Platform')
 
-    <example></example>
+@section('main')
+
+
 
 @endsection
 
-@push('vue-script')
-
+@push('scripts')
 <script>
-    Vue.component('example', {
-        template: '<div>A custom component!</div>'
-    })
+
 </script>
 
 @endpush

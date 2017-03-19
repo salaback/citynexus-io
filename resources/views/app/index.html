@@ -12,8 +12,6 @@
 
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    @stack('style')
-
 </head>
 <body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
 
@@ -58,7 +56,7 @@
                     </ul>
                 </li>
                 <li class="dropdown users"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i>
-                    </a>
+                </a>
                     <div class="dropdown-menu pull-right with-arrow panel panel-default" role="menu">
                         <ul class="app-sortcut">
                             <li>
@@ -101,40 +99,40 @@
                     </div>
                 </li>
                 <li class="dropdown messages"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-envelope"></i>
-                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-                    </a>
+                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                </a>
                     <div class="dropdown-menu pull-right with-arrow panel panel-default" role="menu">
                         <ul class="list-group">
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object thumb thumb-sm"> <img src="assets/images/pi-avatar.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Lucas sent you a message</span> <small class="text-muted">9 minutes ago</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">Lucas sent you a message</span> <small class="text-muted">9 minutes ago</small> </div>
+                            </a> </li>
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/Jane-avatar.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Jane sent you a message</span> <small class="text-muted">27 minutes ago</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">Jane sent you a message</span> <small class="text-muted">27 minutes ago</small> </div>
+                            </a> </li>
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/random-avatar1.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Lee sent you a message</span> <small class="text-muted">2 hour ago</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">Lee sent you a message</span> <small class="text-muted">2 hour ago</small> </div>
+                            </a> </li>
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/random-avatar3.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Rihtik sent you a message</span> <small class="text-muted">8 hours ago</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">Rihtik sent you a message</span> <small class="text-muted">8 hours ago</small> </div>
+                            </a> </li>
                         </ul>
                         <div class="panel-footer"> <a role="button" tabindex="0">Show all messages <i class="pull-right fa fa-angle-right"></i></a> </div>
                     </div>
                 </li>
                 <li class="dropdown notifications"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-bell"></i>
-                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-                    </a>
+                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                </a>
                     <div class="dropdown-menu pull-right with-arrow panel panel-default ">
                         <ul class="list-group">
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-ban"></i> </span>
-                                    <div class="media-body"> <span class="block">User Lucas cancelled account</span> <small class="text-muted">12 minutes ago</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">User Lucas cancelled account</span> <small class="text-muted">12 minutes ago</small> </div>
+                            </a> </li>
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-spotify"></i> </span>
-                                    <div class="media-body"> <span class="block">2 voice mails</span> <small class="text-muted">Neque porro quisquam est</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">2 voice mails</span> <small class="text-muted">Neque porro quisquam est</small> </div>
+                            </a> </li>
                             <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-whatsapp"></i> </span>
-                                    <div class="media-body"> <span class="block">8 voice messanger</span> <small class="text-muted">8 texts</small> </div>
-                                </a> </li>
+                                <div class="media-body"> <span class="block">8 voice messanger</span> <small class="text-muted">8 texts</small> </div>
+                            </a> </li>
                         </ul>
                         <div class="panel-footer"> <a role="button" tabindex="0">Show all notifications <i class="fa fa-angle-right pull-right"></i></a> </div>
                     </div>
@@ -412,7 +410,7 @@
     <!--  CONTENT  -->
     <section id="content">
         <div class="page page-offcanvas-layout">
-            @yield('main')
+
         </div>
     </section>
     <!--/ CONTENT -->
@@ -426,8 +424,6 @@
 <!--/ vendor javascripts -->
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
-
-@stack('scripts')
 
 <!--/ custom javascripts -->
 </body>

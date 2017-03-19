@@ -12,7 +12,6 @@
 
     <script>
 
-
         new Vue({
             el: '#content'
             // options

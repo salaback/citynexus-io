@@ -38,9 +38,17 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-
         if ($this->auth->guest()) {
-            return redirect()->guest('auth/login');
+            if ($request->ajax()) {
+                if ($request->getUri() == '/api-query/add-to') {
+                    return $next($request);
+                } else {
+                    return response('Unauthorized.', 401);
+                }
+            } else {
+
+                return redirect()->guest('auth/login');
+            }
         }
 
         return $next($request);
