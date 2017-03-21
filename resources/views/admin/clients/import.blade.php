@@ -83,7 +83,7 @@
             </div>
 @endsection
 
-@push('js_footer')
+@push('scripts')
 
 <script>
     var importTable = function(table, type)
@@ -105,14 +105,12 @@
                 type: type
             }
         }).success(function(data){
-            Command: toastr["success"]('Table imported.');
             $('#' + table + '_button').html("Migrated");
             $('#' + table + '_count').html(data);
 
             $('#' + table + '_button').removeClass("btn-primary").addClass('btn-success');
 
         }).error(function(){
-            Command: toastr["warning"]('Table didn\'t import properly.');
             $('#' + table + '_button').html("Error");
             $('#' + table + '_button').removeClass("btn-primary").addClass('btn-warning');
         });

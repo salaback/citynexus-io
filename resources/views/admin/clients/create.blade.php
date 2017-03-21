@@ -3,7 +3,7 @@
 
 @section(config('citynexus.section'))
 
-    <form action="{{route('admin.client.store')}}" method="POST" class="form-horizontal" role="form">
+    <form action="{{action('ClientController@store')}}" method="POST" class="form-horizontal" role="form">
         {{csrf_field()}}
         <div class="panel panel-default">
             <div class="panel-heading">

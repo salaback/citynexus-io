@@ -28,7 +28,7 @@
 </div>
 
 <div class="col-sm-3">
-    <a href="{{route('admin.client.create')}}" class="btn btn-primary pull-right" >Create New Client</a>
+    <a href="{{action('ClientController@create')}}" class="btn btn-primary pull-right" >Create New Client</a>
 </div>
 
 <!-- Modal -->
@@ -106,7 +106,7 @@
 </div><!-- /.modal -->
 
 
-@push('js_footer')
+@push('scripts')
 
 <script>
     var importId;

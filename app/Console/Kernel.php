@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\Upload::class,
+        \App\Console\Commands\Upgrade::class,
         \App\Console\Commands\ClientInfoUpdate::class,
 
     ];

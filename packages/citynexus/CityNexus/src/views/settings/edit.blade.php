@@ -46,13 +46,11 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('citynexus', ['superAdmin', 'all'])
                                 <li role="presentation" class="">
                                     <a href="#clients" role="tab" id="clients-tab" data-toggle="tab" aria-controls="clients" aria-expanded="false">
                                         Client Management
                                     </a>
                                 </li>
-                            @endcan
 
                         </ul>
                         <div id="myTabContent" class="tab-content">
@@ -118,7 +116,6 @@
                                 </div>
                             </div>
                             @endcan
-                            @can('citynexus', ['superAdmin', 'all'])
                                 <div role="tabpanel" class="tab-pane fade" id="clients" aria-labelledby="app_settings-tab">
                                     <div class="panel">
                                         <div class="panel-body">
@@ -126,7 +123,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endcan
                         </div>
                     </div>
                 </div>

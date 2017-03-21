@@ -3,11 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Client;
-use CityNexus\CityNexus\Dropbox;
-use CityNexus\CityNexus\Uploader;
 use Illuminate\Console\Command;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Artisan;
 
 class Upgrade extends Command
 {
@@ -16,14 +12,14 @@ class Upgrade extends Command
      *
      * @var string
      */
-    protected $signature = 'upgrade {client_id}';
+    protected $signature = 'citynexus:upgrade {client_id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Upgrade client version';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -56,7 +52,5 @@ class Upgrade extends Command
         {
             print $e;
         }
-
     }
-
 }

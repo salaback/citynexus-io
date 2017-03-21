@@ -10,15 +10,21 @@ namespace App\Services;
 
 
 use App\Client;
+use App\Jobs\UpgradeProperies;
+use CityNexus\CityNexus\Property;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class Upgrade
 {
 
+    use DispatchesJobs;
     private $client;
 
-    public function client($id)
+    public function client($client)
     {
-        $this->client = Client::find($id);
+        $this->client = $client;
+
+        config(['database.connections.tenant.schema' => $this->client->schema]);
 
         if($this->client->version_id === null)
         {
@@ -35,6 +41,16 @@ class Upgrade
     private function version_0()
     {
         // Updates
+
+        // Migrate properties table
+        $properties = Property::pluck('id')->chunk(100);
+
+        foreach($properties as $chunk)
+        {
+            $this->dispatch(new UpgradeProperies($this->client->id, $chunk));
+        }
+
+//        TODO: Add job which processes each property and changes the id of related fields.
 
 
         // Save client version

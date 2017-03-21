@@ -78,7 +78,6 @@ class MultiTenant
         {
             config([
                 'database.connections.tenant.schema' => $client->schema,
-                'database.default' => 'tenant'
             ]);
 
             Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);

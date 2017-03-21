@@ -142,7 +142,6 @@ return [
         Illuminate\Notifications\NotificationServiceProvider::class,
 
 
-
         /*
          * Application Service Providers...
          */
@@ -154,6 +153,14 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         CityNexus\CityNexus\PackageServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class,
+
+
+        /*
+         * CityNexus Packages
+         */
+        CityNexus\PropertyMgr\PackageServiceProvider::class,
+
     ],
 
     /*

@@ -36,6 +36,20 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+// need to replace
+Route::get('settings', '\CityNexus\CityNexus\Http\CitynexusSettingsController@getIndex');
+Route::get('settings/create-widget', '\CityNexus\CityNexus\Http\WidgetController@getCreate');
+Route::post('settings/create-widget', '\CityNexus\CityNexus\Http\WidgetController@postCreate');
+Route::post('settings/update-dashboard', '\CityNexus\CityNexus\Http\CitynexusSettingsController@postUpdateDashboard');
+
+Route::resource('admin/client', 'ClientController');
+Route::get('admin/client/reset-db/{id}', 'ClientController@resetDb')->name('admin.client.resetDb');
+Route::post('admin/client/import-db/', 'ClientController@importDb')->name('admin.client.importDb');
+Route::get('admin/client/migrate-db/{id}', 'ClientController@migrateDb')->name('admin.client.migrateDb');
+Route::get('admin/client/config/{id}', 'ClientController@config')->name('admin.client.config');
+Route::post('admin/client/config/{id}', 'ClientController@postConfig');
+Route::post('admin/client/import-table', 'ClientController@importTable');
+
 
 Route::get('test', function(){
     return view('master.auth');
