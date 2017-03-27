@@ -1,6 +1,6 @@
 @extends('master.main')
 
-@section('properties', 'All Properties')
+@section('title', 'All Properties')
 
 @section('main')
 
@@ -15,10 +15,9 @@
                     <table id="propertiesTable" class="table table-custom">
                         <thead>
                         <tr>
-                            <th>House Number</th>
-                            <th>Street</th>
-                            <th>Unit</th>
-                            <th>Actions</th>
+                            <th>Address</th>
+                            <th>Units</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,9 +48,8 @@
             serverSide: true,
             ajax: '{!! route('api.properties.index') !!}',
             columns: [
-                { data: 'house_number', name: 'house_number' },
-                { data: 'street_name', name: 'street_name' },
-                { data: 'unit', name: 'unit' },
+                { data: 'address', name: 'address' },
+                { data: 'units', name: 'units', orderable: false, searchable: false },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false}
             ]
         });

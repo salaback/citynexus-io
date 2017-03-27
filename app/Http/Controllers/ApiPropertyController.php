@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use CityNexus\CityNexus\Property;
+use CityNexus\PropertyMgr\Property;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -15,14 +15,17 @@ class ApiPropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::query();
+        $properties = Property::where('is_building', true);
+
         return Datatables::of($properties)
             ->addColumn('actions', function($property) {
               return '<a href="' . route('properties.show', [$property->id]) . '" class="btn btn-raised btn-primary btn-sm">Profile</a>';
             })
             ->rawColumns(['actions'])
-            ->editColumn('street_name', '{{title_case($street_name)}}')
-            ->editColumn('unit', '{{title_case($unit)}}')
+            ->addColumn('units', function ($property) {
+               return $property->units->count();
+            })
+            ->editColumn('address', '{{title_case($address)}}')
             ->make(true);
     }
 

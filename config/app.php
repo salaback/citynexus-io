@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://citynexus.app:8000'),
+    'url' => env('APP_URL', 'http://tenant.citynexus.app:8000'),
 
     /*
     |--------------------------------------------------------------------------
@@ -161,6 +161,7 @@ return [
          * CityNexus Packages
          */
         CityNexus\PropertyMgr\PackageServiceProvider::class,
+        CityNexus\DataStore\PackageServiceProvider::class,
 
     ],
 

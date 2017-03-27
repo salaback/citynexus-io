@@ -8,17 +8,26 @@
     <title>:: Oakleaf - Admin ::</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 
+    <style>
+        .auth-logo {
+            max-width: 100%;
+        }
+
+    </style>
     <!-- CSS Files -->
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
 
 <body class="signup-page">
 <div class="wrapper">
-    <div class="header header-filter" style="background-image: url('/assets/images/login-bg.jpg'); background-size: cover; background-position: top center;">
+    <div class="header header-filter" style="background-image: url('/img/background.png'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 text-center">
                     <div class="card card-signup">
+                        <div class="header auth-header text-center">
+                            <img class="auth-logo" src="/img/cn_logo.png" alt="CityNexus">
+                        </div>
                         @yield('main')
                     </div>
                 </div>

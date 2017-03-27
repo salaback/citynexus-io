@@ -45,6 +45,8 @@ class TenantCheck
             ]);
         }
 
+        DB::reconnect();
+
         return $next($request);
     }
 }

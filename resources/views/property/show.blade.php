@@ -1,6 +1,6 @@
 @extends('master.main')
 
-@section('properties', 'All Properties')
+@section('title', title_case($property->address))
 
 @section('main')
     <div class="page profile-page">
@@ -11,28 +11,15 @@
         <div class="row">
             <div class="col-md-12 address-wrapper">
                 <span class="address">
-                    {{title_case($property->full_address)}}
+                    {{title_case($property->address)}}
                 </span>
 
             </div>
             <div class="col-md-4">
                 <!-- boxs -->
-                <section class="boxs boxs-simple">
-                    <!-- boxs header -->
-                    <div class="boxs-header dvd dvd-btm">
-                        <h1 class="custom-font"><strong>About</strong> Me</h1>
-                    </div>
-                    <!-- /boxs header -->
-
-                    <!-- boxs body -->
-                    <div class="boxs-body">
-                        <p class="text-default">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                        <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                            <small>Designer <cite title="Source Title">Source Title</cite></small> </blockquote>
-                    </div>
-                    <!-- /boxs body -->
-                </section>
+                @if($property->units->count() > 0)
+                    @include('property.snipits._units', ['units' => $property->units()->orderBy('unit')->get()])
+                @endif
                 <!-- /boxs -->
 
                 <!-- boxs -->

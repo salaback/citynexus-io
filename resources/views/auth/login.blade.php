@@ -4,13 +4,9 @@
 
     <form class="form" method="POST" action="{{ action('AuthController@postLogin') }}">
         {{csrf_field()}}
-        <div class="header header-primary text-center">
-            <h4>Sign in</h4>
-            <div class="social-line"> <a href="#" class="btn btn-just-icon"><i class="fa fa-facebook-square"></i></a> <a href="#" class="btn btn-just-icon"><i class="fa fa-twitter"></i></a> <a href="#" class="btn btn-just-icon"><i class="fa fa-google-plus"></i></a> </div>
-        </div>
-        <h3 class="mt-0">CityNexus</h3>
-        <p class="help-block">Or Be Classical</p>
-        @if (count($errors) > 0)
+        <h3 class="mt-0">Log In</h3>
+
+    @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)

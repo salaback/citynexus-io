@@ -32,7 +32,6 @@ class Property extends Model
         'polygon'
     ];
 
-
     protected $table = 'cn_properties';
 
     public function getOneLineAddressAttribute()

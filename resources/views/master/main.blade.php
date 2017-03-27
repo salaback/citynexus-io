@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
 
     <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/citynexus.css">
 
     @stack('style')
 
@@ -24,7 +25,7 @@
     <section id="header">
         <header class="clearfix">
             <!-- Branding -->
-            <div class="branding"> <a class="brand" href="index.html"><span>Oakleaf</span></a> <a role="button" tabindex="0" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a> </div>
+            <div class="branding"> <a class="" href="/"><img class="logo" src="/img/logo_on_black.gif" alt=""></a> <a role="button" tabindex="0" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a> </div>
             <!-- Branding end -->
 
             <!-- Left-side navigation -->

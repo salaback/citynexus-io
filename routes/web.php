@@ -28,9 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/auth/user-groups/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup');
     Route::get('/admin', 'AdminController@index');
 
-    Route::get('/', function (){
-        return view('app.index');
-    })->name('dashboard');
+    Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::resource('properties', 'PropertyController');
 

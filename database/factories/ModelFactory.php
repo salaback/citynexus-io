@@ -21,30 +21,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(CityNexus\CityNexus\Property::class, function (Faker\Generator $faker) {
-    $house_number = rand(100, 1000);
-    $street = $faker->streetName;
-    $street_type = $faker->streetSuffix;
-    $unit = rand(1, 20);
-
-    return [
-        'full_address' => $house_number . ' ' . $street . ' ' . $street_type . ' ' . $unit,
-        'house_number' => $house_number,
-        'street_name' => $street,
-        'street_type' => $street_type,
-        'unit' => $unit,
-        'city' => $faker->city,
-        'state' => 'MA',
-    ];
-});
-
-$factory->define(CityNexus\CityNexus\Table::class, function (Faker\Generator $faker) {
-    return [
-        'table_title' => 'Testing Table',
-        'table_name' => 'tabler_testing_table',
-        'scheme' => null,
-    ];
-});
 
 $factory->define(\App\UserGroup::class, function (Faker\Generator $faker) {
     return [

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use CityNexus\CityNexus\Property;
+use App\UserGroup;
+use CityNexus\PropertyMgr\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
@@ -14,6 +16,9 @@ class PropertyController extends Controller
      */
     public function index()
     {
+
+        $this->authorize('citynexus', ['properties', 'view']);
+
         return view('property.index');
     }
 
@@ -44,8 +49,10 @@ class PropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Property $property)
+    public function show($id)
     {
+        $property = Property::find($id);
+
         return view('property.show', compact('property'));
     }
 
