@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Phaza\LaravelPostgis\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePropertiesTable extends Migration {
+class CreateCNPropertiesTable extends Migration {
 
     /**
      * Run the migrations.

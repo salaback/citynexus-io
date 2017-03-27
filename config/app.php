@@ -154,6 +154,7 @@ return [
         CityNexus\CityNexus\PackageServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        Phaza\LaravelPostgis\DatabaseServiceProvider::class,
 
 
         /*

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTagsTable extends Migration
+class CreateCnTaskMorphTables extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cn_tags', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('tag');
+        Schema::create('cn_taskables', function (Blueprint $table) {
+            $table->integer('task_id');
+            $table->integer('cn_taskable_id');
+            $table->string('cn_taskable_type');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -25,6 +25,6 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('cn_tags');
+        Schema::drop('cn_taskables');
     }
 }

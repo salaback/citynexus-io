@@ -220,6 +220,7 @@ class ClientController extends Controller
         {
             $data = DB::connection('import')->table('users')->whereNull('deleted_at')->get();
 
+            $users = [];
             foreach($data as $user)
             {
                 $memebership = json_decode($user->permissions, true);
@@ -247,7 +248,14 @@ class ClientController extends Controller
                 $nUser->memberships = $memeberships;
 
                 $nUser->save();
+
+                $users[$user->id] = $nUser->id;
             }
+
+            $settings = $client->settings;
+            $settings['user_ids'] = $users;
+            $client->settings = $settings;
+            $client->save();
 
             return 'Migrated';
         }
@@ -277,15 +285,15 @@ class ClientController extends Controller
                 break;
         }
 
+                $this->dispatch(new ImportDb($request->get('table'), $importDb, $client->schema));
 
-
-            $data = DB::connection('import')->table($request->get('table'))->get();
-
-            $data = collect($data)->map(function ($x) {
-                return (array)$x;
-            })->toArray();
-
-            DB::connection('tenant')->table($request->get('table'))->insert($data);
+//            $data = DB::connection('import')->table($request->get('table'))->get();
+//
+//            $data = collect($data)->map(function ($x) {
+//                return (array)$x;
+//            })->toArray();
+//
+//            DB::connection('tenant')->table($request->get('table'))->insert($data);
 
             return 'Queued';}
     }

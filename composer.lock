@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e33ebfbff39fea268bc467bebb2961b3",
+    "content-hash": "bfeda0128569b01597f20fc84cb673c4",
     "packages": [
         {
             "name": "anlutro/curl",
@@ -2898,31 +2898,30 @@
         },
         {
             "name": "phaza/laravel-postgis",
-            "version": "2.16",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/njbarrett/laravel-postgis.git",
-                "reference": "45b5e519108f2f02ed14f25fd8961fea4cc684bb"
+                "reference": "5af1d261b400b803be2299ed59d3b38c2d82e550"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/njbarrett/laravel-postgis/zipball/45b5e519108f2f02ed14f25fd8961fea4cc684bb",
-                "reference": "45b5e519108f2f02ed14f25fd8961fea4cc684bb",
+                "url": "https://api.github.com/repos/njbarrett/laravel-postgis/zipball/5af1d261b400b803be2299ed59d3b38c2d82e550",
+                "reference": "5af1d261b400b803be2299ed59d3b38c2d82e550",
                 "shasum": ""
             },
             "require": {
-                "bosnadev/database": "~0.1",
-                "geo-io/wkb-parser": "~1.0",
-                "illuminate/database": "~5.1",
-                "jmikola/geojson": "~1.0",
+                "bosnadev/database": "~0.16",
+                "geo-io/wkb-parser": "^1.0",
+                "illuminate/database": "^5.2",
+                "jmikola/geojson": "^1.0",
                 "php": ">=5.5"
             },
             "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
+                "codeclimate/php-test-reporter": "~0.3",
                 "illuminate/pagination": "~5.0",
                 "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~4.5",
-                "satooshi/php-coveralls": "~0.6"
+                "phpunit/phpunit": "~4.5"
             },
             "type": "library",
             "autoload": {
@@ -2938,10 +2937,14 @@
                 {
                     "name": "Peter Haza",
                     "email": "peter.haza@gmail.com"
+                },
+                {
+                    "name": "Nicholas Barrett",
+                    "email": "njbarrett7@gmail.com"
                 }
             ],
             "description": "Postgis extensions for laravel. Aims to make it easy to work with geometries from laravel models",
-            "time": "2016-01-04T07:20:47+00:00"
+            "time": "2017-01-16T08:04:22+00:00"
         },
         {
             "name": "phpoffice/phpexcel",

@@ -13,8 +13,8 @@ class CreateTagablesTable extends Migration
     public function up()
     {
         Schema::create('cn_tagables', function (Blueprint $table) {
-            $table->string('tagables_type');
-            $table->integer('tagables_id')->unsigned();
+            $table->string('cn_tagables_type');
+            $table->integer('cn_tagables_id')->unsigned();
             $table->integer('tag_id')->unsigned();
             $table->timestamp('created_at');
             $table->integer('created_by')->unsigned()->nullable();
