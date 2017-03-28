@@ -11,21 +11,14 @@
 |
 */
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
+    static $password;
+
     return [
-        'first_name' => $faker->firstName,
-        'last_name' => $faker->lastName,
-        'email' => $faker->email,
-        'password' => bcrypt(str_random(10)),
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
 });
-
-
-$factory->define(\App\UserGroup::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->name . ' Group',
-        'permissions' => json_decode('{"datasets":{"view":"true","raw":"true","create":"true","upload":"true","edit":"true","delete":"true","export":"true","rollback":"true"},"scores":{"view":"true","raw":"true","create":"true","refresh":"true","edit":"true","delete":"true","upload":"true"},"reports":{"view":"true","create":"true","save":"true","score":"true"},"usersAdmin":{"create":"true","delete":"true","assign":"true"},"properties":{"view":"true","show":"true","merge":"true","edit":"true","create":"true"},"export":{"view":"true","create":"true"}}', true)
-    ];
-});
-

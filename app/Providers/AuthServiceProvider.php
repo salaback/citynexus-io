@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use App\User;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\DatasetPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -34,10 +32,10 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
+
         // Dataset Permissions
-        Gate::define('citynexus', function(User $user, $group, $method){
+        Gate::define('citynexus', function($user, $group, $method){
             return $user->allowed($group, $method);
         });
     }
-
 }

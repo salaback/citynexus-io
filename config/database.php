@@ -92,7 +92,7 @@ return [
             'password' => env('DB_PASSWORD', 'secret'),
             'charset'  => 'utf8',
             'prefix'   => '',
-            'schema'   => 'tenant_84280',
+            'schema'   => '',
         ],
 
     ],

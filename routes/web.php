@@ -1,7 +1,7 @@
 <?php
 
 // Authentication routes...
-Route::get('auth/login', 'AuthController@getLogin');
+Route::get('auth/login', 'AuthController@getLogin')->name('login');
 Route::post('auth/login', 'AuthController@postLogin');
 Route::get('auth/logout', 'AuthController@getLogout');
 

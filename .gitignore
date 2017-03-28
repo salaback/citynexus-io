@@ -1,11 +1,9 @@
-/vendor
 /node_modules
-Homestead.yaml
-Homestead.json
-.env
+/public/storage
+/public/hot
+/storage/*.key
+/vendor
 /.idea
-resources/views/vendor/citynexus/master/main.blade.php
-
-storage/export_cache/*
-
-storage/export_cache/1485872065-40U Fines.csv
+Homestead.json
+Homestead.yaml
+.env

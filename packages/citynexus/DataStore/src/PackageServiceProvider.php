@@ -26,6 +26,7 @@ class PackageServiceProvider extends ServiceProvider
         // Include Helpers
         include_once __DIR__ . '/helpers/typer.php';
         include_once __DIR__ . '/helpers/DataProcessor.php';
+        include_once __DIR__ . '/helpers/DataAccess.php';
 
     }
 

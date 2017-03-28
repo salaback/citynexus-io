@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\UserGroup;
+use CityNexus\DataStore\DataAccess;
 use CityNexus\PropertyMgr\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,9 +50,14 @@ class PropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, DataAccess $dataAccess)
     {
         $property = Property::find($id);
+
+        $result = $dataAccess->getDataByPropertyID($id);
+
+        dd($result);
+
 
         return view('property.show', compact('property'));
     }

@@ -10,7 +10,7 @@ class UserGroup extends Model
     protected $casts = [
         'permissions' => 'array'
     ];
-    protected $connection = 'tenant';
+    protected $connection = 'public';
 
     public function users()
     {
