@@ -3,17 +3,21 @@
 
 namespace CityNexus\DataStore;
 
+use CityNexus\PropertyMgr\PropertySync;
 use Illuminate\Support\Facades\DB;
 
 class DataProcessor
 {
-
-    public function processData( $data , $uploader_id)
+    public function __construct()
     {
-        $uploader = Uploader::find($uploader_id);
+        $this->sync = new PropertySync();
+    }
+
+    public function processData($data , Uploader $uploader)
+    {
         $data = $this->applyFilters($data, $uploader);
         if($uploader->hasSyncClass('address')){
-            $data = $this->sync->address($data, $uploader->getSyncClass('address'));
+            $data = $this->sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
         return $data;
@@ -36,7 +40,6 @@ class DataProcessor
                     // loop though each of the related filters
                     foreach($filters[$key] as $filter)
                     {
-
                         // replace the old value with the filtered value
                         $data[$row][$key] = $this->filter($filter, $value);
                     }
@@ -59,4 +62,6 @@ class DataProcessor
             default: return $value;
         }
     }
+
+
 }

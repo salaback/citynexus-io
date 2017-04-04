@@ -1,6 +1,6 @@
-@extends(config('citynexus.template'))
+@extends('master.main')
 
-@section(config('citynexus.section'))
+@section('main')
 
     <div class="row">
         <div class="panel panel-default">
@@ -87,42 +87,45 @@
                                 </div>
                             </div>
 
-                            @can('citynexus', ['usersAdmin', 'create'])
-                            <div role="tabpanel" class="tab-pane fade" id="users" aria-labelledby="users-tab">
-                                <div class="panel">
-                                    <div class="panel-body">
-                                        @include('citynexus::settings._users')
-                                    </div>
-                                </div>
-                            </div>
-                            @endcan
+                            {{--@can('citynexus', ['usersAdmin', 'create'])--}}
+                            {{--<div role="tabpanel" class="tab-pane fade" id="users" aria-labelledby="users-tab">--}}
+                                {{--<div class="panel">--}}
+                                    {{--<div class="panel-body">--}}
+                                        {{--@include('citynexus::settings._users')--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--@endcan--}}
 
+                            {{--@can('citynexus', ['superAdmin', 'all'])--}}
+                                {{--<div role="tabpanel" class="tab-pane fade" id="groups" aria-labelledby="groups-tab">--}}
+                                    {{--<div class="panel">--}}
+                                        {{--<div class="panel-body">--}}
+                                            {{--@include('citynexus::settings._groups')--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--@endcan--}}
+
+                            {{--@can('citynexus', ['admin', 'edit'])--}}
+                            {{--<div role="tabpanel" class="tab-pane fade" id="app_settings" aria-labelledby="app_settings-tab">--}}
+                                {{--<div class="panel">--}}
+                                    {{--<div class="panel-body">--}}
+                                        {{--@include('citynexus::settings._app_settings')--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--@endcan--}}
                             @can('citynexus', ['superAdmin', 'all'])
-                                <div role="tabpanel" class="tab-pane fade" id="groups" aria-labelledby="groups-tab">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            @include('citynexus::settings._groups')
-                                        </div>
-                                    </div>
-                                </div>
-                            @endcan
 
-                            @can('citynexus', ['admin', 'edit'])
-                            <div role="tabpanel" class="tab-pane fade" id="app_settings" aria-labelledby="app_settings-tab">
+                            <div role="tabpanel" class="tab-pane fade" id="clients" aria-labelledby="app_settings-tab">
                                 <div class="panel">
                                     <div class="panel-body">
-                                        @include('citynexus::settings._app_settings')
+                                        @include('citynexus::settings._clients')
                                     </div>
                                 </div>
                             </div>
                             @endcan
-                                <div role="tabpanel" class="tab-pane fade" id="clients" aria-labelledby="app_settings-tab">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            @include('citynexus::settings._clients')
-                                        </div>
-                                    </div>
-                                </div>
                         </div>
                     </div>
                 </div>

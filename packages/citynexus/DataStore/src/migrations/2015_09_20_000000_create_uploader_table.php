@@ -14,15 +14,16 @@ class CreateUploaderTable extends Migration
     {
         Schema::create('cn_uploader', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('dataset_id')->unsigned()->nullable();;
+            $table->integer('dataset_id')->unsigned()->nullable();
             $table->foreign('dataset_id')->references('id')->on('cn_datasets')->onDelete('cascade');
             $table->string('name')->nullable();
-            $table->text('description')->nullable()->nullable();;
-            $table->string('type')->nullable()->nullable();;
-            $table->string('frequency')->nullable()->nullable();;
+            $table->text('description')->nullable();
+            $table->string('type')->nullable();
+            $table->string('frequency')->nullable();
             $table->json('map')->nullable();
             $table->json('filters')->nullable();
             $table->json('syncs')->nullable();
+            $table->json('settings')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

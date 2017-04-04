@@ -19,22 +19,19 @@ class PropertySync
         // find raw address element and send to address sync
 
         $return = [];
+        if(isset($sync['full_address']))
 
         foreach ($data as $row) {
-            switch ($sync->type) {
-                case 'unparsed':
-                    $row['property_id'] = $this->unparsedAddress($row, $sync);
-                    break;
-
-                case 'parsed':
-                    $row['property_id'] = $this->parsedAddress($row, $sync);
-                    break;
-            }
+            $row['property_id'] = $this->unparsedAddress($row, $sync);
             $return[] = $row;
+
+        } else {
+            foreach ($data as $row) {
+                $row['property_id'] = $this->parsedAddress($row, $sync);
+                $return[] = $row;
+            }
         }
-
         return $return;
-
     }
 
     public function parseFullAddress($address)
@@ -62,38 +59,44 @@ class PropertySync
 
     private function rawParsedAddress($row, $sync)
     {
-        $full_address = strtoupper(trim($row[$sync->street_number]));
+        $full_address = strtoupper(trim($row[$sync['house_number']]));
 
-        $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->street_name]));
+        $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['street_name']]));
 
-        if(isset($row[$sync->street_type]))
+        if(isset($sync['street_type']) && isset($row[$sync['street_type']]))
         {
-            $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->street_type]));
+            $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['street_type']]));
 
         }
-        if(isset($row[$sync->unit]))
+        if(isset($sync['unit']) && isset($row[$sync['unit']]))
         {
-           $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->unit]));
+           $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['unit']]));
         }
 
-        if (isset($row[$sync->city]) && $row[$sync->city] != null)
-            $full_address = $full_address . ', ' . strtoupper(trim($row[$sync->city]));
+        if (isset($sync['city']) && isset($row[$sync['city']]) && $row[$sync['city']] != null)
+            $full_address = $full_address . ', ' . strtoupper(trim($row[$sync['city']]));
+        elseif(isset($sync['default_city']))
+            $full_address = $full_address . ', ' . strtoupper(trim($sync['default_city']));
         else
-            $full_address = $full_address . ', ' . strtoupper(trim($sync->default_city));
+            $full_address = $full_address . ', ' . strtoupper(config('client.city'));
 
-        if (!isset($sync->WithCityState)) {
-            if (!isset($sync->StateInCity)) {
-                if (isset($row[$sync->state]) && $row[$sync->state] != null)
-                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->state]));
-                elseif(isset($sync->default_state))
-                    $full_address = $full_address . ' ' . strtoupper(trim($sync->default_state));
+
+        if (!isset($sync['WithCityState'])) {
+            if (!isset($sync['StateInCity'])) {
+                if (isset($sync['state']) && isset($row[$sync['state']]) && $row[$sync['state']] != null)
+                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['state']]));
+                elseif(isset($sync['default_state']))
+                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_state']));
+                else
+                    $full_address = $full_address . ' ' . strtoupper(trim(config('client.city')));
+
             }
 
-            if (!isset($sync->PostalCodeInCity)) {
-                if (isset($row[$sync->postal_code]) && $row[$sync->postal_code] != null)
-                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->postal_code]));
-                elseif(isset($sync->default_postal_code))
-                    $full_address = $full_address . ' ' . strtoupper(trim($sync->default_postal_code));
+            if (!isset($sync['PostalCodeInCity'])) {
+                if (isset($sync['postal_code']) && isset($row[$sync['postal_code']]) && $row[$sync['postal_code']] != null)
+                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['postal_code']]));
+                elseif(isset($sync['default_postal_code']))
+                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_postal_code']));
             }
         }
 
@@ -245,39 +248,44 @@ class PropertySync
         $return = [];
 
         // make uppercase
-        $full_address = strtoupper(trim($row[$sync->full_address]));
+        $full_address = strtoupper(trim($row[$sync['full_address']]));
 
 
         // if a city is set and is not null, use it.
-        if (isset($row[$sync->city]) && $row[$sync->city] != null)
-            $full_address = $full_address . ', ' . strtoupper(trim($row[$sync->city]));
-        else
-            $full_address = $full_address . ', ' . strtoupper(trim($sync->default_city));
+        if (isset($sync['city']) && isset($row[$sync['city']]) && $row[$sync['city']] != null)
+            $full_address = $full_address . ', ' . strtoupper(trim($row[$sync['city']]));
+        elseif(isset($sync['default_city']))
+            $full_address = $full_address . ', ' . strtoupper(trim($sync['default_city']));
+        else{
+            $full_address = $full_address . ', ' . config('client.city');
+        }
 
         // if city, state, and postal code not in full address
-        if (!isset($sync->WithCityState)) {
+        if (!isset($sync['WithCityState'])) {
 
             // if state  not is city field
-            if (!isset($sync->StateInCity)) {
+            if (!isset($sync['StateInCity'])) {
 
                 // if state is offered and is not null use it
-                if (isset($row[$sync->state]) && $row[$sync->state] != null)
-                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->state]));
-                elseif(isset($sync->default_state))
+                if (isset($sync['state']) && isset($row[$sync['state']]) && $row[$sync['state']] != null)
+                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['state']]));
+                elseif(isset($sync['default_state']))
 
                     // else, if state is not offered, format and use default
-                    $full_address = $full_address . ' ' . strtoupper(trim($sync->default_state));
+                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_state']));
+                else
+                    $full_address = $full_address . ', ' . config('client.state');
             }
 
             // if postal code was not in the city
-            if (!isset($sync->PostalCodeInCity)) {
+            if (!isset($sync['PostalCodeInCity'])) {
 
                 // and postal code is set use it
-                if (isset($row[$sync->postal_code]) && $row[$sync->postal_code] != null)
-                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync->postal_code]));
+                if (isset($sync['postal_code']) && isset($row[$sync['postal_code']]) && $row[$sync['postal_code']] != null)
+                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['postal_code']]));
                 elseif(isset($sync->default_postal_code))
                     // else format and use default
-                    $full_address = $full_address . ' ' . strtoupper(trim($sync->default_postal_code));
+                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_postal_code']));
             }
 
         }

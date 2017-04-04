@@ -38,10 +38,16 @@ class DataAccess
         // get data for each unit
         foreach($tables as $table)
         {
-            $return[$table->table_title] = $this->getData($table->table_name, $ids);
+            $reply = $this->getData($table->table_name, $ids);
+
+            if($reply->count() != 0)
+            {
+                $return[$table->table_title] = $reply;
+            }
+
         }
 
-        dd($return);
+        return $return;
 
     }
 
@@ -51,6 +57,6 @@ class DataAccess
             ->whereIn('property_id', $ids)
             ->get();
 
-        dd($results);
+        return $results;
     }
 }

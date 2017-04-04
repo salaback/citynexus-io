@@ -27,6 +27,11 @@ class PackageServiceProvider extends ServiceProvider
         include_once __DIR__ . '/helpers/typer.php';
         include_once __DIR__ . '/helpers/DataProcessor.php';
         include_once __DIR__ . '/helpers/DataAccess.php';
+        include_once __DIR__ . '/helpers/Uploader.php';
+        include_once __DIR__ . '/helpers/TableBuilder.php';
+
+        // Inlcude Jobs
+        include_once __DIR__ . '/Jobs/ProcessUpload.php';
 
     }
 

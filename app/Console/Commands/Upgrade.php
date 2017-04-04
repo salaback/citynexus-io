@@ -19,13 +19,15 @@ class Upgrade extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Upgrade CityNexus Instance';
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param \App\Services\Upgrade $upgrade
      */
+
+    protected $upgrade;
     public function __construct(\App\Services\Upgrade $upgrade)
     {
         parent::__construct();

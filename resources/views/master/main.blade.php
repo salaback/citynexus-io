@@ -419,7 +419,7 @@
     <!--/ CONTENT -->
 </div>
 <!--/ Application Content -->
-
+@stack('modal')
 <!--  Vendor JavaScripts  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
 <script src="/assets/bundles/libscripts.bundle.js"></script>

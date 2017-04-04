@@ -54,12 +54,9 @@ class PropertyController extends Controller
     {
         $property = Property::find($id);
 
-        $result = $dataAccess->getDataByPropertyID($id);
+        $data = $dataAccess->getDataByPropertyID($id);
 
-        dd($result);
-
-
-        return view('property.show', compact('property'));
+        return view('property.show', compact('property', 'data'));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClientInfoUpdate;
+use App\Console\Commands\Upgrade;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Upgrade::class,
+        ClientInfoUpdate::class,
     ];
 
     /**

@@ -31,11 +31,11 @@ class ImportDb extends Job implements ShouldQueue
      * @internal param string $data
      * @internal param Property $upload_id
      */
-    public function __construct($table, $source, $schema)
+    public function __construct($table, $source, $client_schema)
     {
         $this->table = $table;
         $this->source = $source;
-        $this->schema = $schema;
+        $this->schema = $client_schema;
 
     }
 

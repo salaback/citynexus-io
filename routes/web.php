@@ -32,7 +32,24 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('properties', 'PropertyController');
 
+    // dataset routes
+    Route::get('/dataset/any-data', 'DatasetController@anyData')->name('dataset.anydata');
+    Route::resource('/dataset', 'DatasetController');
+
+    // Uploaders routes
+
+    Route::resource('upload', 'UploadController');
+    Route::resource('uploader', 'UploaderController');
+    Route::post('/uploader/schema', 'UploaderController@schema')->name('uploader.schema');
+    Route::get('/uploader/address-sync/{id}', 'UploaderController@addressSync')->name('uploader.addressSync');
+    Route::get('/uploader/entity-sync/{id}', 'UploaderController@entitySync')->name('uploader.entitySync');
+    Route::get('/uploader/filters/{id}', 'UploaderController@filters')->name('uploader.filters');
+
+    Route::post('/uploader/post', 'UploaderController@post')->name('uploader.post');
+
 });
+
+
 
 // need to replace
 Route::get('settings', '\CityNexus\CityNexus\Http\CitynexusSettingsController@getIndex');

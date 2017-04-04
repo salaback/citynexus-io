@@ -17,6 +17,8 @@ class Uploader extends Model
         'name',
         'settings',
         'type',
+        'map',
+        'syncs',
         'description',
         'frequency',
         'filters'
@@ -26,7 +28,7 @@ class Uploader extends Model
         'settings' => 'array',
         'filters' => 'array',
         'syncs' => 'array',
-        'map' => 'array'
+        'map' => 'array',
     ];
 
     /**
@@ -67,7 +69,7 @@ class Uploader extends Model
 
     public function hasSyncClass($class)
     {
-        if($this->sync != null) {
+        if($this->syncs != null) {
             foreach($this->syncs as $i)  {
                 if($i['class'] == $class) return true;
             }
@@ -77,7 +79,7 @@ class Uploader extends Model
 
     public function getSyncClass($class)
     {
-        if($this->sync != null) {
+        if($this->syncs != null) {
             foreach($this->syncs as $i)  {
                 if($i['class'] == $class) return $i;
             }

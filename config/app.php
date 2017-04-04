@@ -185,11 +185,10 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
-
-
         /*
          * CityNexus Packages
          */
+        CityNexus\CityNexus\PackageServiceProvider::class,
         CityNexus\PropertyMgr\PackageServiceProvider::class,
         CityNexus\DataStore\PackageServiceProvider::class,
 

@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Client;
 use App\Jobs\UpgradeProperies;
 use CityNexus\CityNexus\Property;
+use CityNexus\DataStore\DataSet;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -59,6 +60,9 @@ class Upgrade
 
         // Tasks
         $this->migrateTasks();
+
+        // Data Sets
+        $this->datasets();
 
         // Save client version
         $this->client->version_id = 1;
@@ -169,6 +173,68 @@ class Upgrade
         }
 
         DB::table('cn_taskables')->insert($taskables);
+    }
+
+    public function datasets()
+    {
+        $data = DB::table('tabler_tables')->whereNull('deleted_at')->get();
+
+        $datasets = [];
+        $uploaders = [];
+
+        foreach($data as $k => $i)
+        {
+            $table_name = str_replace('tabler_', 'cnd_', $i->table_name
+            );
+
+            // Create new Data Set
+            $dataset = DataSet::create([
+                'name' => $i->table_title,
+                'table_name' => $table_name,
+                'description' => $i->table_description,
+                'schema' => json_decode($i->scheme, true),
+                'type' => 'profile'
+            ]);
+
+
+            // Create map and sync arrays
+            $sync = [];
+            $syncs = [];
+            $map = [];
+            foreach (json_decode($i->scheme, true) as $key => $item)
+            {
+                $map[$key] = $key;
+
+                if(isset($item['sync']) && $item['sync'] != null)
+                {
+                    $sync[$item['sync']] = $key;
+                }
+            }
+            $sync['class'] = 'address';
+
+            $syncs[] = $sync;
+
+            // Create uploader
+            $dataset->uploaders()->create([
+                'name' => "SQL Migration",
+                'type' => "sql",
+                'settings' => [
+                    'table_name' => $i->table_name,
+                    'driver'   => 'pgsql',
+                    'host'     => config('database.connections.tenant.host'),
+                    'database' => config('database.connections.tenant.database'),
+                    'username' => config('database.connections.tenant.username'),
+                    'password' => config('database.connections.tenant.password'),
+                    'charset'  => config('database.connections.tenant.charset'),
+                    'prefix'   => config('database.connections.tenant.prefix'),
+                    'schema'   => config('database.connections.tenant.schema'),
+                    ],
+                'map' => $map,
+                'syncs' => $syncs
+            ]);
+
+        }
+
     }
 
 }
