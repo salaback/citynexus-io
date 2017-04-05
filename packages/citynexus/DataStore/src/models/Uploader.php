@@ -34,7 +34,7 @@ class Uploader extends Model
     /**
      * Table name
      */
-    protected $table = 'cn_uploader';
+    protected $table = 'cn_uploaders';
 
     /**
      * The data points uploaded during upload

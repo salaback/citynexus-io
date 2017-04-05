@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Client;
 use CityNexus\DataStore\DataProcessor;
+use CityNexus\DataStore\Helper\UploadHelper;
 use CityNexus\DataStore\Uploader;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -12,30 +13,33 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
 
-class ProcessData implements ShouldQueue
+class SaveData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $uploader;
-    private $settings;
-    private $client_id;
+
+    private $uploader_id;
+    private $uploadHelper;
     private $data;
-    private $dataProcessor;
+    private $upload_id;
+    private $client_id;
 
     /**
+     *
      * Create a new job instance.
      *
      * @param int $client_id
      * @param Uploader $uploader
      * @param array $settings
      */
-    public function __construct($client_id, Uploader $uploader, $data, $settings = [])
+    public function __construct($client_id, $data, $uploader_id, $upload_id)
     {
+
         $this->client_id = $client_id;
-        $this->uploader = $uploader;
         $this->data = $data;
-        $this->settings = $settings;
-        $this->dataProcessor = new DataProcessor();
+        $this->uploader_id = $uploader_id;
+        $this->upload_id = $upload_id;
+
     }
 
     /**
@@ -45,10 +49,12 @@ class ProcessData implements ShouldQueue
      */
     public function handle()
     {
-        $client = Client::find($this->id);
-        config(['database.connections.tenant.schema' => $client->schema]);
-        DB::reconnect();
 
-        $this->dataProcessor->processData($this->data, $this->uploader->id);
+        Client::find($this->client_id)->logInAsClient();
+
+        $uploader = Uploader::find($this->uploader_id);
+        $uploadHelper = new UploadHelper();
+
+        $uploadHelper->importData($this->data, $uploader, $this->upload_id);
     }
 }

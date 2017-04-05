@@ -11,6 +11,8 @@ namespace CityNexus\DataStore;
 
 use CityNexus\CityNexus\Table;
 use CityNexus\PropertyMgr\Property;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 class DataAccess
@@ -33,18 +35,16 @@ class DataAccess
         $return = [];
 
         // get each table
-        $tables = Table::all();
+        $tables = DataSet::all();
 
         // get data for each unit
         foreach($tables as $table)
         {
             $reply = $this->getData($table->table_name, $ids);
-
-            if($reply->count() != 0)
+            if($reply)
             {
-                $return[$table->table_title] = $reply;
+                $return[$table->id] = $reply;
             }
-
         }
 
         return $return;
@@ -53,10 +53,23 @@ class DataAccess
 
     public function getData($table, $ids)
     {
-        $results = DB::table($table)
-            ->whereIn('property_id', $ids)
-            ->get();
-
-        return $results;
+        try
+        {
+            $results = DB::table($table)
+                ->whereIn('property_id', $ids)
+                ->get();
+        }
+        catch(QueryException $exception)
+        {
+            return false;
+        }
+        if(isset($results) && $results->count() > 0)
+        {
+            return $results;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

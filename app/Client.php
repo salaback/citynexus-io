@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
@@ -22,5 +23,20 @@ class Client extends Model
     public function version()
     {
         return $this->belongsTo(Version::class);
+    }
+
+    public function logInAsClient()
+    {
+        $settings = $this->settings;
+
+        // set tenant db
+        config([
+            'client' => $settings,
+            'client.id' => $this->id,
+            'database.connections.tenant.schema' => $this->schema,
+            'database.default' => 'tenant'
+        ]);
+
+        DB::reconnect();
     }
 }

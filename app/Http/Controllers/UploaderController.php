@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SqlImport;
+use App\Jobs\TestJob;
+use Carbon\Carbon;
+use CityNexus\DataStore\DataProcessor;
 use CityNexus\DataStore\DataSet;
+use CityNexus\DataStore\Helper\UploadHelper;
 use CityNexus\DataStore\Store;
 use CityNexus\DataStore\Upload;
 use CityNexus\DataStore\Uploader;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CityNexus\DataStore\Typer;
@@ -15,10 +20,14 @@ use CityNexus\DataStore\Typer;
 class UploaderController extends Controller
 {
 
+    use DispatchesJobs;
+
+    private $uploader;
 
     public function __construct()
     {
         $this->store = new Store();
+        $this->uploader = new UploadHelper();
     }
 
     public function index()
@@ -111,8 +120,9 @@ class UploaderController extends Controller
         switch ($request->get('slug'))
         {
             case 'import-sql':
-                $this->dispatch(new SqlImport(config('database.connections.tenant.schema'), $request->get('uploader_id'), $request->get('settings')));
+
                 session(['flash_success' => 'SQL Import has been queued.']);
+                $this->uploader->sqlUpload($request->get('uploader_id'));
                 return redirect()->back();
                 break;
 

@@ -12,7 +12,7 @@ class CreateUploaderTable extends Migration
      */
     public function up()
     {
-        Schema::create('cn_uploader', function (Blueprint $table) {
+        Schema::create('cn_uploaders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('dataset_id')->unsigned()->nullable();
             $table->foreign('dataset_id')->references('id')->on('cn_datasets')->onDelete('cascade');

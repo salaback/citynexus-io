@@ -4,7 +4,7 @@
 }
 
 .unit-list {
-    height: 200px;
+    max-height: 200px;
     overflow: scroll;
 }
 
@@ -13,4 +13,8 @@
     text-decoration: none;
     padding-bottom: 5px;
     border-bottom: 1px;
+}
+
+.dataset-body {
+    overflow: scroll;
 }

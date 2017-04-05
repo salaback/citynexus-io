@@ -3,9 +3,12 @@
 namespace CityNexus\DataStore;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DataSet extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *

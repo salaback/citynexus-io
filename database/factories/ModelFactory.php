@@ -49,3 +49,13 @@ $factory->define(\CityNexus\PropertyMgr\Address::class, function(\Faker\Generato
     $address['property_id'] = $property->id;
     return $address;
 });
+
+$factory->define(\App\Client::class, function(\Faker\Generator $faker){
+    $schema = $faker->word . '_' . $faker->randomNumber(4);
+   return [
+       'name' => $faker->name,
+       'domain' => $schema . '.citynexus-io.app:8000',
+       'schema' => $schema,
+       'settings' => ['test' => true]
+   ];
+});

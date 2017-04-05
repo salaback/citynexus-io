@@ -40,7 +40,7 @@
 
                                 @endif
                             </td>
-                            <td>{{$upload->user->fullname}}</td>
+                            <td>{{$upload->user->fullname()}}</td>
                             <td><div class="dropup pull-right">
                                     <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-navicon" id="icon-{{$upload->id}}"></i>
