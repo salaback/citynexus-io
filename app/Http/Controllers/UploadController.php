@@ -51,11 +51,9 @@ class UploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Upload $upload)
     {
-        $dataset = DataSet::find($id);
-
-        return view('dataset.show.' . $dataset->type, compact('dataset'));
+        return view('upload.show', compact('upload'));
     }
 
     /**

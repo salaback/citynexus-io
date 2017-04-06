@@ -19,6 +19,7 @@ use CityNexus\DataStore\Uploader;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 class UploadHelper
@@ -70,8 +71,10 @@ class UploadHelper
      * @param $source
      * @param $uploader
      */
-    public function sqlUpload($uploader, $settings = null)
+    public function sqlUpload($uploader, $settings = [])
     {
+        Log::info('Got to the start Upload');
+
         $uploader = Uploader::find($uploader);
 
         // check for dataset updated table
@@ -89,19 +92,13 @@ class UploadHelper
             'file_type' => 'sql_import',
             'size' => count($data),
             'processed_at' => Carbon::now(),
-            'user_id' => Auth::id(),
+            'user_id' => $settings['user_id'],
         ]);
-
 
 
         foreach($chunks as $chunk)
         {
-            $this->dispatch(new SaveData(
-                    config('client.id'),
-                    $chunk,
-                    $uploader->id,
-                    $upload->id)
-            );
+            dispatch((new SaveData(config('client.id'), $chunk, $uploader->id, $upload->id))->onQueue('dataUpload'));
         }
     }
 

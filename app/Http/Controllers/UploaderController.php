@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SqlImport;
+use App\Jobs\StartImport;
+use App\Jobs\StartUpload;
 use App\Jobs\TestJob;
 use Carbon\Carbon;
 use CityNexus\DataStore\DataProcessor;
@@ -16,6 +18,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CityNexus\DataStore\Typer;
+use Illuminate\Support\Facades\Log;
 
 class UploaderController extends Controller
 {
@@ -120,9 +123,9 @@ class UploaderController extends Controller
         switch ($request->get('slug'))
         {
             case 'import-sql':
-
+                dispatch(new StartImport(config('client.id'), $request->get('uploader_id')));
                 session(['flash_success' => 'SQL Import has been queued.']);
-                $this->uploader->sqlUpload($request->get('uploader_id'));
+                Log::info('Got to the end');
                 return redirect()->back();
                 break;
 

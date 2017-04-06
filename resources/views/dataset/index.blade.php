@@ -1,6 +1,6 @@
 @extends('master.main')
 
-@section('title', 'All Properties')
+@section('title', 'All Datasets')
 
 @section('main')
 

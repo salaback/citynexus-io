@@ -15,7 +15,7 @@ class CreateUploadsTable extends Migration
         Schema::create('cn_uploads', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('uploader_id')->unsigned();
-            $table->foreign('uploader_id')->references('id')->on('cn_uploader')->onDelete('cascade');
+            $table->foreign('uploader_id')->references('id')->on('cn_uploaders')->onDelete('cascade');
             $table->string('source');
             $table->string('size');
             $table->string('file_type');

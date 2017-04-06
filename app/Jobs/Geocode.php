@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,6 +15,7 @@ class Geocode implements ShouldQueue
 
     private $property_id;
     private $geocode;
+    private $client_id;
     /**
      * Create a new job instance.
      *
@@ -23,6 +25,8 @@ class Geocode implements ShouldQueue
     {
         $this->property_id = $property_id;
         $this->geocode = new \CityNexus\PropertyMgr\Geocode();
+        $this->client_id = config('client.id');
+
     }
 
     /**
@@ -32,6 +36,7 @@ class Geocode implements ShouldQueue
      */
     public function handle()
     {
+        Client::find($this->client_id)->logInAsClient();
         if(config('citynexus.geocoding') == true)
         {
             $this->geocode->property($this->property_id);

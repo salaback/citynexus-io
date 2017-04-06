@@ -33,6 +33,7 @@ class PackageServiceProvider extends ServiceProvider
         // Inlcude Jobs
         include_once __DIR__ . '/Jobs/ProcessUpload.php';
         include_once __DIR__ . '/Jobs/SaveData.php';
+        include_once __DIR__ . '/Jobs/StartImport.php';
 
     }
 

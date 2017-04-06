@@ -21,7 +21,6 @@ class ProcessUpload implements ShouldQueue
     private $uploader;
     private $settings;
     private $client_id;
-    private $dataProcessor;
 
     /**
      * Create a new job instance.
