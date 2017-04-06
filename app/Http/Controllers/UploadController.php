@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use CityNexus\DataStore\DataSet;
 use CityNexus\DataStore\Upload;
+use CityNexus\PropertyMgr\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -53,7 +55,9 @@ class UploadController extends Controller
      */
     public function show(Upload $upload)
     {
-        return view('upload.show', compact('upload'));
+        $properties = Property::find($upload->new_property_ids);
+        $data = DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->get();
+        return view('upload.show', compact('upload', 'properties', 'data'));
     }
 
     /**

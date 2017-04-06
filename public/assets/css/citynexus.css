@@ -18,3 +18,8 @@
 .dataset-body {
     overflow: scroll;
 }
+
+.data-preview {
+    overflow: scroll;
+    max-height: 300px;
+}
