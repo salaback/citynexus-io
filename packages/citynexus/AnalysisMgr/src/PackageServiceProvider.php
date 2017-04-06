@@ -24,6 +24,7 @@ class PackageServiceProvider extends ServiceProvider
         // Include Helpers
 
         include_once __DIR__ . '/helpers/ScoreBuilder.php';
+        include_once __DIR__ . '/helpers/MapHelper.php';
 
 
     }

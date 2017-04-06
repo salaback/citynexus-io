@@ -47,6 +47,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/uploader/post', 'UploaderController@post')->name('uploader.post');
 
+    Route::get('view/map', 'ViewController@map')->name('map');
+    Route::post('view/map', 'ViewController@mapData');
+
     Route::get('/get-notification/{id}', function($id){
 
         $notification = \Illuminate\Support\Facades\Auth::user()->notifications()->where('id', $id)->first();

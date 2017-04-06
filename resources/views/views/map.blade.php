@@ -4,18 +4,27 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>CityNexus | @yield('title')</title>
+    <title>CityNexus | Mapping Portal</title>
     <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/citynexus.css">
-
-    @stack('style')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <style>
+        #content #mapid {
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        .page {
+            padding: 0px !important;
+        }
+    </style>
 
 </head>
-<body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
+<body id="oakleaf" class="main_Wrapper leftmenu-offcanvas device-lg theme-default default-theme-color header-fixed aside-fixed rightmenu-show leftmenu-sm">
 
 <!--  Application Content -->
 <div id="wrap" class="animsition">
@@ -131,80 +140,41 @@
             <div role="tabpanel">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">Chat</a></li>
-                    <li role="presentation"><a href="#todo" aria-controls="todo" role="tab" data-toggle="tab">Todo</a></li>
-                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                    <li role="presentation" class="active"><a href="#datasets" aria-controls="datasets" role="tab" data-toggle="tab">Data Sets</a></li>
+                    {{--<li role="presentation"><a href="#datasets" aria-controls="computed" role="tab" data-toggle="tab">Computed</a></li>--}}
+                    {{--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>--}}
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="chat">
-                        <div class="search">
-                            <div class="form-group is-empty">
-                                <input type="text" class="form-control underline-input" placeholder="Search...">
-                                <span class="material-input"></span></div>
+
+                    <div role="tabpanel" class="tab-pane active" id="datasets">
+                        <div class="boxs-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                @foreach($datasets as $dataset)
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="dataset_{{$dataset->id}}_heading">
+                                            <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#dataset_{{$dataset->id}}" aria-expanded="false" aria-controls="collapseOne" class="collapsed">{{$dataset->name}}</a> </h4>
+                                        </div>
+                                        <div id="dataset_{{$dataset->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                @foreach($dataset->schema as $item)
+                                                    @if(isset($item['show']) && $item['show'] == 'on')
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" name="optionsCheckboxes" onclick="loadDatasetPoint({{$dataset->id}}, '{{$item['key']}}')"><span class="checkbox-material"></span>
+                                                            {{$item['name']}}</label>
+                                                    </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                        <h6>Recent</h6>
-                        <ul>
-
-
-                        </ul>
-                        <h6>Contacts</h6>
-                        <ul>
-
-                        </ul>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="todo">
-                        <div class="form-group">
-                            <input type="text" value="" placeholder="Create new task..." class="form-control" />
-                            <span class="fa fa-plus"></span> </div>
-                        <h6>Today</h6>
-                        <ul class="todo-list">
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        Initialize the project</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        Create the main structure</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        Create the main structure</label>
-                                </div>
-                            </li>
-                        </ul>
-                        <h6>Tomorrow</h6>
-                        <ul class="todo-list">
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        Initialize the project</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        Create the main structure</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="optionsCheckboxes">
-                                        displayed in a normal space!</label>
-                                </div>
-                            </li>
-                        </ul>
+                    <div role="tabpanel" class="tab-pane" id="computed">
+
                     </div>
                     <div role="tabpanel" class="tab-pane" id="settings">
                         <h6>Chat Settings</h6>
@@ -293,7 +263,7 @@
     <!--  CONTENT  -->
     <section id="content">
         <div class="page page-offcanvas-layout">
-            @yield('main')
+            <div id="mapid"></div>
         </div>
     </section>
     <!--/ CONTENT -->
@@ -307,7 +277,199 @@
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
 
-@stack('scripts')
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+<script>
+    $('#mapid').css('height', ($(window).height() - ($('#header').height())));
+    $(window).resize(function() {
+        $('#mapid').css('height', ($(window).height() - ($('#header').height())));
+    });
+
+    var mymap = L.map('mapid').setView([{{config('client.map_lat')}}, {{config('client.map_lng')}}], {{config('client.map_zoom')}});
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        accessToken: "{{env('MAPBOX_TOKEN')}}"
+    }).addTo(mymap);
+
+
+    var layers = new Array();
+
+    var dataCollections = new Array();
+
+    function toggleElement(name)
+    {
+        if(name in dataCollections)
+        {
+            removeLayer(dataCollections.name);
+            return false;
+        }
+        else{
+            return true
+        }
+    }
+
+    var loadDatasetPoint = function (dataset_id, key) {
+        var collectionName = 'dataset-' + dataset_id + '-' + key;
+
+        if(toggleElement(collectionName))
+        {
+            $("#settings_cog").addClass('fa-spin');
+            $.ajax({
+                type: 'post',
+                url: '{{route('map')}}',
+                data: {
+                    _token: "{{csrf_token()}}",
+                    type: 'datapoint',
+                    key: key,
+                    dataset_id: dataset_id
+
+                },
+                success: function(data) {
+                    reloadMap(data['points'], data['title'], data['max'], data['handle'])
+                },
+                error: function(data){
+                    $("#settings_cog").removeClass('fa-spin');
+                    alert('Oh oh, something went wrong.');
+                }
+            });
+        }
+
+    };
+
+    var loadDataset = function (dataset_id) {
+        $("#settings_cog").addClass('fa-spin');
+
+        $.ajax({
+            type: 'post',
+            url: '/citynexus/reports/views/dot-map',
+            data: {
+                _token: "{{csrf_token()}}",
+                type: 'dataset',
+                dataset_id: dataset_id
+
+            },
+            success: function(data) {
+                reloadMap(data['points'], data['title'], data['max'], data['handle'])
+            },
+            error: function(data){
+                $("#settings_cog").removeClass('fa-spin');
+                alert('Oh oh, something went wrong.');
+            }
+        });
+
+    };
+
+    {{--var loadScore = function (id) {--}}
+        {{--$("#settings_cog").addClass('fa-spin');--}}
+
+        {{--$.ajax({--}}
+            {{--type: 'post',--}}
+            {{--url: '/citynexus/reports/views/dot-map',--}}
+            {{--data: {--}}
+                {{--_token: "{{csrf_token()}}",--}}
+                {{--type: 'score',--}}
+                {{--id: id,--}}
+            {{--},--}}
+            {{--success: function(data) {--}}
+                {{--reloadMap(data['points'], data['title'], data['max'], data['handle'])--}}
+            {{--},--}}
+            {{--error: function(data){--}}
+                {{--$("#settings_cog").removeClass('fa-spin');--}}
+                {{--alert('Oh oh, something went wrong.');--}}
+            {{--}--}}
+        {{--});--}}
+
+    {{--};--}}
+
+
+    var colors = {
+        0: {
+            layer: null,
+            color:'#c93635'
+        },
+        1: {
+            layer: null,
+            color: '#003f5e'
+        },
+        2: {
+            layer: null,
+            color: '#35c980'
+        },
+        3: {
+            layer: null,
+            color: '#5e003f'
+        },
+        4: {
+            layer: null,
+            color: '#35c8c9'
+        },
+        5: {
+            layer: null,
+            color: '#357ec9'
+        }
+    };
+
+    var newColor = function(layer)
+    {
+
+        for (var i=0; i < Object.keys(colors).length;  ++i)
+        {
+            if (colors[i]['layer'] == null)
+            {
+                colors[i].layer = layer;
+                return colors[i].color;
+            }
+        }
+
+    };
+
+    var reloadMap = function(markers, title, max, handle)
+    {
+        layers[handle] = L.layerGroup();
+
+        var color = newColor(handle);
+
+        for (var i=0; i < markers.length;  ++i)
+        {
+            layers[handle].addLayer( new L.circleMarker( [markers[i].lat, markers[i].lng], {
+                        radius: 4,
+                        stroke: false,
+                        color: 'black',
+                        opacity: 1,
+                        fill: true,
+                        fillColor: color,
+                        fillOpacity: (markers[i].value/max) + .1
+                    } ).bindPopup( markers[i].message )
+            );
+        }
+
+        layers[handle].addTo(mymap);
+        createLayerBox(handle, color, title, markers.length);
+        $("#settings_cog").removeClass('fa-spin');
+    };
+
+    var createLayerBox = function(layer, color, name, length)
+    {
+        var box = '<div class="card-box" id="layer_' + layer + '"><span class="fa fa-square" style="color: ' + color + '"></span> <b>' + name + '</b> <small>(' + length + ')</small><span class="fa fa-trash pull-right" style="cursor: pointer" onclick="removeLayer(\'' + layer + '\')"></span></div>';
+        $('#layerCards').append(box);
+    };
+
+    function removeLayer(layer) {
+        layer = layer.trim();
+        layers[layer].clearLayers();
+        $('#layer_' + layer).remove();
+
+        for (var i=0; i < Object.keys(colors).length;  ++i)
+        {
+            if (colors[i]['layer'] == layer)
+            {
+                colors[i].layer = null;
+                break;
+            }
+        }
+    };
+</script>
 
 <!--/ custom javascripts -->
 </body>
