@@ -32,7 +32,6 @@
             "CityNexus\\PropertyMgr\\": "packages/CityNexus/PropertyMgr/src",
             "CityNexus\\DataStore\\": "packages/CityNexus/DataStore/src",
             "CityNexus\\AnalysisMgr\\": "packages/CityNexus/AnalysisMgr/src"
-
         }
     },
     "autoload-dev": {

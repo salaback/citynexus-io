@@ -15,7 +15,6 @@ class CreateScoreResults extends Migration {
         Schema::create('cn_score_results', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('score_id')->unsigned();
-            $table->foreign('score_id')->references('id')->on('cn_scores')->onDelete('CASCADE');
             $table->json('results');
             $table->timestamp('period_start')->nullable();
             $table->timestamp('period_end')->nullable();
