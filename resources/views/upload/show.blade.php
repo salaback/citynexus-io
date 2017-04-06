@@ -1,6 +1,6 @@
 @extends("master.main")
 
-@section('title', "Upload Information")
+@section('title', "Upload Information | " . $upload->uploader->name . "(" . $upload->id . ")")
 
 @section('main')
 
@@ -12,6 +12,7 @@
 
                 </div>
                 <div class="boxs-body">
+                    <h4>{{$upload->uploader->name}} ({{$upload->id}})</h4>
                     <strong>Uploaded By: </strong> {{$upload->user->fullname}} <br>
                     <strong>Uploaded At: </strong> {{$upload->updated_at->toFormattedDateString()}} <br>
                     <strong>Records Added: </strong> {{$upload->size}} <br>
