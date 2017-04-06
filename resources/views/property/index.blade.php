@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
-                    <h1 class="custom-font"><strong>FooTable</strong> Example</h1>
+                    <h1 class="custom-font"><strong>All </strong>Properties</h1>
 
                 </div>
                 <div class="boxs-body">

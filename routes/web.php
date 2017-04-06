@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Uploaders routes
 
-    Route::resource('upload', 'UploadController');
+    Route::resource('dataset/upload', 'UploadController');
     Route::resource('uploader', 'UploaderController');
     Route::post('/uploader/schema', 'UploaderController@schema')->name('uploader.schema');
     Route::get('/uploader/address-sync/{id}', 'UploaderController@addressSync')->name('uploader.addressSync');
@@ -47,6 +47,20 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/uploader/post', 'UploaderController@post')->name('uploader.post');
 
+    Route::get('/get-notification/{id}', function($id){
+
+        $notification = \Illuminate\Support\Facades\Auth::user()->notifications()->where('id', $id)->first();
+
+        if($notification)
+        {
+            $notification->markAsRead();
+            return redirect($notification->data['clickBack']);
+        }
+        else{
+            return back()->withErrors('We could not found the specified notification');
+        }
+
+    })->name('getNotification');
 });
 
 

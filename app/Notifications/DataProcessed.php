@@ -15,6 +15,7 @@ class DataProcessed extends Notification
     private $upload;
     private $client_id;
     private $dataset;
+    private $click_back;
 
     /**
      * Create a new notification instance.
@@ -26,6 +27,7 @@ class DataProcessed extends Notification
         $this->upload = $upload;
         $this->dataset = $upload->uploader->dataset->name;
         $this->client_id = config('client.id');
+        $this->click_back = url(route('upload.show', [$upload->id]));
     }
 
     /**
@@ -49,7 +51,7 @@ class DataProcessed extends Notification
     {
         return (new MailMessage)
                     ->line('Your data upload has finished')
-                    ->action('View upload report', url(route('upload.show', [$this->upload->id])))
+                    ->action('View upload report', $this->click_back)
                     ->line('Thank you for using our application!');
     }
 
@@ -65,8 +67,8 @@ class DataProcessed extends Notification
             'name' => $this->dataset,
             'dataCount' => $this->upload->size,
             'newProperties' => count($this->upload->new_property_ids),
-            'upload_id' => $this->upload->id,
-            'client_id' => $this->client_id
+            'client_id' => $this->client_id,
+            'clickBack' => $this->click_back
         ];
     }
 }

@@ -31,7 +31,7 @@ class User extends Authenticatable
         [
             'memberships' => 'array'
         ];
-    public function fullname()
+    public function getFullnameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
     }
