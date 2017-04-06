@@ -3,8 +3,11 @@
 namespace App\Jobs;
 
 use App\Client;
+use App\Notifications\DataProcessed;
+use App\User;
 use CityNexus\DataStore\DataProcessor;
 use CityNexus\DataStore\Helper\UploadHelper;
+use CityNexus\DataStore\Upload;
 use CityNexus\DataStore\Uploader;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -50,9 +53,25 @@ class SaveData implements ShouldQueue
 
         Client::find($this->client_id)->logInAsClient();
 
+
+        $upload = Upload::find($this->upload_id);
+
+        session(['upload_id' => $this->upload_id]);
+
         $uploader = Uploader::find($this->uploader_id);
         $uploadHelper = new UploadHelper();
 
         $uploadHelper->importData($this->data, $uploader, $this->upload_id);
+
+        $upload->queues -= 1;
+        $upload->save();
+
+        if($upload->queues == 0)
+        {
+            $upload->user->notify(new DataProcessed($upload));
+        }
+
+        session(['upload_id' => null]);
+
     }
 }

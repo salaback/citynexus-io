@@ -12,8 +12,12 @@ class Upload extends Model
         'size',
         'file_type',
         'note',
+        'queues',
+        'new_property_ids',
         'user_id'
     ];
+
+    protected $casts = ['new_property_ids' => 'array'];
 
     protected $dates = ['processed_at', 'deleted_at', 'created_at', 'updated_at'];
 

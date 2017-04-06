@@ -10,6 +10,7 @@ namespace CityNexus\PropertyMgr;
 
 
 use App\Jobs\Geocode;
+use CityNexus\DataStore\Upload;
 use Illuminate\Support\Facades\DB;
 
 class PropertySync
@@ -200,13 +201,20 @@ class PropertySync
     {
         $property = Property::firstOrNew($property);
 
-        // if a new property, geocode it
-        if($property->location == null) {
+        if(!$property->exists && session('upload_id') != null)
+        {
             $property->save();
-            dispatch(new Geocode($property->id));
+            $upload = Upload::find(session('upload_id'));
+            $upload->new_property_ids[] = $property->id;
+            $upload->save();
         }
 
         $property->save();
+
+        // if a new property, geocode it
+        if($property->location == null) {
+            dispatch(new Geocode($property->id));
+        }
 
         return $property->id;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use CityNexus\DataStore\Upload;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,16 +12,20 @@ class DataProcessed extends Notification
 {
     use Queueable;
 
-    private $upload_id;
+    private $upload;
+    private $client_id;
+    private $dataset;
 
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param $upload
      */
-    public function __construct($upload_id)
+    public function __construct($upload)
     {
-        $this->upload_id = $upload_id;
+        $this->upload = $upload;
+        $this->dataset = $upload->uploader->dataset->name;
+        $this->client_id = config('client.id');
     }
 
     /**
@@ -43,8 +48,8 @@ class DataProcessed extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('You\'r data upload has finished')
-                    ->action('Notification Action', url('/'))
+                    ->line('Your data upload has finished')
+                    ->action('View upload report', url(route('upload.show', [$this->upload->id])))
                     ->line('Thank you for using our application!');
     }
 
@@ -57,7 +62,11 @@ class DataProcessed extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'name' => $this->dataset,
+            'dataCount' => $this->upload->size,
+            'newProperties' => count($this->upload->new_property_ids),
+            'upload_id' => $this->upload->id,
+            'client_id' => $this->client_id
         ];
     }
 }

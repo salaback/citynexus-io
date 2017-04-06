@@ -93,12 +93,12 @@ class UploadHelper
             'size' => count($data),
             'processed_at' => Carbon::now(),
             'user_id' => $settings['user_id'],
+            'queues' => count($chunks)
         ]);
-
 
         foreach($chunks as $chunk)
         {
-            dispatch((new SaveData(config('client.id'), $chunk, $uploader->id, $upload->id))->onQueue('dataUpload'));
+            dispatch((new SaveData(config('client.id'), $chunk, $uploader->id, $upload->id))->onQueue('low'));
         }
     }
 

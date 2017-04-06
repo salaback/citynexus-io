@@ -36,10 +36,13 @@ class Geocode implements ShouldQueue
      */
     public function handle()
     {
-        Client::find($this->client_id)->logInAsClient();
-        if(config('citynexus.geocoding') == true)
+        if(config('app.env') == 'production')
         {
-            $this->geocode->property($this->property_id);
+            Client::find($this->client_id)->logInAsClient();
+            if(config('citynexus.geocoding') == true)
+            {
+                $this->geocode->property($this->property_id);
+            }
         }
     }
 }

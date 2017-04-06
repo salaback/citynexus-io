@@ -22,6 +22,8 @@ class CreateUploadsTable extends Migration
             $table->string('note')->nullable();
             $table->dateTime('processed_at')->nullable();
             $table->integer('user_id')->unsigned();
+            $table->integer('queues')->default(0);
+            $table->json('new_property_ids')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
