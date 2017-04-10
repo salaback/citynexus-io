@@ -4,9 +4,11 @@ namespace App\Jobs;
 
 use App\Client;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\DB;
 
 class Geocode implements ShouldQueue
 {
@@ -24,7 +26,6 @@ class Geocode implements ShouldQueue
     public function __construct($property_id)
     {
         $this->property_id = $property_id;
-        $this->geocode = new \CityNexus\PropertyMgr\Geocode();
         $this->client_id = config('client.id');
 
     }
@@ -36,13 +37,10 @@ class Geocode implements ShouldQueue
      */
     public function handle()
     {
-        if(config('app.env') == 'production')
-        {
-            Client::find($this->client_id)->logInAsClient();
-            if(config('citynexus.geocoding') == true)
-            {
-                $this->geocode->property($this->property_id);
-            }
-        }
+        if(session('client.id') != $this->client_id)  Client::find($this->client_id)->logInAsClient();
+
+        $geocode = new \CityNexus\PropertyMgr\GeocodeHelper();
+        $geocode->property($this->property_id);
+
     }
 }

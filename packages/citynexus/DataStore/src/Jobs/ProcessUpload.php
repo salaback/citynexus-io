@@ -43,9 +43,7 @@ class ProcessUpload implements ShouldQueue
      */
     public function handle()
     {
-        $client = Client::find($this->id);
-        config(['database.connections.tenant.schema' => $client->schema]);
-        DB::reconnect();
+        Client::find($this->id)->logInAsClient();
 
         switch ($this->uploader->type)
         {
@@ -59,5 +57,6 @@ class ProcessUpload implements ShouldQueue
                 }
                 break;
         }
+
     }
 }

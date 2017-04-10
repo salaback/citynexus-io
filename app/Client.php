@@ -33,10 +33,12 @@ class Client extends Model
         config([
             'client' => $settings,
             'client.id' => $this->id,
-            'database.connections.tenant.schema' => $this->schema,
-            'database.default' => 'tenant'
+            'database.connections.tenant.schema' => $this->schema
         ]);
 
-        DB::reconnect();
+        DB::disconnect('tenant');
+        DB::reconnect('tenant');
+
+        return true;
     }
 }

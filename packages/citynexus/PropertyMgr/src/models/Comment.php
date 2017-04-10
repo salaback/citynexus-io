@@ -32,14 +32,14 @@ class Comment extends Model
         return $this->belongsTo('\App\User', 'posted_by');
     }
 
-    public function commentable()
-    {
-        return $this->morphTo();
-    }
-
     public function comments()
     {
         return $this->morphMany('CityNexus\PropertyMgr\Comment', 'cn_commentable');
+    }
+
+    public function replyTo()
+    {
+        return $this->belongsTo('\App\User', 'reply_to');
     }
 
 }

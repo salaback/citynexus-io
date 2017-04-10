@@ -22,7 +22,7 @@ class MapHelper
             ->where($key, '>', '0')
             ->orderBy($dataset->table_name . '.created_at')
             ->join('cn_properties', $dataset->table_name . '.property_id', '=', 'cn_properties.id')
-            ->select($dataset->table_name . '.' . $key, 'cn_properties.id', 'cn_properties.address', 'cn_properties.location')
+            ->select($dataset->table_name . '.' . $key, 'cn_properties.id', 'cn_properties.address', 'cn_properties.unit', 'cn_properties.cords')
             ->get();
 
         $max = 0;
@@ -31,14 +31,17 @@ class MapHelper
 
         foreach($results as $i)
         {
-            if($i->location != null)
+            if($i->cords != null)
             {
+                $cords = json_decode($i->cords, true);
+                $address = $i->address;
+                if($i->unit != null) $address .= ' #' . $i->unit;
                 $points[$i->id] = [
-                    'name' => ucwords($i->address),
+                    'name' => ucwords($address),
                     'value' => $i->$key,
                     'url' => route('properties.show', [$i->id]),
-                    'lat' => $i->location->lat,
-                    'lng' => $i->location->lng,
+                    'lat' => $cords['lat'],
+                    'lng' => $cords['lng'],
                 ];
             }
             if($max < $i->$key) $max = $i->$key;

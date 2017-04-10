@@ -17,13 +17,14 @@ class Property extends Model
         'address',
         'unit',
         'city',
+        'cords',
         'state',
         'postcode',
         'country',
         'is_building',
         'is_unit',
         'is_lot',
-        'point',
+        'location',
         'polygon'
         ];
 
@@ -32,11 +33,18 @@ class Property extends Model
         'polygon'
     ];
 
+    protected $casts = [
+        'cords' => 'array'
+    ];
+
     protected $table = 'cn_properties';
 
     public function getOneLineAddressAttribute()
     {
-        return trim($this->address . ' ' . $this->unit);
+        if($this->unit == null)
+            return $this->address;
+        else
+            return $this->address . ' #' . $this->unit;
     }
 
     public function building()
@@ -46,7 +54,17 @@ class Property extends Model
 
     public function getFullAddressAttribute()
     {
-        return $this->address . ' ' . $this->city . ', ' . $this->state . ' ' . $this->postcode;
+        $address = $this->address;
+
+        if($this->city != null) {$address .= ', ' . $this->city;}
+        else {$address .= ', ' . config('client.city');}
+
+        if($this->state != null) { $address .= ', ' . $this->state;}
+        else {$address .= ', ' . config('client.state');}
+
+        if($this->postal_code != null) { $address .= ' ' . $this->postal_code;}
+
+        return $address;
     }
 
     public function units()

@@ -2,7 +2,7 @@
 
     <!-- boxs header -->
     <div class="boxs-header dvd dvd-btm">
-        <h1 class="custom-font"><strong>Units</strong> at this property</h1>
+        <h1 class="custom-font"><strong>{{$units->count()}} {{str_plural('Unit', $units->count())}}</strong> at this property</h1>
     </div>
     <!-- /boxs header -->
 

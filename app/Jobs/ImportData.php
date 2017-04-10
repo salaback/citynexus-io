@@ -57,7 +57,6 @@ class ImportData extends Job implements ShouldQueue
             $first = array_shift($data)->id;
             $last = last($data)->id;
 
-            DB::statement("SET search_path TO 'public'");
             $this->dispatch(new ImportDbChunk($first, $last, $this->table->table_name, $this->source, $this->target_schema));
 
         });

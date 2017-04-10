@@ -285,12 +285,16 @@
         $('#mapid').css('height', ($(window).height() - ($('#header').height())));
     });
 
-    var mymap = L.map('mapid').setView([{{config('client.map_lat')}}, {{config('client.map_lng')}}], {{config('client.map_zoom')}});
-    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+    var mymap = L.map('mapid', {
+        fullscreenControl: true,
+    }).setView([{{config('client.map_lat')}}, {{config('client.map_lng')}}], {{config('client.map_zoom')}});
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/seanalaback/ciwtk4ush002o2qrxo43r8o13/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
+        maxZoom: 20,
         accessToken: "{{env('MAPBOX_TOKEN')}}"
     }).addTo(mymap);
+
 
 
     var layers = new Array();
@@ -314,7 +318,7 @@
 
         if(toggleElement(collectionName))
         {
-            $("#settings_cog").addClass('fa-spin');
+            $(".fa-gear").addClass('fa-spin');
             $.ajax({
                 type: 'post',
                 url: '{{route('map')}}',
@@ -326,19 +330,20 @@
 
                 },
                 success: function(data) {
-                    reloadMap(data['points'], data['title'], data['max'], data['handle'])
+                    reloadMap(data['points'], data['title'], data['max'], data['handle'], collectionName)
                 },
                 error: function(data){
                     $("#settings_cog").removeClass('fa-spin');
                     alert('Oh oh, something went wrong.');
                 }
             });
+
         }
 
     };
 
     var loadDataset = function (dataset_id) {
-        $("#settings_cog").addClass('fa-spin');
+        $(".fa-gear").addClass('fa-spin');
 
         $.ajax({
             type: 'post',
@@ -424,8 +429,9 @@
 
     };
 
-    var reloadMap = function(markers, title, max, handle)
+    var reloadMap = function(markers, title, max, handle, collection)
     {
+
         layers[handle] = L.layerGroup();
 
         var color = newColor(handle);
@@ -435,18 +441,18 @@
             layers[handle].addLayer( new L.circleMarker( [markers[i].lat, markers[i].lng], {
                         radius: 4,
                         stroke: false,
-                        color: 'black',
+                        color: 'red',
                         opacity: 1,
-                        fill: true,
-                        fillColor: color,
-                        fillOpacity: (markers[i].value/max) + .1
                     } ).bindPopup( markers[i].message )
             );
         }
 
         layers[handle].addTo(mymap);
         createLayerBox(handle, color, title, markers.length);
-        $("#settings_cog").removeClass('fa-spin');
+        $(".fa-gear").removeClass('fa-spin');
+
+        dataCollections[collection] = layers[handle];
+
     };
 
     var createLayerBox = function(layer, color, name, length)
@@ -469,7 +475,7 @@
             }
         }
     };
-</script>
+    </script>
 
 <!--/ custom javascripts -->
 </body>

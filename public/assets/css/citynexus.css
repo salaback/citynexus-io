@@ -17,6 +17,7 @@
 
 .dataset-body {
     overflow: scroll;
+    max-height: 400px;
 }
 
 .data-preview {

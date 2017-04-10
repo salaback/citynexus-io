@@ -184,6 +184,9 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Geocoder\Laravel\Providers\GeocoderService::class,
+        Phaza\LaravelPostgis\DatabaseServiceProvider::class,
+
 
         /*
          * CityNexus Packages
@@ -243,7 +246,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
-
+        'Geocoder' => \Geocoder\Laravel\Facades\Geocoder::class,
 
     ],
 

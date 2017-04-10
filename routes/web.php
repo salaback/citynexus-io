@@ -31,13 +31,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::resource('properties', 'PropertyController');
+    Route::get('properties/geocode/{id}', 'PropertyController@geocode')->name('property.geocode');
 
     // dataset routes
     Route::get('/dataset/any-data', 'DatasetController@anyData')->name('dataset.anydata');
     Route::resource('/dataset', 'DatasetController');
 
-    // Uploaders routes
 
+    // Comments
+    Route::resource('/comments', 'CommentController');
+
+    // Uploaders routes
     Route::resource('dataset/upload', 'UploadController');
     Route::resource('uploader', 'UploaderController');
     Route::post('/uploader/schema', 'UploaderController@schema')->name('uploader.schema');

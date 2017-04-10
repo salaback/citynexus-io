@@ -114,7 +114,7 @@ class Upgrade
         foreach ($comments as $key => $comment)
         {
             $comments[$key]['cn_commentable_id'] = $new_id;
-            $comments[$key]['cn_commentable_type'] = "App\Citynexus\PropertyMgr\Property";
+            $comments[$key]['cn_commentable_type'] = "CityNexus\PropertyMgr\Property";
             $comments[$key]['posted_by'] = $user_ids[$comment['user_id']];
             if(isset($comment['reply_to']))
             {

@@ -30,7 +30,7 @@ class PackageServiceProvider extends ServiceProvider
         // Include Helpers
         include_once __DIR__ . '/helpers/Sync.php';
         include_once __DIR__ . '/helpers/EntitySync.php';
-        include_once __DIR__ . '/helpers/Geocode.php';
+        include_once __DIR__ . '/helpers/GeocodeHelper.php';
         include_once __DIR__ . '/helpers/PropertySync.php';
 
     }

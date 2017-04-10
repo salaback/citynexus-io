@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Client;
 use CityNexus\DataStore\Upload;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -27,7 +28,7 @@ class DataProcessed extends Notification
         $this->upload = $upload;
         $this->dataset = $upload->uploader->dataset->name;
         $this->client_id = config('client.id');
-        $this->click_back = url(route('upload.show', [$upload->id]));
+        $this->click_back = Client::find($this->client_id)->domain . '/' . route('upload.show', [$upload->id]);
     }
 
     /**

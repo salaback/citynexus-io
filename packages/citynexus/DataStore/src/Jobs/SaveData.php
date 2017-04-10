@@ -73,5 +73,6 @@ class SaveData implements ShouldQueue
 
         session(['upload_id' => null]);
 
+
     }
 }

@@ -29,6 +29,7 @@ class CreateCNPropertiesTable extends Migration {
             $table->boolean('is_building')->default(false);
             $table->boolean('is_unit')->default(false);
             $table->boolean('is_lot')->default(false);
+            $table->json('cords')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

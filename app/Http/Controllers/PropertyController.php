@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\Geocode;
 use App\UserGroup;
 use CityNexus\DataStore\DataAccess;
 use CityNexus\PropertyMgr\Property;
@@ -90,5 +91,14 @@ class PropertyController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function geocode($id)
+    {
+        $this->dispatch(new Geocode($id));
+        return redirect()->back();
     }
 }
