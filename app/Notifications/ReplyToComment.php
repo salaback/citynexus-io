@@ -35,7 +35,7 @@ class ReplyToComment extends Notification
         switch ($comment->cn_commentable_type)
         {
             case 'CityNexus\PropertyMgr\Property':
-                $this->clickBack = Client::find(config('client.id'))->domain . route('properties.show', [$comment->cn_commentable_id]) . '#comment-' . $comment->reply_to;
+                $this->clickBack = route('properties.show', [$comment->cn_commentable_id]) . '?tab=comments#comment-' . $comment->reply_to;
                 break;
         }
     }

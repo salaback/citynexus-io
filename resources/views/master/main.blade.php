@@ -49,6 +49,8 @@
                             @forelse(\Illuminate\Support\Facades\Auth::user()->notifications as $notification)
                                 @if($notification->type == 'App\Notifications\DataProcessed')
                                     @include('master.notifications.dataProcessed')
+                                @elseif($notification->type == 'App\Notifications\ReplyToComment')
+                                    @include('master.notifications.replyToComment')
                                 @endif
                             @empty
                             @endforelse

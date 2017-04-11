@@ -5,14 +5,16 @@
 @section('main')
 
     <!-- BASIC WIZARD -->
-    <div class="col-lg-offset-1 col-lg-10 animated" id="slide-card">
-        <div class="card-box p-b-0">
-            <div class="slide-contents" id="slide-content">
-                <div class="row">
-                    @include('uploader.slides.information')
+    <div class="col-sm-offset-2 col-sm-8">
+        <!-- boxs -->
+        <section class="boxs boxs-simple" id="slide-card">
+            <!-- boxs body -->
+            <div class="boxs-body">
+                <div class="slide-contents" id="slide-content">
+                        @include('uploader.slides.information')
                 </div>
             </div>
-        </div>
+        </section>
     </div>
     <!-- end col -->
 

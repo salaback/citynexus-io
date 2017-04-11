@@ -9,7 +9,7 @@
 
     <div class="replies @unless($comment->comments->count() > 0) hidden @endunless" id="reply-comments-{{$comment->id}}">
         @if($comment->comments->count() > 0)
-            @each('property.snipits._comment', $comment->replies, 'comment')
+            @each('property.snipits._comment', $comment->comments, 'comment')
         @endif
     </div>
 </div>

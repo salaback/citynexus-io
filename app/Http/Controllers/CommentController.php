@@ -43,9 +43,12 @@ class CommentController extends Controller
 
         $comment = Comment::create($request->all());
 
-        if($comment->reply_id != null)
+        if($comment->reply_to != null)
         {
-            $comment->replyTo->poster()->notify(new ReplyToComment($comment));
+            $comment->cn_commentable_id = $comment->reply_to;
+            $comment->cn_commentable_type = 'CityNexus\PropertyMgr\Comment';
+            $comment->replyTo->poster->notify(new ReplyToComment($comment));
+            $comment->save();
         }
 
         return view('property.snipits._comment', compact('comment'));

@@ -39,7 +39,7 @@ class Comment extends Model
 
     public function replyTo()
     {
-        return $this->belongsTo('\App\User', 'reply_to');
+        return $this->belongsTo('\CityNexus\PropertyMgr\Comment', 'reply_to');
     }
 
 }
