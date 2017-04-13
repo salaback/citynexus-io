@@ -34,9 +34,10 @@
             <!-- Left-side navigation end -->
 
             <!-- Search -->
-            <div class="search" id="main-search">
-                <input type="text" class="form-control underline-input" placeholder="Seach by property...">
-            </div>
+            <form action="{{route('search.search')}}" class="search" id="main-search">
+                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Seach by property...">
+                <input type="submit" style="display:none"/>
+            </form>
             <!-- Search end -->
 
             <!-- Right-side navigation -->
@@ -308,6 +309,30 @@
 <!--/ vendor javascripts -->
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+
+<script>
+    var results = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // url points to a json file that contains an array of country names, see
+        // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+        prefetch: '{{route('search.suggestions')}}',
+        remote: {
+            url: '{{route('search.suggestions')}}/%QUERY',
+            wildcard: '%QUERY'
+
+        }
+    });
+
+    // passing in `null` for the `options` arguments will result in the default
+    // options being used
+    $('#main-search .typeahead').typeahead(null, {
+        name: 'results',
+        source: results
+    });
+</script>
 
 @stack('scripts')
 

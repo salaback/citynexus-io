@@ -47,6 +47,13 @@ Route::group(['middleware' => 'auth'], function () {
     // Entities
     Route::resource('/entities', 'EntityController');
 
+    // Tags
+    Route::resource('/tags', 'TagController');
+
+    // Search
+    Route::get('/search/suggestions/{query?}', 'SearchController@suggestions')->name('search.suggestions');
+    Route::get('/search/', 'SearchController@search')->name('search.search');
+
     // Uploaders routes
     Route::resource('dataset/upload', 'UploadController');
     Route::resource('uploader', 'UploaderController');
@@ -94,5 +101,5 @@ Route::post('admin/client/import-table', 'ClientController@importTable');
 
 
 Route::get('test', function(){
-    return view('master.auth');
+    return view('welcome');
 });

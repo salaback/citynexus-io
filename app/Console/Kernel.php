@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\BuildSearchIndex;
 use App\Console\Commands\ClientInfoUpdate;
 use App\Console\Commands\Upgrade;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Upgrade::class,
         ClientInfoUpdate::class,
+        BuildSearchIndex::class,
     ];
 
     /**

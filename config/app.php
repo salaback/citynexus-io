@@ -186,6 +186,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Geocoder\Laravel\Providers\GeocoderService::class,
         Phaza\LaravelPostgis\DatabaseServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
 
         /*
