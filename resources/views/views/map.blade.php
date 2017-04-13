@@ -305,7 +305,7 @@
     {
         if(name in dataCollections)
         {
-            removeLayer(dataCollections.name);
+            removeLayer(name);
             return false;
         }
         else{
@@ -315,7 +315,6 @@
 
     var loadDatasetPoint = function (dataset_id, key) {
         var collectionName = 'dataset-' + dataset_id + '-' + key;
-
         if(toggleElement(collectionName))
         {
             $(".fa-gear").addClass('fa-spin');
@@ -462,8 +461,8 @@
     };
 
     function removeLayer(layer) {
-        layer = layer.trim();
-        layers[layer].clearLayers();
+
+        dataCollections[layer].clearLayers();
         $('#layer_' + layer).remove();
 
         for (var i=0; i < Object.keys(colors).length;  ++i)
@@ -474,6 +473,9 @@
                 break;
             }
         }
+
+        dataCollections = dataCollections.splice(layer, 1);
+
     };
     </script>
 
