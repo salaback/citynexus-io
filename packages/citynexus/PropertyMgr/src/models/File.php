@@ -10,23 +10,18 @@ use Illuminate\Support\Facades\DB;
 class File extends Model
 {
     use SoftDeletes;
-    protected $table = 'citynexus_files';
-    protected $fillable = ['caption', 'description', 'version_id', 'location_id', 'property_id'];
+    protected $table = 'cn_files';
+    protected $fillable = ['name', 'description', 'version_id', 'location_id', 'property_id'];
 
-    public function property()
+    public function getTypeAttribute()
     {
-        return $this->belongsTo('\CityNexus\PropertyMgr\Property');
-    }
-
-    public function location()
-    {
-        return $this->belongsTo('\CityNexus\PropertyMgr\Location');
+        return $this->current->type;
     }
 
     public function getImage()
     {
         $return['source'] = $this->current->source;
-        $return['caption'] = $this->caption;
+        $return['name'] = $this->name;
         $return['description'] = $this->description;
         return $return;
     }

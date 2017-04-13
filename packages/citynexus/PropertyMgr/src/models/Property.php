@@ -87,4 +87,9 @@ class Property extends Model
         return $this->morphMany('CityNexus\PropertyMgr\Comment', 'cn_commentable');
     }
 
+    public function files()
+    {
+        return $this->morphMany('CityNexus\PropertyMgr\File', 'cn_fileable');
+    }
+
 }

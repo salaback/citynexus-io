@@ -85,7 +85,10 @@ class Upgrade
 
         foreach ($files as $key => $file)
         {
-            $files[$key]['property_id'] = $new_id;
+            $files[$key]['name'] = $files['caption'];
+            unset($files[$key]['caption']);
+            $files[$key]['cn_fileable_id'] = $new_id;
+            $files[$key]['cn_fileable_type'] = "CityNexus\\PropertyMgr\\Property";
         }
 
         DB::table('cn_files')->insert($files);

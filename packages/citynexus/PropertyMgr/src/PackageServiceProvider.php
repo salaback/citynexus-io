@@ -25,6 +25,8 @@ class PackageServiceProvider extends ServiceProvider
         include_once __DIR__ . '/models/RawEntity.php';
         include_once __DIR__ . '/models/Tag.php';
         include_once __DIR__ . '/models/Comment.php';
+        include_once __DIR__ . '/models/File.php';
+        include_once __DIR__ . '/models/FileVersion.php';
 
 
         // Include Helpers

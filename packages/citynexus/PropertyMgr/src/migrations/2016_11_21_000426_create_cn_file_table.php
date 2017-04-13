@@ -14,8 +14,8 @@ class CreateCnFileTable extends Migration
     {
         Schema::create('cn_files', function (Blueprint $table) {
             $table->increments('id')->unsigned();;
-            $table->integer('location_id')->nullable();
-            $table->integer('property_id')->nullable();
+            $table->integer('cn_fileable_id')->unsigned;
+            $table->string('cn_fileable_type');
             $table->string('caption')->nullable();
             $table->string('description')->nullable();
             $table->integer('version_id')->nullable();

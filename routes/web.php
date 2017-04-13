@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Comments
     Route::resource('/comments', 'CommentController');
 
+    // Files
+    Route::resource('/files', 'FileController');
+
     // Uploaders routes
     Route::resource('dataset/upload', 'UploadController');
     Route::resource('uploader', 'UploaderController');
