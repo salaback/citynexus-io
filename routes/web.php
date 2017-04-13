@@ -44,6 +44,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Files
     Route::resource('/files', 'FileController');
 
+    // Entities
+    Route::resource('/entities', 'EntityController');
+
     // Uploaders routes
     Route::resource('dataset/upload', 'UploadController');
     Route::resource('uploader', 'UploaderController');
