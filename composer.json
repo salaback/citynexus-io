@@ -30,7 +30,6 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "CityNexus\\CityNexus\\": "packages/CityNexus/CityNexus/src",
             "CityNexus\\PropertyMgr\\": "packages/CityNexus/PropertyMgr/src",
             "CityNexus\\DataStore\\": "packages/CityNexus/DataStore/src",
             "CityNexus\\AnalysisMgr\\": "packages/CityNexus/AnalysisMgr/src"
