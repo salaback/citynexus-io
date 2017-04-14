@@ -223,9 +223,8 @@ class Store extends DataProcessor
 
         $extension = explode('.', $source);
         $extension = end($extension);
-
-        $tempname = storage_path() . "/temp_file/tmpfile"  . date('hms') . "." . $extension;
-        file_put_contents($tempname, Storage::get($source));
+        $tempname = storage_path() . "/temp_file/tmpfile_"  . date('hms') . "." . $extension;
+        file_put_contents($tempname, Storage::disk('s3')->get($source));
 
         return $tempname;
     }

@@ -10,7 +10,7 @@
         <div class="col-lg-offset-1 col-lg-10 animated" id="slide-card">
             <div class="card-box p-b-0">
                 <div class="slide-contents" id="slide-content">
-                    @include('layouts._form_error')
+                    @include('master._form_error')
                     <div class="row">
                         <div class="row">
                             <div class="form-horizontal">
@@ -89,7 +89,7 @@
 
 @endsection
 
-@push('javascript')
+@push('scripts')
 <script>
     var setType = function(type)
     {

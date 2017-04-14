@@ -1,18 +1,20 @@
+
 <tr>
     <td>
         <input type="checkbox" name="map[{{$i['key']}}][skip]" @if(isset($schema[$key]) && isset($schema[$key]['skip'])) checked @endif >
     </td>
 
-    <td><input type="checkbox" name="map[{{$i['key']}}][show]" @if(isset($schema[$key]) && isset($schema[$key]['show'])) checked @endif></td>
+    <td><input type="checkbox" name="map[{{$i['key']}}][show]" @if(isset($schema[$key]) && isset($schema[$key]['show'])) checked @elseif(!isset($schema[$key])) checked @endif></td>
     <td><input type="text" id="name-{{$i['key']}}" name="map[{{$i['key']}}][name]" class="form-control"
                value="@if(isset($schema[$key]) && isset($schema[$key]['name'])) {{$schema[$key]['name']}} @else {{$i['name']}} @endif"></td>
 
     <td>
         @if(isset($schema[$key]) && isset($schema[$key]['key']))
-            <select name="map[{{$i}}][key]" id="">
+            <select name="map[{{$key}}][key]" id="">
                 <option value="create">Create New Field</option>
-                @foreach($schema as $item)
-                    <option value="{{$item->key}}">{{$item->name}}</option>
+                <option value="ignore">Ignore</option>
+            @foreach($schema as $item)
+                    <option value="{{$item['key']}}">{{$item['name']}}</option>
                 @endforeach
             </select>
         @else
@@ -22,7 +24,7 @@
     </td>
     <td>
         @if(isset($schema[$key]) && isset($schema[$key]['key']))
-            <input type="text" name="map[{{$i['key']}}[key]">
+            <input type="text" name="map[{{$i['key']}}][key]">
         @else
 
         @endif

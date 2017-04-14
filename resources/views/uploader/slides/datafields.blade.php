@@ -21,6 +21,8 @@
             @endforeach
             </tbody>
         </table>
+        <input type="submit" class="btn btn-primary" value="Update Data Set">
+
     @else
     <table class="table" id="table" >
         <thead>
@@ -37,6 +39,6 @@
         @endforeach
         </tbody>
     </table>
+    <input type="submit" class="btn btn-primary" value="Create Data Set">
     @endif
-    <input type="submit" class="btn btn-primary" value="Create Dataset">
 </form>

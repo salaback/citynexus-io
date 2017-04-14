@@ -33,7 +33,8 @@ class Client extends Model
         config([
             'client' => $settings,
             'client.id' => $this->id,
-            'database.connections.tenant.schema' => $this->schema
+            'database.connections.tenant.schema' => $this->schema,
+            'schema' => $this->schema,
         ]);
 
         DB::disconnect('tenant');

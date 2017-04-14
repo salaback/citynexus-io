@@ -60,7 +60,8 @@ class UploaderController extends Controller
     public function show($id)
     {
         $uploader = Uploader::find($id);
-        return view('uploader.types.' . $uploader->type, compact('uploader'));
+        $uploads = $uploader->uploads;
+        return view('uploader.types.' . $uploader->type, compact('uploader', 'uploads'));
     }
 
 
@@ -72,6 +73,7 @@ class UploaderController extends Controller
         if($request->exists('map'))
         {
             $uploader->map = $request->get('map');
+
             return redirect(route('uploader.show', [$uploader->id]));
         } else{
 

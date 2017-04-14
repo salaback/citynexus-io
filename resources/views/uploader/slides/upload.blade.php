@@ -1,6 +1,6 @@
 <?php
 
-$s3FormDetails = getS3Details(env('S3_BUCKET'), env('S3_REGION'));
+$s3FormDetails = getS3Details(config('filesystems.disks.s3.bucket'), config('filesystems.disks.s3.region'));
 
 
 // Get all the necessary details to directly upload a private file to S3
@@ -16,8 +16,8 @@ $s3FormDetails = getS3Details(env('S3_BUCKET'), env('S3_REGION'));
 function getS3Details($s3Bucket, $region, $acl = 'private') {
 
 // Options and Settings
-    $awsKey = (!empty(getenv('S3_KEY')) ? getenv('S3_KEY') : S3_KEY);
-    $awsSecret = (!empty(getenv('S3_SECRET')) ? getenv('S3_SECRET') : S3_SECRET);
+    $awsKey = config('filesystems.disks.s3.key');
+    $awsSecret = config('filesystems.disks.s3.secret');
 
     $algorithm = "AWS4-HMAC-SHA256";
     $service = "s3";
@@ -122,7 +122,7 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
 
     // Place any uploads within the descending folders
     // so ['test1', 'test2'] would become /test1/test2/filename
-    var folders = ['test'];
+    var folders = ['{{config('schema')}}', 'data-upload'];
 
     var size;
     var type;
