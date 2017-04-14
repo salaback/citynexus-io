@@ -192,6 +192,7 @@ return [
         /*
          * CityNexus Packages
          */
+        CityNexus\CityNexus\PackageServiceProvider::class,
         CityNexus\PropertyMgr\PackageServiceProvider::class,
         CityNexus\DataStore\PackageServiceProvider::class,
         CityNexus\AnalysisMgr\PackageServiceProvider::class,
