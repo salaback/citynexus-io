@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/entities', 'EntityController');
 
     // Tags
-    Route::resource('/tags', 'TagController');
+    Route::resource('/tag', 'TagController');
 
     // Search
     Route::get('/search/suggestions/{query?}', 'SearchController@suggestions')->name('search.suggestions');

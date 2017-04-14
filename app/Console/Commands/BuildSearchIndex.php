@@ -13,7 +13,7 @@ class BuildSearchIndex extends Command
      *
      * @var string
      */
-    protected $signature = 'citynexus:searchindex';
+    protected $signature = 'citynexus:searchindex {client_id}';
 
     /**
      * The console command description.
@@ -39,8 +39,8 @@ class BuildSearchIndex extends Command
      */
     public function handle(IndexSearch $indexSearch)
     {
-        $indexSearch->run();
+        $indexSearch->run($this->argument('client_id'));
 
-        print ('All clients Indexed: ' . Carbon::now());
+        print ('Clients Indexed: ' . Carbon::now());
     }
 }

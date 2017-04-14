@@ -1,6 +1,6 @@
-@extends(config('citynexus.template'))
+@extends('master.main')
 
-@section(config('citynexus.section'))
+@section('main')
 
     <div class="col-lg-8">
         <div class="card-box">

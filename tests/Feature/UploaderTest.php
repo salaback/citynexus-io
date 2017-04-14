@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use CityNexus\DataStore\Helper\Uploader;
+use CityNexus\DataStore\Helper\UploadHelper;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
@@ -21,7 +21,7 @@ class UploaderTest extends TestCase
      */
     public function testMapData()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
         $map = [
             'one' => 'ten',
             'two' => 'twenty',
@@ -48,7 +48,7 @@ class UploaderTest extends TestCase
 
     public function testMapDataWithExtraData()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
         $map = [
             'one' => 'ten',
             'two' => 'twenty',
@@ -75,7 +75,7 @@ class UploaderTest extends TestCase
 
     public function testMapDataWithMissingData()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
         $map = [
             'one' => 'ten',
             'two' => 'twenty',
@@ -100,7 +100,7 @@ class UploaderTest extends TestCase
 
     public function testCheckTable()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
 
         Schema::create('check_table_test', function (Blueprint $table) {
             $table->increments('id');
@@ -131,7 +131,7 @@ class UploaderTest extends TestCase
 
     public function testCheckTableMissingColumn()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
 
         Schema::create('check_table_test_missing', function (Blueprint $table) {
             $table->increments('id');
@@ -168,7 +168,7 @@ class UploaderTest extends TestCase
 
     public function testCheckTableMissingTable()
     {
-        $uploader = new Uploader();
+        $uploader = new UploadHelper();
 
         $table_name = 'check_table_test';
 

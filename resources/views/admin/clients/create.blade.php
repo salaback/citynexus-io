@@ -1,7 +1,7 @@
-@extends(config('citynexus.template'))
+@extends('master.main')
 
 
-@section(config('citynexus.section'))
+@section('main')
 
     <form action="{{action('ClientController@store')}}" method="POST" class="form-horizontal" role="form">
         {{csrf_field()}}

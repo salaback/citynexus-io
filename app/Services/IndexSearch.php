@@ -19,9 +19,16 @@ use Illuminate\Support\Facades\DB;
 
 class IndexSearch
 {
-    public function run()
+    public function run($id = null)
     {
-        $clients = Client::all();
+        if($id == null)
+        {
+            $clients = Client::all();
+        }
+        else
+        {
+            $clients[] = Client::find($id);
+        }
 
         foreach($clients as $client)
         {

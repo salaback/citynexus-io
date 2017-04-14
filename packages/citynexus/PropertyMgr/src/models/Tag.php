@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     protected $table = 'cn_tags';
-    protected $fillable = ["tag"];
+    protected $fillable = ['tag'];
+
     public $timestamps = false;
 
     public function properties()

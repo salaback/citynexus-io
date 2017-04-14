@@ -14,10 +14,12 @@ use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use Carbon\Carbon;
 use CityNexus\CityNexus\Table;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class MultiTenant
 {
@@ -76,11 +78,18 @@ class MultiTenant
 
         try
         {
-            config([
-                'database.connections.tenant.schema' => $client->schema,
-            ]);
+            $client->logInAsClient();
 
-            DB::statement("SET search_path TO " . config('database.connections.tenant.schema') . ',public');
+            DB::statement("SET search_path TO " . $client->schema . ',public');
+
+            if(!Schema::hasTable($client->schema . '.migrations'))
+            {
+                Schema::connection('tenant')->create('migrations', function (Blueprint $table){
+                    $table->increments('id');
+                    $table->string('migration');
+                    $table->integer('batch');
+                });
+            }
 
             Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);
 
@@ -89,9 +98,7 @@ class MultiTenant
         }
 
         catch(\Exception $e)
-
         {
-
             return $e;
         }
 
