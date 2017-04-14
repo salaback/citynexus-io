@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class ImportData extends Job implements SelfHandling, ShouldQueue
+class ImportData extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
@@ -57,7 +57,6 @@ class ImportData extends Job implements SelfHandling, ShouldQueue
             $first = array_shift($data)->id;
             $last = last($data)->id;
 
-            DB::statement("SET search_path TO 'public'");
             $this->dispatch(new ImportDbChunk($first, $last, $this->table->table_name, $this->source, $this->target_schema));
 
         });

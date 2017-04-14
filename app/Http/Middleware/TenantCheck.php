@@ -35,14 +35,7 @@ class TenantCheck
 
         if ($client)
         {
-            $settings = $client->settings;
-
-            // set tenant db
-            config([
-                'client' => $settings,
-                'database.connections.tenant.schema' => $client['schema'],
-                'database.default' => 'tenant'
-            ]);
+            $client->logInAsClient();
         }
 
         return $next($request);

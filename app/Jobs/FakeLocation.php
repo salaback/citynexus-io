@@ -6,7 +6,7 @@ use App\Jobs\Job;
 use CityNexus\CityNexus\Location;
 use Illuminate\Contracts\Bus\SelfHandling;
 use CityNexus\CityNexus\Property;
-class FakeLocation extends Job implements SelfHandling
+class FakeLocation extends Job
 {
 
     protected $id;

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class ImportDbChunk extends Job implements SelfHandling, ShouldQueue
+class ImportDbChunk extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
@@ -46,13 +46,11 @@ class ImportDbChunk extends Job implements SelfHandling, ShouldQueue
     public function handle()
     {
 
-
-        DB::reconnect();
-
         config([
             'database.connections.import' => $this->source,
             'database.connections.tenant.schema' => $this->target_schema,
         ]);
+
 
 
         if($this->first == null or $this->last == null)
@@ -68,15 +66,11 @@ class ImportDbChunk extends Job implements SelfHandling, ShouldQueue
                 ->get();
         }
 
-        $data = collect($data)->map(function($x){ return (array) $x; })->toArray();
-
-        config([
-            'database.default' => 'tenant',
-        ]);
-
         DB::reconnect();
 
-        DB::table($this->table)->insert($data);
+        $data = collect($data)->map(function($x){ return (array) $x; })->toArray();
+
+        DB::connection('tenant')->table($this->table)->insert($data);
 
     }
 }

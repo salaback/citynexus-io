@@ -48,7 +48,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="{{action('Admin\ClientController@config', [$client->id])}}">Edit Config</a>
+                                <a class="btn btn-primary btn-sm" href="{{action('ClientController@config', [$client->id])}}">Edit Config</a>
                             </td>
 
                         </tr>

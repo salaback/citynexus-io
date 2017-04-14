@@ -4,13 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>:: Oakleaf - Admin Dashboard ::</title>
-    <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
+    <title>CityNexus | @yield('title')</title>
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
-
     <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/citynexus.css">
+
+    @stack('style')
+
 </head>
 <body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
 
@@ -21,7 +24,7 @@
     <section id="header">
         <header class="clearfix">
             <!-- Branding -->
-            <div class="branding"> <a class="brand" href="index.html"><span>Oakleaf</span></a> <a role="button" tabindex="0" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a> </div>
+            <div class="branding"> <a class="" href="/"><img class="logo" src="/img/logo_on_black.gif" alt=""></a> <a role="button" tabindex="0" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a> </div>
             <!-- Branding end -->
 
             <!-- Left-side navigation -->
@@ -31,112 +34,33 @@
             <!-- Left-side navigation end -->
 
             <!-- Search -->
-            <div class="search" id="main-search">
-                <input type="text" class="form-control underline-input" placeholder="Seach by property...">
-            </div>
+            <form action="{{route('search.search')}}" class="search" id="main-search">
+                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Seach by property...">
+                <input type="submit" style="display:none"/>
+            </form>
             <!-- Search end -->
 
             <!-- Right-side navigation -->
             <ul class="nav-right pull-right list-inline">
-                <li class="dropdown nav-profile"> <a href class="dropdown-toggle" data-toggle="dropdown"> <img src="assets/images/profile-photo.jpg" alt="" class="0 size-30x30"></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <div class="user-info">
-                                <div class="user-name">Jonathan Smith</div>
-                                <div class="user-position online">Available</div>
-                            </div>
-                        </li>
-                        <li><a href="profile.html" role="button" tabindex="0"><span class="label label-success pull-right">80%</span><i class="fa fa-user"></i>Profile</a></li>
-                        <li><a role="button" tabindex="0"><span class="label label-info pull-right">new</span><i class="fa fa-check"></i>Tasks</a></li>
-                        <li> <a role="button" tabindex="0"><i class="fa fa-cog"></i>Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="locked.html" role="button" tabindex="0"><i class="fa fa-lock"></i>Lock</a></li>
-                        <li><a href="login.html" role="button" tabindex="0"><i class="fa fa-sign-out"></i>Logout</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown users"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i>
-                    </a>
-                    <div class="dropdown-menu pull-right with-arrow panel panel-default" role="menu">
-                        <ul class="app-sortcut">
-                            <li>
-                                <a href="#" class="connection-item">
-                                    <i class="fa  fa-umbrella"></i>
-                                    <span class="block">weather</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="drive.html" class="connection-item">
-                                    <i class="fa fa-cloud-upload"></i>
-                                    <span class="block">Drive</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="calendar.html" class="connection-item">
-                                    <i class="fa fa-calendar-check-o"></i>
-                                    <span class="block">calendar</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="maps-google.html" class="connection-item">
-                                    <i class="fa fa-map-o"></i>
-                                    <span class="block">map</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html" class="connection-item">
-                                    <i class="fa fa-comments-o"></i>
-                                    <span class="block">chat</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="connection-item">
-                                    <i class="fa fa-book"></i>
-                                    <span class="block">contact</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="dropdown messages"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-envelope"></i>
-                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-                    </a>
-                    <div class="dropdown-menu pull-right with-arrow panel panel-default" role="menu">
-                        <ul class="list-group">
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object thumb thumb-sm"> <img src="assets/images/pi-avatar.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Lucas sent you a message</span> <small class="text-muted">9 minutes ago</small> </div>
-                                </a> </li>
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/Jane-avatar.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Jane sent you a message</span> <small class="text-muted">27 minutes ago</small> </div>
-                                </a> </li>
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/random-avatar1.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Lee sent you a message</span> <small class="text-muted">2 hour ago</small> </div>
-                                </a> </li>
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object  thumb thumb-sm"> <img src="assets/images/random-avatar3.jpg" alt="" class=""> </span>
-                                    <div class="media-body"> <span class="block">Rihtik sent you a message</span> <small class="text-muted">8 hours ago</small> </div>
-                                </a> </li>
-                        </ul>
-                        <div class="panel-footer"> <a role="button" tabindex="0">Show all messages <i class="pull-right fa fa-angle-right"></i></a> </div>
-                    </div>
-                </li>
                 <li class="dropdown notifications"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-bell"></i>
-                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                        @if(\Illuminate\Support\Facades\Auth::user()->unreadNotifications->count() > 0)<div class="notify"><span class="heartbit"></span><span class="point"></span></div>@endif
                     </a>
                     <div class="dropdown-menu pull-right with-arrow panel panel-default ">
                         <ul class="list-group">
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-ban"></i> </span>
-                                    <div class="media-body"> <span class="block">User Lucas cancelled account</span> <small class="text-muted">12 minutes ago</small> </div>
-                                </a> </li>
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-spotify"></i> </span>
-                                    <div class="media-body"> <span class="block">2 voice mails</span> <small class="text-muted">Neque porro quisquam est</small> </div>
-                                </a> </li>
-                            <li class="list-group-item"> <a role="button" tabindex="0" class="media"> <span class="pull-left media-object media-icon"> <i class="fa fa-whatsapp"></i> </span>
-                                    <div class="media-body"> <span class="block">8 voice messanger</span> <small class="text-muted">8 texts</small> </div>
-                                </a> </li>
+                            @forelse(\Illuminate\Support\Facades\Auth::user()->notifications as $notification)
+                                @if($notification->type == 'App\Notifications\DataProcessed')
+                                    @include('master.notifications.dataProcessed')
+                                @elseif($notification->type == 'App\Notifications\ReplyToComment')
+                                    @include('master.notifications.replyToComment')
+                                @endif
+                            @empty
+                            @endforelse
                         </ul>
                         <div class="panel-footer"> <a role="button" tabindex="0">Show all notifications <i class="fa fa-angle-right pull-right"></i></a> </div>
                     </div>
                 </li>
                 <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
+                <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-sign-out"></i></a></li>
             </ul>
             <!-- Right-side navigation end -->
         </header>
@@ -224,49 +148,12 @@
                         </div>
                         <h6>Recent</h6>
                         <ul>
-                            <li class="online">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/pi-avatar.jpg" alt=""> </a>
-                                    <div class="media-body"> <span class="name">Claire Sassu</span> <span class="message">Can you share the...</span> <span class="badge badge-outline status"></span> </div>
-                                </div>
-                            </li>
-                            <li class="online">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/John-avatar.jpg" alt=""> </a>
-                                    <div class="media-body">
-                                        <div class="media-body"> <span class="name">Maggie jackson</span> <span class="message">Can you share the...</span> <span class="badge badge-outline status"></span> </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="online">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/Jane-avatar.jpg" alt=""> </a>
-                                    <div class="media-body">
-                                        <div class="media-body"> <span class="name">Joel King</span> <span class="message">Ready for the meeti...</span> <span class="badge badge-outline status"></span> </div>
-                                    </div>
-                                </div>
-                            </li>
+
+
                         </ul>
                         <h6>Contacts</h6>
                         <ul>
-                            <li class="offline">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/random-avatar4.jpg" alt=""> </a>
-                                    <div class="media-body">
-                                        <div class="media-body"> <span class="name">Joel King</span> <span class="badge badge-outline status"></span> </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="online">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/random-avatar5.jpg" alt=""> </a>
-                                    <div class="media-body">
-                                        <div class="media-body"> <span class="name">Joel King</span> <span class="badge badge-outline status"></span> </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="offline">
-                                <div class="media"> <a class="pull-left thumb thumb-sm" role="button" tabindex="0"> <img class="media-object " src="assets/images/random-avatar6.jpg" alt=""> </a>
-                                    <div class="media-body">
-                                        <div class="media-body"> <span class="name">Joel King</span> <span class="badge badge-outline status"></span> </div>
-                                    </div>
-                                </div>
-                            </li>
+
                         </ul>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="todo">
@@ -415,15 +302,40 @@
     <!--/ CONTENT -->
 </div>
 <!--/ Application Content -->
-
+@stack('modal')
 <!--  Vendor JavaScripts  -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>
 <script src="/assets/bundles/libscripts.bundle.js"></script>
 <script src="/assets/bundles/vendorscripts.bundle.js"></script>
 <!--/ vendor javascripts -->
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
-<script src="/js/all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+
+<script>
+    var results = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // url points to a json file that contains an array of country names, see
+        // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+        prefetch: '{{route('search.suggestions')}}',
+        remote: {
+            url: '{{route('search.suggestions')}}/%QUERY',
+            wildcard: '%QUERY'
+
+        }
+    });
+
+    // passing in `null` for the `options` arguments will result in the default
+    // options being used
+    $('#main-search .typeahead').typeahead(null, {
+        name: 'results',
+        source: results
+    });
+</script>
+
+@stack('scripts')
+
 <!--/ custom javascripts -->
 </body>
 </html>

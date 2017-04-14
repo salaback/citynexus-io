@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class CleanApartments extends Job implements SelfHandling, ShouldQueue
+class CleanApartments extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     private $addresses;

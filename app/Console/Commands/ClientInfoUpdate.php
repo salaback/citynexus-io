@@ -4,13 +4,8 @@ namespace App\Console\Commands;
 
 use App\Client;
 use App\User;
-use CityNexus\CityNexus\Dropbox;
-use CityNexus\CityNexus\Uploader;
 use Illuminate\Console\Command;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class ClientInfoUpdate extends Command
 {
@@ -33,11 +28,9 @@ class ClientInfoUpdate extends Command
      *
      * @return void
      */
-    public function __construct(Dropbox $dropbox)
+    public function __construct()
     {
         parent::__construct();
-
-        $this->dropbox = $dropbox;
     }
 
     /**

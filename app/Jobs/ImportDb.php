@@ -9,30 +9,34 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Schema;
-use Toin0u\Geocoder\Facade\Geocoder;
 
 
-class ImportDb extends Job implements SelfHandling, ShouldQueue
+class ImportDb extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
 
-    private $table;
-    private $source;
-    private $target_schema;
+    protected $table;
+    protected $source;
+    protected $schema;
 
 
     /**
      * Create a new job instance.
      *
-     * @param string $data
-     * @param Property $upload_id
+     * @param $table
+     * @param $source
+     * @param $schema
+     * @internal param $target_schema
+     * @internal param string $data
+     * @internal param Property $upload_id
      */
-    public function __construct($table, $source, $target_schema)
+    public function __construct($table, $source, $client_schema)
     {
         $this->table = $table;
         $this->source = $source;
-        $this->target_schema = $target_schema;
+        $this->schema = $client_schema;
+
     }
 
     /**
@@ -42,35 +46,32 @@ class ImportDb extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-        DB::reconnect();
-
         config([
             'database.connections.import' => $this->source,
-            'database.connections.tenant.schema' => $this->target_schema,
+            'database.connections.tenant.schema' => $this->schema,
         ]);
 
         if(!Schema::hasColumn($this->table, 'id')){
-            $this->dispatch(new ImportDbChunk(null, null, $this->table, $this->source, $this->target_schema));
+            $this->dispatch(new ImportDbChunk(null, null, $this->table, $this->source, $this->schema));
         }
         else
         {
+
             DB::connection('import')->table($this->table)->orderBy('id')->chunk(250, function($data)
             {
 
-                $first = array_shift($data)->id;
+                $first = $data->first()->id;
 
                 if(count($data) > 1)
                 {
-                    $last = last($data)->id;
+                    $last = $data->last()->id;
                 }
                 else
                 {
                     $last = $first;
                 }
-
                 DB::statement("SET search_path TO 'public'");
-
-                $this->dispatch(new ImportDbChunk($first, $last, $this->table, $this->source, $this->target_schema));
+                $this->dispatch(new ImportDbChunk($first, $last, $this->table, $this->source, $this->schema));
 
             });
         }

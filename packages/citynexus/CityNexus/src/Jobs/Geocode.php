@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Toin0u\Geocoder\Facade\Geocoder;
 
-class GeocodeJob extends Job implements SelfHandling, ShouldQueue
+class GeocodeJob extends Job implements  ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     private $p_id;

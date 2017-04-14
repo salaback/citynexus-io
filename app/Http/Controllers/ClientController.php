@@ -60,7 +60,7 @@ class ClientController extends Controller
 
         $client = $multiTenant->createClient($request->get('name'), $request->get('domain'));
 
-        return redirect(route('admin.client.config', [$client->id]));
+        return redirect(action('AdminController@index'));
     }
 
     /**
@@ -147,9 +147,14 @@ class ClientController extends Controller
         }
 
         $new = DB::connection('import')->table('information_schema.tables')->where('table_schema', '=', $importDb['schema'])->get();
-        $datasets = DB::connection('import')->table('tabler_tables')->whereNull('deleted_at')->whereNotNull('table_name')->lists('table_name');
+        $data = DB::connection('import')->table('tabler_tables')->whereNull('deleted_at')->whereNotNull('table_name')->pluck('table_name');
 
-        $datasets = array_flip($datasets);
+        $datasets = [];
+
+        foreach($data as $i)
+        {
+            $datasets[$i] = true;
+        }
 
         foreach ($new as $item)
         {
@@ -215,9 +220,10 @@ class ClientController extends Controller
         {
             $data = DB::connection('import')->table('users')->whereNull('deleted_at')->get();
 
+            $users = [];
             foreach($data as $user)
             {
-                $memebership = \GuzzleHttp\json_decode($user->permissions, true);
+                $memebership = json_decode($user->permissions, true);
 
                 $memebership['password'] = $user->password;
                 $memebership['title'] = $user->title;
@@ -242,7 +248,14 @@ class ClientController extends Controller
                 $nUser->memberships = $memeberships;
 
                 $nUser->save();
+
+                $users[$user->id] = $nUser->id;
             }
+
+            $settings = $client->settings;
+            $settings['user_ids'] = $users;
+            $client->settings = $settings;
+            $client->save();
 
             return 'Migrated';
         }
@@ -264,20 +277,24 @@ class ClientController extends Controller
                 $tableModel = new Table();
                 $tableModel->setConnection('tenant');
                 $table = $tableModel->where('table_name', $request->get('table'))->first();
-                $tableBuilder->create($table);
-                $this->dispatch(new ImportDb($table,$importDb, $client->schmea));
+                $table = $tableBuilder->create($table);
+                $schema = $client->schema;
+
+                $this->dispatch(new ImportDb($table, $importDb, $schema));
                 return 'Queued.';
                 break;
         }
 
-            $data = DB::connection('import')->table($request->get('table'))->get();
+                $this->dispatch(new ImportDb($request->get('table'), $importDb, $client->schema));
 
-            $data = collect($data)->map(function ($x) {
-                return (array)$x;
-            })->toArray();
+//            $data = DB::connection('import')->table($request->get('table'))->get();
+//
+//            $data = collect($data)->map(function ($x) {
+//                return (array)$x;
+//            })->toArray();
+//
+//            DB::connection('tenant')->table($request->get('table'))->insert($data);
 
-            DB::connection('tenant')->table($request->get('table'))->insert($data);
-
-            return count($data);}
+            return 'Queued';}
     }
 }

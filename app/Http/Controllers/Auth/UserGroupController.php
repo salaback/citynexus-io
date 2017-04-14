@@ -53,7 +53,7 @@ class UserGroupController extends Controller
         }
         else
             Session::flash('flash_error', 'Something went wrong.');
-            return redirect()->back();
+        return redirect()->back();
     }
 
     /**
