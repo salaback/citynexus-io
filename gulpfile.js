@@ -17,7 +17,7 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.scripts([
-        'app.js',
-        'bootstrap.js'
+        'main.js',
+        'bundles/vendorscripts.bundle.js'
     ]);
 });
