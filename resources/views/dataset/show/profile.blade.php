@@ -3,7 +3,9 @@
 @section('title', "Data Set Settings: " . $dataset->name)
 
 @section('main')
-
+    <div class="col-sm-12">
+        <h4>Data Set: {{$dataset->name}}</h4>
+    </div>
     <div class="col-md-6">
         <section class="boxs">
             <div class="boxs-header dvd dvd-btm">

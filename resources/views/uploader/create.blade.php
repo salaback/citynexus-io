@@ -22,7 +22,6 @@
 @endpush
 @push('scripts')
 
-<script src="/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/vendor/fileuploads/js/dropify.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.js"></script>

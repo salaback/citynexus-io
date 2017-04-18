@@ -18,8 +18,9 @@ class StartImport implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    private $uploader_id;
+    private $id;
     private $client_id;
+    private $type;
     private $user_id;
 
     /**
@@ -29,10 +30,11 @@ class StartImport implements ShouldQueue
      * @param int $client_id
      * @param $uploader_id
      */
-    public function __construct($client_id, $uploader_id)
+    public function __construct($client_id, $type, $id)
     {
         $this->client_id = $client_id;
-        $this->uploader_id = $uploader_id;
+        $this->type = $type;
+        $this->id = $id;
         $this->user_id = Auth::id();
 
     }
@@ -46,13 +48,13 @@ class StartImport implements ShouldQueue
     {
         Client::find($this->client_id)->logInAsClient();
 
-        $uploader = Uploader::find($this->uploader_id);
-
-        switch ($uploader->type)
+        switch ($this->type)
         {
             case 'sql';
-                $uploadHelper->sqlUpload($this->uploader_id, ['user_id' => $this->user_id]);
+                $uploadHelper->sqlUpload($this->id, ['user_id' => $this->user_id]);
                 break;
+            case 'csv_upload':
+                $uploadHelper->csvUpload($this->id, []);
 
         }
 

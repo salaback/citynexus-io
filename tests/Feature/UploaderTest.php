@@ -189,4 +189,5 @@ class UploaderTest extends TestCase
 
         $this->assertFalse($uploader->checkTable($table_name, $schema));
     }
+
 }

@@ -19,7 +19,6 @@ class DataProcessor
         if($uploader->hasSyncClass('address')){
             $data = $this->sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
-
         return $data;
     }
 

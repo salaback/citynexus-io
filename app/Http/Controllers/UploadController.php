@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\StartImport;
 use CityNexus\DataStore\DataSet;
+use CityNexus\DataStore\Store;
 use CityNexus\DataStore\Upload;
 use CityNexus\PropertyMgr\Property;
 use Illuminate\Http\Request;
@@ -13,6 +15,13 @@ use Yajra\Datatables\Facades\Datatables;
 
 class UploadController extends Controller
 {
+    private $storeHelper;
+
+    public function __construct()
+    {
+        $this->storeHelper = new Store();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,15 +45,21 @@ class UploadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return array|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
         $upload = $request->all();
         $upload['user_id'] = Auth::id();
+        $upload = Upload::create($upload);
 
-        return Upload::create($upload);
+        $this->storeHelper->processUpload($upload->id);
+        if($request->ajax())
+            return view('uploader.types._upload', compact('upload'));
+        else
+            return redirect(route('uploader.show', $upload->uploader->id));
     }
 
     /**
@@ -93,5 +108,15 @@ class UploadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function post(Request $request)
+    {
+        switch ($request->get('slug'))
+        {
+            case 'csv_upload':
+                $upload = Upload::create($request->all());
+                break;
+        }
     }
 }

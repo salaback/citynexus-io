@@ -125,7 +125,7 @@ class UploaderController extends Controller
         switch ($request->get('slug'))
         {
             case 'import-sql':
-                dispatch(new StartImport(config('client.id'), $request->get('uploader_id')));
+                dispatch(new StartImport(config('client.id'), 'sql', $request->get('uploader_id')));
                 session(['flash_success' => 'SQL Import has been queued.']);
                 Log::info('Got to the end');
                 return redirect()->back();
@@ -142,7 +142,6 @@ class UploaderController extends Controller
 
             case 'upload':
                 $upload = $request->all();
-
                 $upload['user_id'] = Auth::id();
                 $upload = Upload::create($upload);
                 return response()->json($upload);

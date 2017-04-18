@@ -13,6 +13,7 @@ use App\Jobs\ImportProcessData;
 use App\Jobs\SaveData;
 use Carbon\Carbon;
 use CityNexus\DataStore\DataProcessor;
+use CityNexus\DataStore\Store;
 use CityNexus\DataStore\TableBuilder;
 use CityNexus\DataStore\Upload;
 use CityNexus\DataStore\Uploader;
@@ -29,11 +30,13 @@ class UploadHelper
 
     public $tableBuilder;
     public $dataProcessor;
+    public $store;
 
     public function __construct()
     {
         $this->dataProcessor = new DataProcessor();
         $this->tableBuilder = new TableBuilder();
+        $this->store = new Store();
     }
 
     /**

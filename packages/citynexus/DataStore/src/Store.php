@@ -8,7 +8,7 @@
 
 namespace CityNexus\DataStore;
 
-use App\Jobs\ProcessData;
+use CityNexus\DataStore\ProcessData;
 use Carbon\Carbon;
 use CityNexus\PropertyMgr\Property;
 use CityNexus\PropertyMgr\Sync;
@@ -190,7 +190,7 @@ class Store extends DataProcessor
 
             foreach($data as $i)
             {
-                dispatch(new ProcessData(config('org')->id, $i, $upload->id));
+                dispatch(new ProcessData(config('client.id'), $i, $upload->id));
             }
         });
 
@@ -358,6 +358,8 @@ class Store extends DataProcessor
             $dataset->table_name = $this->tableNameMaker($dataset->table_name);
             $dataset->save();
         }
+
+        DB::statement("SET search_path TO " . config('schema'));
 
         if(!Schema::hasTable($dataset->table_name)) {
             Schema::create($dataset->table_name, function (Blueprint $table) use ($fields) {

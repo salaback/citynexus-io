@@ -47,7 +47,7 @@
             ajax: '{{route('dataset.anydata')}}',
             columns: [
                 {data: 'name', name: 'name'},
-                {data: 'updated', name: 'updated'},
+                {data: 'updated', name: 'updated_at'},
                 {data: 'settings', name:'settings'}
             ],
             dom: "Bfrtip",
