@@ -80,9 +80,7 @@ class MultiTenant
         {
             $client->logInAsClient();
 
-            DB::statement("SET search_path TO " . $client->schema . ',public');
-
-            if(!Schema::hasTable($client->schema . '.migrations'))
+            if(!Schema::hasTable('migrations'))
             {
                 Schema::connection('tenant')->create('migrations', function (Blueprint $table){
                     $table->increments('id');
