@@ -37,7 +37,6 @@ class MultiTenant
 
         $client = Client::firstornew(['domain' => $domain]);
 
-
         if($client->exists)
         {
             App::abort(500, 'Domain already exists');
@@ -59,6 +58,13 @@ class MultiTenant
         try
         {
             DB::statement('CREATE SCHEMA ' . $schema);
+
+            Schema::create($schema . '.migrations', function (Blueprint $table){
+                $table->increments('id');
+                $table->string('migration');
+                $table->integer('batch');
+            });
+
         }
         catch(\Exception $e)
         {
@@ -80,14 +86,7 @@ class MultiTenant
         {
             $client->logInAsClient();
 
-            if(!Schema::hasTable('migrations'))
-            {
-                Schema::connection('tenant')->create('migrations', function (Blueprint $table){
-                    $table->increments('id');
-                    $table->string('migration');
-                    $table->integer('batch');
-                });
-            }
+            DB::statement("SET search_path TO " . $client->schema . ',public');
 
             Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);
 

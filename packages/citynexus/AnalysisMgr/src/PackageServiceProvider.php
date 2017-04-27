@@ -20,11 +20,16 @@ class PackageServiceProvider extends ServiceProvider
         // Include Models
         include_once __DIR__ . '/models/Score.php';
         include_once __DIR__ . '/models/ScoreResult.php';
+        include_once __DIR__ . '/models/CalculatedValue.php';
+
+        // Include Jobs
+        include_once __DIR__ . '/jobs/CalculateValue.php';
+        include_once __DIR__ . '/jobs/StoreCalculatedValue.php';
 
         // Include Helpers
-
         include_once __DIR__ . '/helpers/ScoreBuilder.php';
         include_once __DIR__ . '/helpers/MapHelper.php';
+        include_once __DIR__ . '/helpers/Calculator.php';
 
 
     }

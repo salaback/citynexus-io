@@ -50,6 +50,10 @@ Route::group(['middleware' => 'auth'], function () {
     // Tags
     Route::resource('/tag', 'TagController');
 
+    // Calculate Values
+    Route::resource('calculated-value', 'CalculatedValueController');
+    Route::post('calculated-value/refresh', 'CalculatedValueController@refresh')->name('calculated-value.refresh');
+
     // Search
     Route::get('/search/suggestions/{query?}', 'SearchController@suggestions')->name('search.suggestions');
     Route::get('/search/', 'SearchController@search')->name('search.search');

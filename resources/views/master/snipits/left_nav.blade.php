@@ -7,6 +7,11 @@
             <li><a href="{{route('map')}}"><i class="fa fa-angle-right"></i>Mapping</a></li>
         </ul>
     </li>
+    <li> <a role="button" tabindex="0"><i class="fa fa-bar-chart-o"></i> <span>Data Analysis</span></a>
+        <ul>
+            <li><a href="{{route('calculated-value.index')}}"><i class="fa fa-superscript"></i>Calculated Values</a></li>
+        </ul>
+    </li>
     <li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>
 </ul>
 <!--/ NAVIGATION Content -->
