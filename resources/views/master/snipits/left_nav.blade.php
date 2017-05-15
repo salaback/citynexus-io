@@ -8,5 +8,7 @@
         </ul>
     </li>
     <li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>
+    <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li>
+
 </ul>
 <!--/ NAVIGATION Content -->

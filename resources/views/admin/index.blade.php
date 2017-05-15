@@ -3,23 +3,12 @@
 @section('main')
 
     <div class="col-lg-8">
-        <div class="card-box">
-            <div class="dropdown pull-right">
-                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                    <i class="zmdi zmdi-more-vert"></i>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
+        <section class="boxs ">
+            <div class="boxs-header dvd dvd-btm">
+                <h1 class="custom-font"><strong>Client</strong> Instances</h1>
+
             </div>
-
-            <h4 class="header-title m-t-0 m-b-30">Client Instances</h4>
-
-            <div class="table-responsive">
+            <div class="boxs-body p-0">
                 <table class="table">
                     <thead>
                     <tr>
@@ -33,31 +22,27 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @foreach($clients as $client)
+                            <tr>
+                                <td>{{$client->name}}</td>
+                                <td>{{$client->domain}}</td>
+                                <td>{{$client->schema}}</td>
+                                <td>{{$client->info['user_count']}}</td>
+                                <td>@if(isset($client->info['dataset_count'])) {{ $client->info['dataset_count'] }} @endif</td>
+                                <td>
+                                    {{$client->version_id ?: 0}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-raised btn-primary btn-sm" href="{{route('admin.client.upgrade', [$client->id])}}">Upgrade</a>
+                                    <a class="btn btn-raised btn-primary btn-sm" href="{{route('admin.client.config', [$client->id])}}">Edit Config</a>
+                                </td>
 
-                    @foreach($clients as $client)
-                        <tr>
-                            <td>{{$client->name}}</td>
-                            <td>{{$client->domain}}</td>
-                            <td>{{$client->schema}}</td>
-                            <td>{{$client->info['user_count']}}</td>
-                            <td>@if(isset($client->info['dataset_count'])) {{ $client->info['dataset_count'] }} @endif</td>
-                            <td>
-                                @if($client->version != null)
-                                    {{$client->version->version}}
-                                    [{{$client->version->versioned_at}}]
-                                @endif
-                            </td>
-                            <td>
-                                <a class="btn btn-primary btn-sm" href="{{action('ClientController@config', [$client->id])}}">Edit Config</a>
-                            </td>
-
-                        </tr>
-                    @endforeach
-
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
     </div>
 
 @stop

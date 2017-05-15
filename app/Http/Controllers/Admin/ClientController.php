@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Client;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use App\Services\MultiTenant;
 use App\User;
-use BackupManager\Manager;
 use CityNexus\CityNexus\TableBuilder;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Schema\Blueprint;
 use CityNexus\CityNexus\Table;
 use Illuminate\Http\Request;
@@ -296,5 +296,12 @@ class ClientController extends Controller
 //            DB::connection('tenant')->table($request->get('table'))->insert($data);
 
             return 'Queued';}
+    }
+
+    public function upgrade($id)
+    {
+        Artisan::queue('citynexus:upgrade', ['client_id' => $id]);
+        Session::flash('flash_success', 'Client queued for upgrade.');
+        return redirect()->back();
     }
 }

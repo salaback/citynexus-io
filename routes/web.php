@@ -16,12 +16,13 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/client', 'ClientController');
-    Route::get('admin/client/reset-db/{id}', 'ClientController@resetDb')->name('admin.client.resetDb');
-    Route::post('admin/client/import-db/', 'ClientController@importDb')->name('admin.client.importDb');
-    Route::get('admin/client/migrate-db/{id}', 'ClientController@migrateDb')->name('admin.client.migrateDb');
-    Route::get('admin/client/config/{id}', 'ClientController@config')->name('admin.client.config');
-    Route::post('admin/client/config/{id}', 'ClientController@postConfig');
-    Route::post('admin/client/import-table', 'ClientController@importTable');
+    Route::get('admin/client/reset-db/{id}', 'Admin\ClientController@resetDb')->name('admin.client.resetDb');
+    Route::post('admin/client/import-db/', 'Admin\ClientController@importDb')->name('admin.client.importDb');
+    Route::get('admin/client/migrate-db/{id}', 'Admin\ClientController@migrateDb')->name('admin.client.migrateDb');
+    Route::get('admin/client/config/{id}', 'Admin\ClientController@config')->name('admin.client.config');
+    Route::post('admin/client/config/{id}', 'Admin\ClientController@postConfig');
+    Route::post('admin/client/import-table', 'Admin\ClientController@importTable');
+    Route::get('admin/client/upgrade/{id}', 'Admin\ClientController@upgrade')->name('admin.client.upgrade');
 
     Route::resource('/auth/user-groups/', 'Auth\UserGroupController');
     Route::post('/auth/user-groups/add-user-to-group', 'Auth\UserGroupController@addUserToGroup');
@@ -91,14 +92,14 @@ Route::get('settings/create-widget', '\CityNexus\CityNexus\Http\WidgetController
 Route::post('settings/create-widget', '\CityNexus\CityNexus\Http\WidgetController@postCreate');
 Route::post('settings/update-dashboard', '\CityNexus\CityNexus\Http\CitynexusSettingsController@postUpdateDashboard');
 
-Route::resource('admin/client', 'ClientController');
-Route::get('admin/client/reset-db/{id}', 'ClientController@resetDb')->name('admin.client.resetDb');
-Route::post('admin/client/import-db/', 'ClientController@importDb')->name('admin.client.importDb');
-Route::get('admin/client/migrate-db/{id}', 'ClientController@migrateDb')->name('admin.client.migrateDb');
-Route::get('admin/client/config/{id}', 'ClientController@config')->name('admin.client.config');
-Route::post('admin/client/config/{id}', 'ClientController@postConfig');
-Route::post('admin/client/import-table', 'ClientController@importTable');
-
+//Route::resource('admin/client', 'Admin\ClientController');
+//Route::get('admin/client/reset-db/{id}', 'Admin\ClientController@resetDb')->name('admin.client.resetDb');
+//Route::post('admin/client/import-db/', 'Admin\ClientController@importDb')->name('admin.client.importDb');
+//Route::get('admin/client/migrate-db/{id}', 'Admin\ClientController@migrateDb')->name('admin.client.migrateDb');
+//Route::get('admin/client/config/{id}', 'Admin\ClientController@config')->name('admin.client.config');
+//Route::post('admin/client/config/{id}', 'Admin\ClientController@postConfig');
+//Route::post('admin/client/import-table', 'Admin\ClientController@importTable');
+//
 
 Route::get('test', function(){
     return view('welcome');

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>:: Oakleaf - Admin ::</title>
+    <title>CityNexus Login</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 
     <style>

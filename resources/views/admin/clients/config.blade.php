@@ -1,7 +1,7 @@
-@extends(config('citynexus.template'))
+@extends('master.main')
 
 
-@section(config('citynexus.section'))
+@section('main')
 
     <form action="/admin/client/config/{{$client->id}}" method="POST" class="form-horizontal" role="form">
         {{csrf_field()}}
@@ -10,14 +10,12 @@
                 <span class="panel-title">Client Configs: {{$client->name}}</span>
             </div>
             <div class="panel-body">
-
                 <div class="form-group">
                     <label for="config[app_key]" class="col-sm-2 control-label">APP Key</label>
                     <div class="col-sm-10">
                         <input type="password" name="config[app_key]" id="inputID" class="form-control" title="" value="{{$config['app_key'] ?: ''}}" >
                     </div>
                 </div>
-
 
                 <div class="form-group">
                     <label for="config[city]" class="col-sm-2 control-label">City</label>
