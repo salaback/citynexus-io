@@ -6,13 +6,17 @@
         {{csrf_field()}}
         <h3 class="mt-0">Log In</h3>
 
-    @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if(\Illuminate\Support\Facades\Session::exists('flash_info'))
+            <div class="alert alert-info">
+                {{\Illuminate\Support\Facades\Session::get('flash_info')}}
+            </div>
+        @endif
+
+        @if(count($errors) > 0)
+            <div class="alert alert-warning">
+                @foreach ($errors->all() as $error)
+                {{ $error }}<br>
+                @endforeach
             </div>
         @endif
         <div class="content">

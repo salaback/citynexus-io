@@ -55,4 +55,13 @@ class AuthController extends Controller
         Session::flash('flash_info', "Sorry! That user or password doesn't match our records. Please try again.");
         return redirect()->back();
     }
+
+    /**
+     * @return string
+     */
+    public function getLogout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
 }

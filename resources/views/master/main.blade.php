@@ -60,7 +60,7 @@
                     </div>
                 </li>
                 <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
-                <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-sign-out"></i></a></li>
+                <li><a href="{{route('logout')}}"><i class="fa fa-sign-out"></i></a></li>
             </ul>
             <!-- Right-side navigation end -->
         </header>

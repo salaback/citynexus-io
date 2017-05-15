@@ -36,7 +36,7 @@
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 text-center">
-                    <div class="copyright"> &copy; {{date('Y')}} Alaback Strategies, Inc., All Rights Reserved.  </div>
+                    <div class="copyright"> &copy; {{date('Y')}} CityNexus.io, All Rights Reserved.  </div>
                 </div>
             </div>
         </footer>

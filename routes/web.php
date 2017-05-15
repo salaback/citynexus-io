@@ -3,7 +3,7 @@
 // Authentication routes...
 Route::get('auth/login', 'AuthController@getLogin')->name('login');
 Route::post('auth/login', 'AuthController@postLogin');
-Route::get('auth/logout', 'AuthController@getLogout');
+Route::get('auth/logout', 'AuthController@getLogout')->name('logout');
 
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
