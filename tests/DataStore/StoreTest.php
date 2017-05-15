@@ -9,7 +9,7 @@ class ScoreTest extends TestCase
 
     public function __construct()
     {
-        $this->store = new \CityNexus\DataStore\Store();
+        $this->store = new \App\DataStore\Store();
 
     }
     /**

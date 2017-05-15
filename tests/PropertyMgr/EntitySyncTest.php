@@ -25,7 +25,7 @@ class EntitySyncTest extends TestCase
 
     public function testParseName()
     {
-        $sync = new \CityNexus\PropertyMgr\EntitySync();
+        $sync = new App\PropertyMgr\EntitySync();
         $test = [
             'title'         => 'MR',
             'first_name'    => 'SEAN',
@@ -53,7 +53,7 @@ class EntitySyncTest extends TestCase
 
     public function testCompanyName()
     {
-        $sync = new \CityNexus\PropertyMgr\EntitySync();
+        $sync = new App\PropertyMgr\EntitySync();
 
         $test = [
             'company_name'    => 'NORTH OF MAIN',
@@ -68,8 +68,8 @@ class EntitySyncTest extends TestCase
     public function testRawNameCheck()
     {
 
-        $property = \CityNexus\PropertyMgr\Property::create(['street_number' => 50, 'street_name' => 'MAIN', 'street_type' => 'STREET']);
-        $raw = \CityNexus\PropertyMgr\RawEntity::create(['full_name' => 'TEST FULL NAME']);
+        $property = App\PropertyMgr\Model\Property::create(['street_number' => 50, 'street_name' => 'MAIN', 'street_type' => 'STREET']);
+        $raw = App\PropertyMgr\Model\RawEntity::create(['full_name' => 'TEST FULL NAME']);
         $sync['full_name'] = 'full_name';
         $sync['type'] = 'unparsed';
         $sync['role'] = 'Owner';
@@ -83,13 +83,13 @@ class EntitySyncTest extends TestCase
           $testData
         ];
 
-        $syncObject = new \CityNexus\PropertyMgr\Sync();
+        $syncObject = new App\PropertyMgr\Sync();
 
         $this->invokeMethod($syncObject, 'entitySync', [$data, $sync, '99999']);
 
-        $test = \CityNexus\PropertyMgr\Entity::where('first_name', 'TEST')->where('middle_name', 'FULL')->where('last_name', 'NAME')->first();
+        $test = App\PropertyMgr\Model\Entity::where('first_name', 'TEST')->where('middle_name', 'FULL')->where('last_name', 'NAME')->first();
 
-        $raw = \CityNexus\PropertyMgr\RawEntity::find($raw->id);
+        $raw = App\PropertyMgr\Model\RawEntity::find($raw->id);
 
         $this->assertEquals($raw->entity_id, $test->id);
     }

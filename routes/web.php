@@ -64,8 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/uploader/post', 'UploaderController@post')->name('uploader.post');
 
-    Route::get('view/map', 'ViewController@map')->name('map');
-    Route::post('view/map', 'ViewController@mapData');
+    Route::get('view/map', 'Frontend\ViewController@map')->name('map');
+    Route::post('view/map', 'Frontend\ViewController@mapData');
 
     Route::get('/get-notification/{id}', function($id){
 

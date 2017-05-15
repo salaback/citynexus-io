@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use CityNexus\DataStore\Helper\UploadHelper;
+use App\DataStore\UploadHelper;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;

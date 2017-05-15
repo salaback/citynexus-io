@@ -188,16 +188,6 @@ return [
         Phaza\LaravelPostgis\DatabaseServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
 
-
-        /*
-         * CityNexus Packages
-         */
-        CityNexus\CityNexus\PackageServiceProvider::class,
-        CityNexus\PropertyMgr\PackageServiceProvider::class,
-        CityNexus\DataStore\PackageServiceProvider::class,
-        CityNexus\AnalysisMgr\PackageServiceProvider::class,
-
-
     ],
 
     /*

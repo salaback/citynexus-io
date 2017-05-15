@@ -35,7 +35,7 @@ class PropertySyncTest extends TestCase
 
     public function invokeMethod($methodName, array $parameters = array())
     {
-        $object = new \CityNexus\PropertyMgr\PropertySync();
+        $object = new App\PropertyMgr\PropertySync();
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -101,7 +101,7 @@ class PropertySyncTest extends TestCase
 
         $results = $this->invokeMethod('parsedAddress', [$row, $sync]);
 
-        $expected = \CityNexus\PropertyMgr\Property::where('address', '23 MONMOUTH ST')
+        $expected = App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
             ->where('unit', 'APARTMENT 1R')
             ->first();
 
@@ -110,7 +110,7 @@ class PropertySyncTest extends TestCase
 
     public function testGetPropertyId()
     {
-        $building = \CityNexus\PropertyMgr\Property::create([
+        $building = App\PropertyMgr\Model\Property::create([
             'address'       => '23 MONMOUTH ST',
             'city'          => 'SOMERVILLE',
             'state'         => 'MA',
@@ -119,7 +119,7 @@ class PropertySyncTest extends TestCase
             'is_building'   => true
         ]);
 
-        $unit = \CityNexus\PropertyMgr\Property::create([
+        $unit = App\PropertyMgr\Model\Property::create([
             'unit'          => 'APARTMENT 1R',
             'building_id'   => $building->id,
             'address'       => '23 MONMOUTH ST',
@@ -152,7 +152,7 @@ class PropertySyncTest extends TestCase
 
         $results = $this->invokeMethod('unparsedAddress', [$row, $sync]);
 
-        $expected = \CityNexus\PropertyMgr\Property::where('address', '23 MONMOUTH ST')
+        $expected = App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
             ->where('unit', 'APARTMENT 1R')
             ->first();
 
