@@ -11,8 +11,7 @@ namespace App\Services;
 
 use App\Client;
 use App\Jobs\UpgradeProperies;
-use CityNexus\CityNexus\Property;
-use CityNexus\DataStore\DataSet;
+use App\DataStore\Model\DataSet;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -46,7 +45,7 @@ class Upgrade
         // Updates
 
         // Migrate properties table
-        $properties = Property::pluck('id')->chunk(100);
+        $properties = DB::table('citynexus_properties')->pluck('id')->chunk(100);
 
         foreach($properties as $chunk)
         {
