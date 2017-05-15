@@ -301,7 +301,7 @@ class ClientController extends Controller
     public function upgrade($id)
     {
         Artisan::queue('citynexus:upgrade', ['client_id' => $id]);
-        Session::flash('flash_success', 'Client queued for upgrade.');
+        session('flash_success', 'Client queued for upgrade.');
         return redirect()->back();
     }
 }
