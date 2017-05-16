@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\ReplyToComment;
-use CityNexus\PropertyMgr\Comment;
+use App\PropertyMgr\Model\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller

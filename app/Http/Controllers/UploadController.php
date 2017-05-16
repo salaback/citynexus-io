@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\StartImport;
-use CityNexus\DataStore\DataSet;
-use CityNexus\DataStore\Store;
-use CityNexus\DataStore\Upload;
-use CityNexus\PropertyMgr\Property;
+use App\DataStore\Model\DataSet;
+use App\DataStore\Store;
+use App\DataStore\Model\Upload;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

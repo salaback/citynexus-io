@@ -1,40 +1,62 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## About CityNexus
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### Methods
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+##### User Registration
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+Users are registered across the entire application in `public.users`.
+Each record requires a first name, last name, and email address. The
+password field will authorize access to any tenant the user as permission for
 
-## Learning Laravel
+Their membership is stored in the memberships array. Aside from
+super users, users will only be granted access to a tenant instance
+if they have a membership array with the full domain of that
+client used as the key.
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+Within a membership array will be a list of specific permissions
+which will override any group level permissions. These permissions
+are grouped as arrays of methods, each with either a true or false
+value.  True grants positive permission, while false denys access
+no matter what other permissions may exist.
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+The membership array will also include their title and department
+within the organization.  If none exists, a null value should still
+be saved.
 
-## Contributing
+If the user has been migrated from a legacy version of CityNexus
+they may have a hashed password stored in their membership array
+as well. If the user doesn't have a password, this password will be
+tried and if it matches, the user will be prompted to update their
+password which will then be made into their primary account 
+password.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+######Example Membership Array
 
-## Security Vulnerabilities
+``` javascript
+{
+    "demo.citynexus.io": {
+        "properties": {
+            "view": "true",
+            "show": "true",
+            "merge": "false",
+            "edit": "false",
+            "create": "false"
+        },
+        "password": "################",
+        "title": "Director of IT",
+        "department": "Information Technology"
+        }
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Background Jobs
 
-## License
+#### Nightly
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+- `citynexus:client-info` - Updates key statistics about clients including 
+user and dataset counts.
+
+- `citynexus:searchindex {client_id}` - Reindexes all address, comments, file 
+captions, and datasets. Should be run nightly.

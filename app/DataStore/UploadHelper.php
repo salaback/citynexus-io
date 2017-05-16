@@ -142,7 +142,6 @@ class UploadHelper
         return true;
     }
 
-
     private function addUploadId($data, $upload_id)
     {
         foreach($data as $k => $i)

@@ -26,11 +26,15 @@ class Upgrade
     {
         $this->client = $client;
 
-        config(['database.connections.tenant.schema' => $this->client->schema]);
+        $client->logInAsClient();
 
         if($this->client->version_id === null)
         {
             $version = 'version_1';
+        }
+        elseif($this->client->version_id === 1)
+        {
+            return 'Already Up To Date';
         }
         else
         {

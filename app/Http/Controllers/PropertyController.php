@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Jobs\Geocode;
 use App\UserGroup;
-use CityNexus\DataStore\DataAccess;
-use CityNexus\PropertyMgr\Property;
+use App\DataStore\DataAccess;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

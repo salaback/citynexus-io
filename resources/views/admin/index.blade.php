@@ -33,8 +33,17 @@
                                     {{$client->version_id ?: 0}}
                                 </td>
                                 <td>
-                                    <a class="btn btn-raised btn-primary btn-sm" href="{{route('admin.client.upgrade', [$client->id])}}">Upgrade</a>
-                                    <a class="btn btn-raised btn-primary btn-sm" href="{{route('admin.client.config', [$client->id])}}">Edit Config</a>
+                                    <div class="col-md-3 dropdown">
+                                        <a href="#" class="btn btn-simple dropdown-toggle" data-toggle="dropdown">
+                                            Actions
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{route('admin.client.migrateDb', [$client->id])}}">Migrate</a></li>
+                                            <li><a href="{{route('admin.client.upgrade', [$client->id])}}">Upgrade</a></li>
+                                            <li><a href="{{route('admin.client.config', [$client->id])}}">Edit Config</a></li>
+                                        </ul>
+                                    </div>
                                 </td>
 
                             </tr>
@@ -43,6 +52,9 @@
                 </table>
             </div>
         </section>
+    </div>
+    <div class="col-sm-4">
+        <a href="{{route('client.create')}}" class="btn btn-raised btn-primary">Create New Client</a>
     </div>
 
 @stop

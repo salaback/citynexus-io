@@ -54,11 +54,14 @@ class ClientController extends Controller
     public function store(Request $request, MultiTenant $multiTenant)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
-            'domain' => 'required|max:50'
+            'client.name' => 'required|max:255',
+            'client.domain' => 'required|max:50',
+            'user.first_name' => 'required|max:255',
+            'user.last_name' => 'required|max:255',
+            'user.email' => 'required|email|max:255'
         ]);
 
-        $client = $multiTenant->createClient($request->get('name'), $request->get('domain'));
+        $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
 
         return redirect(action('AdminController@index'));
     }

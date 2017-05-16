@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use CityNexus\PropertyMgr\File;
-use CityNexus\PropertyMgr\FileVersion;
+use App\PropertyMgr\Model\File;
+use App\PropertyMgr\Model\FileVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

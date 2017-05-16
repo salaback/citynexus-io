@@ -40,7 +40,5 @@ class BuildSearchIndex extends Command
     public function handle(IndexSearch $indexSearch)
     {
         $indexSearch->run($this->argument('client_id'));
-
-        print ('Clients Indexed: ' . Carbon::now());
     }
 }

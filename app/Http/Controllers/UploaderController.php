@@ -7,17 +7,17 @@ use App\Jobs\StartImport;
 use App\Jobs\StartUpload;
 use App\Jobs\TestJob;
 use Carbon\Carbon;
-use CityNexus\DataStore\DataProcessor;
-use CityNexus\DataStore\DataSet;
-use CityNexus\DataStore\Helper\UploadHelper;
-use CityNexus\DataStore\Store;
-use CityNexus\DataStore\Upload;
-use CityNexus\DataStore\Uploader;
+use App\DataStore\DataProcessor;
+use App\DataStore\Model\DataSet;
+use App\DataStore\UploadHelper;
+use App\DataStore\Store;
+use App\DataStore\Model\Upload;
+use App\DataStore\Model\Uploader;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use CityNexus\DataStore\Typer;
+use App\DataStore\Typer;
 use Illuminate\Support\Facades\Log;
 
 class UploaderController extends Controller

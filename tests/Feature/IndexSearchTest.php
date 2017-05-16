@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Client;
 use App\SearchResult;
 use App\Services\IndexSearch;
 use App\Services\MultiTenant;
@@ -23,18 +24,18 @@ class IndexSearchTest extends TestCase
 
     private $client;
 
+    use DatabaseTransactions;
+
+    protected  $connectionsToTransact = [
+        'public',
+        'tenant'
+    ];
+
     public function setUp()
     {
         parent::setUp();
-        $multiTenant = new MultiTenant();
-        $this->client = $multiTenant->createClient('Test Client', 'testclient');
+        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
         $this->client->logInAsClient();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->client->delete();
     }
 
 
@@ -45,8 +46,9 @@ class IndexSearchTest extends TestCase
      */
     public function testIndexProperties()
     {
+        $address = random_int(10, 500000);
         Property::create([
-            'address' => '123 MAIN STREET',
+            'address' => $address,
             'is_building' => true,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -54,9 +56,7 @@ class IndexSearchTest extends TestCase
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
-        $results = SearchResult::where('type', 'House')->count();
-
-        $this->assertSame($results, 1);
+        $this->assertDatabaseHas('search_results', ['type' => 'House', 'search' => $address]);
     }
 
     /**
@@ -82,25 +82,34 @@ class IndexSearchTest extends TestCase
      */
     public function testIndexDataSets()
     {
-        DataSet::create(['name' => 'This is a Test']);
+        $name = str_random();
+        DataSet::create(['name' => $name]);
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
-        $results = SearchResult::where('type', 'Data Set')->count();
+        $this->assertDatabaseHas('search_results', [
+            'type' => 'Data Set',
+            'search' => $name
+        ]);
 
-        $this->assertSame($results, 1);
+//        $results = SearchResult::where('type', 'Data Set')->->count();
+//
+//        $this->assertSame($results, 1);
     }
 
 
     /**
      * A test that a dataset has been added to the search results
      *
+     * @group failing
      * @return void
      */
     public function testIndexFiles()
     {
+        $caption = str_random();
         DB::table('cn_files')->insert([
-           'caption' => 'This is a test',
+            'caption' => $caption,
+            'description' => 'This is a file',
             'cn_fileable_id' => 1,
             'cn_fileable_type' => 'test',
             'created_at' => Carbon::now(),
@@ -109,9 +118,11 @@ class IndexSearchTest extends TestCase
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
-        $results = SearchResult::where('type', 'File')->count();
+        $this->assertDatabaseHas('search_results', [
+            'type' => 'File',
+            'search' => $caption . ' This is a file'
+        ]);
 
-        $this->assertSame($results, 1);
     }
 
     /**
@@ -121,8 +132,10 @@ class IndexSearchTest extends TestCase
      */
     public function testIndexComments()
     {
+
+        $title = str_random();
         DB::table('cn_comments')->insert([
-            'title' => 'This is a test',
+            'title' => $title,
             'comment' => 'This is a comment',
             'cn_commentable_id' => 1,
             'cn_commentable_type' => 'test',
@@ -133,9 +146,10 @@ class IndexSearchTest extends TestCase
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
-        $results = SearchResult::where('type', 'Comment')->count();
-
-        $this->assertSame($results, 1);
+        $this->assertDatabaseHas('search_results', [
+            'type' => 'Comment',
+            'search' => $title . ' This is a comment'
+        ]);
     }
 
 

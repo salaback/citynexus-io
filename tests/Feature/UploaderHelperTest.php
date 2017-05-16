@@ -20,22 +20,22 @@ class UploaderHelperTest extends TestCase
 
     use DatabaseTransactions;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testCSVUpload()
-    {
-        Queue::fake();
-
-        $uploadHelper = new UploadHelper();
-
-        $uploadHelper->csvUpload(999, []);
-
-        Queue::assertPushed(ProcessData::class, function($job)
-        {
-           return $job->upload_id == 999;
-        });
-    }
+//    /**
+//     * A basic test example.
+//     *
+//     * @return void
+//     */
+//    public function testCSVUpload()
+//    {
+//        Queue::fake();
+//
+//        $uploadHelper = new UploadHelper();
+//
+//        $uploadHelper->csvUpload(999, []);
+//
+//        Queue::assertPushed(ProcessData::class, function($job)
+//        {
+//           return $job->upload_id == 999;
+//        });
+//    }
 }

@@ -11,10 +11,10 @@ namespace App\Services;
 
 use App\Client;
 use App\Tag;
-use CityNexus\DataStore\DataSet;
-use CityNexus\PropertyMgr\Comment;
-use CityNexus\PropertyMgr\File;
-use CityNexus\PropertyMgr\Property;
+use App\DataStore\Model\DataSet;
+use App\PropertyMgr\Model\Comment;
+use App\PropertyMgr\Model\File;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Support\Facades\DB;
 
 class IndexSearch

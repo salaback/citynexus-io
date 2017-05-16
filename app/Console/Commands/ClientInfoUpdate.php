@@ -56,7 +56,7 @@ class ClientInfoUpdate extends Command
                 if(isset($user->memberships[$client->schema])) $info['user_count'] = $info['user_count'] + 1;
             }
 
-            $info['dataset_count'] = DB::table($client->schema . '.tabler_tables')->whereNotNull('deleted_at')->count();
+            $info['dataset_count'] = DB::table($client->schema . '.cn_datasets')->whereNotNull('deleted_at')->count();
 
             $client->info = $this->updateInfo($client, $info);
 

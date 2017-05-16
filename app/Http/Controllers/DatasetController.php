@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use CityNexus\DataStore\DataSet;
+use App\DataStore\Model\DataSet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Facades\Datatables;

@@ -78,7 +78,7 @@ class MultiTenant
 
         try
         {
-            $client->logInAsClient();
+            DB::statement('SET search_path TO ' . $client->schema . ',public');
 
             if(!Schema::hasTable('migrations'))
             {
