@@ -10,10 +10,10 @@
 
     <style>
         .auth-logo {
-            max-width: 100%;
+            max-width: 90%;
         }
-
     </style>
+    @stack('style')
     <!-- CSS Files -->
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
@@ -50,4 +50,7 @@
 <!--  Custom JavaScripts  -->
 <script src="/assets/js/main.js"></script>
 <!--/ custom javascripts -->
+
+@stack('scripts')
+
 </html>

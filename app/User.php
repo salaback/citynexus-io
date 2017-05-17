@@ -28,9 +28,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $dates = [
+        'accepted_terms',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     protected $casts  =
         [
-            'memberships' => 'array'
+            'memberships' => 'array',
+            'terms' => 'array'
         ];
     public function getFullnameAttribute()
     {

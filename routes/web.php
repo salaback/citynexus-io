@@ -4,6 +4,8 @@
 Route::get('auth/login', 'AuthController@getLogin')->name('login');
 Route::post('auth/login', 'AuthController@postLogin');
 Route::get('auth/logout', 'AuthController@getLogout')->name('logout');
+Route::get('activate-account', 'AuthController@activate');
+Route::post('activate-account', 'AuthController@postActivate');
 
 //// Password reset link request routes...
 //Route::get('password/email', 'Auth\PasswordController@getEmail');

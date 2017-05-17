@@ -1,12 +1,19 @@
 @extends('email.basic_email');
 
+@php
+$memberships = $user->memberships;
+reset($memberships);
+$domain = key($memberships);
+
+@endphp
+
 @section("content")
 
     <p>
         You have been invited to join CityNexus!
     </p>
     <p>
-        To activate your account follow this link: {{ url('/activate-account?key=' . $user->activation) }}
+        To activate your account follow this link: {{ $domain . '/activate-account?key=' . $user->activation }}
     </p>
     <p>
         Please note that this platform is still in beta development and some features may not work as they should.

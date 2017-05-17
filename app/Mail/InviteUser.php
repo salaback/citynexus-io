@@ -31,9 +31,10 @@ class InviteUser extends Mailable
      */
     public function build()
     {
-
         $this->user->activation = str_random(24);
         $this->user->save();
+        $this->subject('You are invited to join CityNexus');
+        $this->from('admin@citynexus.io', 'CityNexus');
         return $this->view('email.auth.invite')->with('user', $this->user);
     }
 }

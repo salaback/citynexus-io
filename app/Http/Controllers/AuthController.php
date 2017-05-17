@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Terms;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -64,4 +66,38 @@ class AuthController extends Controller
         Auth::logout();
         return redirect('/');
     }
+
+
+    public function activate(Request $request)
+    {
+        $user = User::where('activation', $request->get('key'))->first();
+        $terms = Terms::orderBy('adopted_at')->first();
+
+        return view('auth.activate', compact('user', 'terms'))->with('key', $request->get('key'));
+    }
+
+    public function postActivate(Request $request)
+    {
+        $this->validate($request, [
+            'password' =>  'required|between:8,250|confirmed',
+            'agree' => 'required'
+        ]);
+
+        $now = Carbon::now();
+
+        $user = User::where('activation', $request->get('key'))->first();
+
+        $user->password = Hash::make($request->get('password'));
+        $user->accepted_terms = $now;
+        $acceptedTerms = $user->terms;
+        $acceptedTerms[$now->toDayDateTimeString()] = Terms::find($request->get('termsId'))->terms;
+        $user->terms = $acceptedTerms;
+
+        $user->save();
+
+        Auth::login($user, true);
+
+        return redirect('/');
+    }
+
 }
