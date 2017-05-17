@@ -75,30 +75,23 @@ class MultiTenant
      */
     public function migrate(Client $client)
     {
+        $client->logInAsClient();
 
-        try
+        if(!Schema::hasTable($client->schema . '.migrations'))
         {
-            DB::statement('SET search_path TO ' . $client->schema . ',public');
-
-            if(!Schema::hasTable('migrations'))
-            {
-                Schema::connection('tenant')->create('migrations', function (Blueprint $table){
-                    $table->increments('id');
-                    $table->string('migration');
-                    $table->integer('batch');
-                });
-            }
-
-            Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);
-
-            $client->migrated_at = Carbon::now();
-            $client->save();
+            Schema::connection('tenant')->create('migrations', function (Blueprint $table){
+                $table->increments('id');
+                $table->string('migration');
+                $table->integer('batch');
+            });
         }
 
-        catch(\Exception $e)
-        {
-            return $e;
-        }
+        DB::statement('SET search_path TO ' . $client->schema . ',public');
+
+        Artisan::call('migrate', ['--force' => 'true','--database' => 'tenant']);
+
+        $client->migrated_at = Carbon::now();
+        $client->save();
 
         return 'migrated';
 
@@ -188,4 +181,5 @@ class MultiTenant
         }
 
     }
+
 }

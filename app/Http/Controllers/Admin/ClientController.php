@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Client;
+use App\Events\UserCreated;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use App\Services\MultiTenant;
@@ -63,6 +64,8 @@ class ClientController extends Controller
 
         $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
 
+        $this->createOwnerUser($client, $request->get('user'));
+
         return redirect(action('AdminController@index'));
     }
 
@@ -103,12 +106,17 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Client $client
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Client $client)
     {
-        //
+        DB::statement('DROP SCHEMA ' . $client->schema . ' CASCADE');
+
+        $client->delete();
+
+        return "Deleted";
     }
 
     public function resetDb($id, MultiTenant $multiTenant)
@@ -306,5 +314,35 @@ class ClientController extends Controller
         Artisan::queue('citynexus:upgrade', ['client_id' => $id]);
         session('flash_success', 'Client queued for upgrade.');
         return redirect()->back();
+    }
+
+    public function createOwnerUser($client, $user)
+    {
+
+        // Get user if they already exist by email
+        $userModel = User::firstOrNew(['email' => $user['email']]);
+
+        if(!$userModel->exists)
+        {
+            // If user is new, add name and temp password
+            $userModel->first_name = $user['first_name'];
+            $userModel->last_name = $user['last_name'];
+            $userModel->password = str_random(24);
+            $userModel->save();
+
+            event(new UserCreated($userModel));
+        }
+
+        // TODO: If user already exists, send notification that they have been assigned a new organization
+
+        $membership = [
+            $client->domain => [
+                'account_owner' => true
+            ]
+        ];
+
+        $userModel->addMemberships($membership);
+
+        return $userModel;
     }
 }

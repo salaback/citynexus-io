@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                         @foreach($clients as $client)
-                            <tr>
+                            <tr id="client-{{$client->id}}">
                                 <td>{{$client->name}}</td>
                                 <td>{{$client->domain}}</td>
                                 <td>{{$client->schema}}</td>
@@ -42,6 +42,7 @@
                                             <li><a href="{{route('admin.client.migrateDb', [$client->id])}}">Migrate</a></li>
                                             <li><a href="{{route('admin.client.upgrade', [$client->id])}}">Upgrade</a></li>
                                             <li><a href="{{route('admin.client.config', [$client->id])}}">Edit Config</a></li>
+                                            <li><a href="#" onclick="destroyClient({{$client->id}}, '{{$client->name}}')">Destroy Client</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -59,7 +60,30 @@
 
 @stop
 
-@push('js_footer')
+@push('scripts')
+
+<script>
+    var destroyClient = function (clientId, clientName)
+    {
+        if(confirm('Are you sure you want to delete this ' + clientName + '? This action can not be undone.'))
+        {
+            $.ajax({
+                url: "{{route('client.index')}}/" + clientId,
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    _method: "DELETE"
+                },
+                success: function() {
+                    $("#client-" + clientId).hide();
+                },
+                error: function () {
+                    "Uh oh!  Something went wrong."
+                }
+            })
+        }
+    }
+</script>
 
 @endpush
 

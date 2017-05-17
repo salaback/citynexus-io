@@ -31,7 +31,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testAddMembershipsNewMemebership()
+    public function testAddMembershipsNewMembership()
     {
         $user = User::create([
             'first_name' => 'Firstname',
