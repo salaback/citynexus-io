@@ -129,11 +129,11 @@ class User extends Authenticatable
             $memberships = $user->memberships;
             if(isset($memberships[config('schema')]))
             {
-                $users[] = $user;
+                $users[] = $user->id;
             }
         }
 
-        return $users;
+        return User::findMany($users);
     }
 
     public function isMember(UserGroup $userGroup)

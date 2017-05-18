@@ -13,8 +13,8 @@ class OrganizationSettingsController extends Controller
     public function index()
     {
         $users = User::fromClient();
-
-        return view('admin.organization.index', compact('users'));
+        $groups = UserGroup::all();
+        return view('admin.organization.index', compact('users', 'groups'));
     }
 
     public function editUser($id)

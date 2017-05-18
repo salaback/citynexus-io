@@ -1,36 +1,66 @@
 @extends('master.main')
 
 @section('main')
+    <div class="row">
+        <div class="col-md-6">
+            <section class="boxs ">
+                <div class="boxs-header dvd dvd-btm">
+                    <h1 class="custom-font"><strong>Organization</strong> Users</h1>
 
-    <div class="col-md-9">
-        <section class="boxs ">
-            <div class="boxs-header dvd dvd-btm">
-                <h1 class="custom-font"><strong>Organization</strong> Users</h1>
-
-            </div>
-            <div class="boxs-body p-0">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Title</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($users as $user)
+                </div>
+                <div class="boxs-body p-0" style="max-height: 400px; overflow: scroll;">
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td>{{$user->fullname}}</td>
-                            <td>{{$user->department}}</td>
-                            <td>{{$user->title}}</td>
-                            <td><a href="{{route('admin.user.edit', [$user->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Title</th>
+                            <th></th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                        </thead>
+                        <tbody >
+                        @foreach($users->sortBy('last_name') as $user)
+                            <tr>
+                                <td>{{$user->fullname}}</td>
+                                <td>{{$user->department}}</td>
+                                <td>{{$user->title}}</td>
+                                <td><a href="{{route('admin.user.edit', [$user->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section class="boxs ">
+                <div class="boxs-header dvd dvd-btm">
+                    <h1 class="custom-font"><strong>Organization</strong> Groups</h1>
+
+                </div>
+                <div class="boxs-body p-0">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Users</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($groups as $group)
+                            <tr>
+                                <td>{{$group->name}}</td>
+                                <td>{{$group->users->count()}}</td>
+                                <td><a href="{{}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </div>
+
 
 @endsection
