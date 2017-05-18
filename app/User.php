@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -117,6 +118,34 @@ class User extends Authenticatable
         }
 
         return $old;
+    }
+
+    public static function fromClient()
+    {
+
+        $users = [];
+        foreach(User::all() as $user)
+        {
+            $memberships = $user->memberships;
+            if(isset($memberships[config('schema')]))
+            {
+                $users[] = $user;
+            }
+        }
+
+        return $users;
+    }
+
+    public function isMember(UserGroup $userGroup)
+    {
+        if(DB::table('user_user_group')->where('user_id', $this->id)->where('user_group_id', $userGroup->id)->count() > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

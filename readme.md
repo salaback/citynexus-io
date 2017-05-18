@@ -32,6 +32,20 @@ tried and if it matches, the user will be prompted to update their
 password which will then be made into their primary account 
 password.
 
+###### Groups and Permissions
+
+Calling the user method ``$user->getGroupPermissions()`` returns an array of 
+permissions that have been created based on merging the permissions of the
+different groups a user is a member of. By default, a user has access to 
+nothing within the system, but gains access by being added to groups. The user
+will gain access to content, when given permission to it in any of their groups, 
+however, if a permission is set to false in any group, they will be denied access.
+For this reason, negative permissions should be used sparingly, and perhaps be
+restricted to only one or two negative permissions at a time.
+
+DEV REQUEST: Add in user specific permissions which will over ride any group
+permissions.
+
 ######Example Membership Array
 
 ``` javascript

@@ -234,29 +234,29 @@ class ClientController extends Controller
             $users = [];
             foreach($data as $user)
             {
-                $memebership = json_decode($user->permissions, true);
+                $membership = json_decode($user->permissions, true);
 
-                $memebership['password'] = $user->password;
-                $memebership['title'] = $user->title;
-                $memebership['department'] = $user->department;
+                $membership['password'] = $user->password;
+                $membership['title'] = $user->title;
+                $membership['department'] = $user->department;
 
                 $nUser = User::firstOrNew(['email' => $user->email]);
 
                 $nUser->first_name = $user->first_name;
                 $nUser->last_name = $user->last_name;
 
-                if($nUser->memeberships != null)
+                if($nUser->memberships != null)
                 {
-                    $memeberships = $nUser->memberships;
+                    $memberships = $nUser->memberships;
                 }
                 else
                 {
-                    $memeberships = [];
+                    $memberships = [];
                 }
 
-                $memeberships[$client->schema] = $memebership;
+                $memberships[$client->schema] = $membership;
 
-                $nUser->memberships = $memeberships;
+                $nUser->memberships = $memberships;
 
                 $nUser->save();
 
