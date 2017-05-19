@@ -6,7 +6,7 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Organization</strong> Users</h1>
-
+                    <a class="badge bg-green pull-right" href="{{route('users.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Invite User </a>
                 </div>
                 <div class="boxs-body p-0" style="max-height: 400px; overflow: scroll;">
                     <table class="table">
@@ -24,7 +24,7 @@
                                 <td>{{$user->fullname}}</td>
                                 <td>{{$user->department}}</td>
                                 <td>{{$user->title}}</td>
-                                <td><a href="{{route('admin.user.edit', [$user->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                                <td><a href="{{route('users.edit', [$user->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -36,7 +36,7 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Organization</strong> Groups</h1>
-
+                    <a class="badge bg-green pull-right" href="{{route('group.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Add Group </a>
                 </div>
                 <div class="boxs-body p-0">
                     <table class="table">
@@ -48,11 +48,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($groups as $group)
+                        @foreach($groups->sortBy('name') as $group)
                             <tr>
                                 <td>{{$group->name}}</td>
                                 <td>{{$group->users->count()}}</td>
-                                <td><a href="{{}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                                <td><a href="{{route('group.edit', [$group->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -43,6 +43,15 @@ however, if a permission is set to false in any group, they will be denied acces
 For this reason, negative permissions should be used sparingly, and perhaps be
 restricted to only one or two negative permissions at a time.
 
+Permissions for groups are defined in an array at the top of the view ```auth.user_group.create```.
+
+**Methods**
+
+```App\User```
+* ```allowed($set, $permision)```: When passed the ```$set``` (i.e. properties) and the ```$permission```
+the method will return a boolean for the user based on all memberships.
+* ```disallowed($set, $permission)```: Reverse of ```allowed()```
+
 DEV REQUEST: Add in user specific permissions which will over ride any group
 permissions.
 

@@ -1,242 +1,126 @@
-<?php
-$pagename = 'Create User Group';
-$section = 'admin';
 
+@if(isset($userGroup))
+    @section('title', "Edit " . $userGroup->name . " Group")
+@else
+    @section('title', "Create New Group")
+@endif
+
+@extends('master.main')
+
+@php
 $permission_sets = [
-        [
-                'title' => 'Datasets',
-                'key' => 'datasets',
-                'permissions' => [
-                        [
-                                'permission' => "View Dataset",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "View Raw Dataset",
-                                'key' => 'raw'
-                        ],
-                        [
-                                'permission' => "Create New Dataset",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Upload to Dataset",
-                                'key' => 'upload'
-                        ],
-                        [
-                                'permission' => "Edit Dataset",
-                                'key' => 'edit'
-                        ],
-                        [
-                                'permission' => "Delete Dataset",
-                                'key' => 'delete'
-                        ],
-                        [
-                                'permission' => "Export Dataset",
-                                'key' => 'export'
-                        ],
-                        [
-                                'permission' => "Rollback Upload",
-                                'key' => 'rollback'
-                        ]
 
-                ]
-        ],
         [
-                'title' => 'Scores',
-                'key' => 'scores',
-                'permissions' => [
-                        [
-                                'permission' => "View Score",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "View Raw Scores",
-                                'key' => 'raw'
-                        ],
-                        [
-                                'permission' => "Create New Score",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Refresh Score",
-                                'key' => 'refresh'
-                        ],
-                        [
-                                'permission' => "Edit Score",
-                                'key' => 'edit'
-                        ],
-                        [
-                                'permission' => "Delete Score",
-                                'key' => 'delete'
-                        ],
-                        [
-                                'permission' => "Upload Score",
-                                'key' => 'upload'
-                        ]
-                ]
-        ],
-        [
-                'title' => 'Reports',
-                'key' => 'reports',
-                'permissions' => [
-                        [
-                                'permission' => "View Reports",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Create Reports",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Save Reports",
-                                'key' => 'save'
-                        ],
-                        [
-                                'permission' => "Delete Score",
-                                'key' => 'score'
-                        ],
-                ]
-        ],
-        [
-                'title' => 'Users',
-                'key' => 'usersAdmin',
-                'permissions' => [
-                        [
-                                'permission' => "Create User",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Delete User",
-                                'key' => 'delete'
-                        ],
-                        [
-                                'permission' => "Assign User Permissions",
-                                'key' => 'assign'
-                        ],
-                ]
-        ],
-        [
-                'title' => 'Properties',
-                'key' => 'properties',
-                'permissions' => [
-                        [
-                                'permission' => "View Properties List",
-                                'key' => 'view',
-                        ],
-                        [
-                                'permission' => "View Properties Details",
-                                'key' => 'show',
-                        ],
-                        [
-                                'permission' => "Merge Properties",
-                                'key' => 'merge',
-                        ],
-                        [
-                                'permission' => "Edit Properties Record",
-                                'key' => 'edit',
-                        ],
-                        [
-                                'permission' => "Create Properties Record",
-                                'key' => 'create',
-                        ]
-                ]
-        ],
-        [
-                'title' => 'Export',
-                'key' => 'export',
-                'permissions' => [
-                        [
-                                'permission' => "View & Download Exports",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Create New Exports",
-                                'key' => 'create'
-                        ]
-                ]
-        ],
-        [
-                'title' => 'Administrator',
-                'key' => 'admin-rights',
+                'title' => 'Organization Admin',
+                'key' => 'org-admin',
                 'permissions' => [
                         [
                                 'permission' => "View Admin Panel",
                                 'key' => 'view'
                         ],
                         [
-                                'permission' => "Hard Delete Data",
-                                'key' => 'delete'
+                                'permission' => "Create and Edit Groups",
+                                'key' => 'groups'
                         ],
                         [
-                                'permission' => "Edit App Settings",
-                                'key' => 'edit'
-                        ]
+                                'permission' => "Create Users",
+                                'key' => 'create-users'
+                        ],
+                        [
+                                'permission' => "Edit Users",
+                                'key' => 'edit-users'
+                        ],
+                        [
+                                'permission' => "Assign Users to Groups",
+                                'key' => 'assign-groups'
+                        ],
                 ]
         ]
 ]
-?>
+@endphp
 
-@extends(config('citynexus.template'))
-
-@section(config('citynexus.section'))
+@section('main')
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="card-box table-responsive">
-                <form action="{{action('Auth\UserGroupController@store')}}" method="post" class="form-horizontal">
-                    {!! csrf_field() !!}
-                    <div class="form-group">
-                        <label for="name" class="control-label col-sm-4">User Group Name</label>
+            @unless(isset($userGroup))
+            <form action="{{action('Auth\UserGroupController@store')}}" method="post" class="form-horizontal">
+            @else
+            <form action="{{action('Auth\UserGroupController@update', [$userGroup->id])}}" method="post" class="form-horizontal">
+            @endunless
+                {!! csrf_field() !!}
 
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"/>
+                <section class="boxs">
+                <div class="boxs-header dvd dvd-btm">
+                    @unless(isset($userGroup))
+                    <h1 class="custom-font"><strong>Create</strong> New Group</h1>
+                    @else
+                    <h1 class="custom-font">Edit <strong>{{$userGroup->name}}</strong> Group</h1>
+                    <input type="hidden" name="_method" value="patch">
+                    @endunless
+                </div>
+                <div class="boxs-body">
+                        <div class="form-group">
+                            <label for="name" class="control-label col-sm-3">User Group Name</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="name" @if(isset($userGroup)) value="{{$userGroup->name}}" @else value="{{old('name')}}" @endif/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        {{--Data sets--}}
+                        <div class="col-sm-offset-3">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                {{--Data sets--}}
 
-                        @foreach($permission_sets as $i)
-                            <?php $group = $i['key']; ?>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#{{$i['key']}}" aria-expanded="true" aria-controls="collapseOne">
-                                            {{$i['title']}}
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="{{$i['key']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="panel-body">
-                                        <div class="list-group">
-                                            @foreach($i['permissions'] as $p)
-                                                <?php $method = $p['key']; ?>
-                                                <div class="list-group-item">
-                                                    <input type="checkbox" name="permissions[{{$i['key']}}][{{$p['key']}}]" value="true" class="{{$i['key']}}"
-                                                           @if(isset($permissions->$group->$method)) checked @endif
-                                                    > <label for="">{{ $p['permission'] }}</label>
+                                @foreach($permission_sets as $i)
+                                    <?php $group = $i['key']; ?>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#{{$i['key']}}" aria-expanded="true" aria-controls="collapseOne">
+                                                    {{$i['title']}}
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="{{$i['key']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body">
+                                                <div class="list-group">
+                                                    @foreach($i['permissions'] as $p)
+                                                        <?php $method = $p['key']; ?>
+                                                        <div class="list-group-item">
+                                                            <input type="checkbox" name="permissions[{{$i['key']}}][{{$p['key']}}]" value="true" class="{{$i['key']}}"
+                                                                   @if(isset($permissions[$group][$method])) checked @endif
+                                                            > <label for="">{{ $p['permission'] }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                    <br><br>
+                                                    <button class="btn btn-raised btn-sm" onclick="select('{{$i['key']}}')" id="{{$i['key']}}SelectAll"> Check All </button>
+                                                    <button class="btn btn-raised btn-sm hidden" onclick="clearChecks('{{$i['key']}}')" id="{{$i['key']}}UnselectAll"> Uncheck All </button>
                                                 </div>
-                                            @endforeach
-                                            <br><br>
-                                            <button class="btn btn-sm" onclick="select('{{$i['key']}}')" id="{{$i['key']}}SelectAll"> Check All </button>
-                                            <button class="btn btn-sm hidden" onclick="clearChecks('{{$i['key']}}')" id="{{$i['key']}}UnselectAll"> Uncheck All </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                @endforeach
+
                             </div>
+                        </div>
+                <div class="boxs-footer">
+                    @unless(isset($userGroup))
+                    <input type="submit" class="btn btn-raised btn-primary" value="Create Group">
+                    @else
+                    <input type="submit" class="btn btn-raised btn-primary" value="Update Group">
+                    @endunless
+                </div>
+            </section>
+            </form>
 
-                    @endforeach
-
-                        <input type="submit" class="btn btn-primary" value="Create">
-                </form>
-            </div>
         </div>
     </div>
 
 @stop
 
-@push('js_footer')
+@push('scripts')
 
 <script>
     function select( type  )

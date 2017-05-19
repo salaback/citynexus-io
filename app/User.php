@@ -46,6 +46,14 @@ class User extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    /**
+     * Returns a true or false for if a user has the permission
+     * being tested.
+     *
+     * @param $set
+     * @param $permission
+     * @return bool
+     */
     public function allowed($set, $permission)
     {
         $permissions = $this->getGroupPermissions();
@@ -53,6 +61,15 @@ class User extends Authenticatable
         else return false;
     }
 
+    /**
+     *
+     * Returns true or false based on the user
+     * not having a permission.
+     *
+     * @param $set
+     * @param $permission
+     * @return bool
+     */
     public function disallowed($set, $permission)
     {
         $permissions = $this->getGroupPermissions();
@@ -60,11 +77,24 @@ class User extends Authenticatable
         else return false;
     }
 
+    /**
+     *
+     * All groups user is a member of
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groups()
     {
         return $this->belongsToMany(UserGroup::class);
     }
 
+    /**
+     *
+     * Array of all the permissions belonging to
+     * the groups a user is a member of
+     *
+     * @return array
+     */
     public function getGroupPermissions()
     {
         $groups = $this->groups;
@@ -76,6 +106,12 @@ class User extends Authenticatable
         return $permissions;
     }
 
+    /**
+     *
+     * Add a new membership array to the memberships
+     *
+     * @param $memberships
+     */
     public function addMemberships($memberships)
     {
         $current = $this->memberships;

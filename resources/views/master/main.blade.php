@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/citynexus.css">
+    <link rel="stylesheet" href="/css/animate.css">
 
     @stack('style')
 
@@ -310,7 +311,9 @@
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="/js/bootstrap-notify.min.js"></script>
 
+@include('master.snipits._alerts')
 
 <script>
     var results = new Bloodhound({
