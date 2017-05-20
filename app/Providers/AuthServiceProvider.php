@@ -25,17 +25,20 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
         Gate::before(function ($user) {
             if ($user->super_admin) {
                 return true;
             }
         });
 
-
         // Dataset Permissions
         Gate::define('citynexus', function($user, $group, $method){
+            if(isset($user->memberships[config('schema')]['account_owner']))
+            {
+                return true;
+            }
             return $user->allowed($group, $method);
         });
+
     }
 }

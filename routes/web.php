@@ -7,6 +7,15 @@ Route::get('auth/logout', 'AuthController@getLogout')->name('logout');
 Route::get('activate-account', 'AuthController@activate');
 Route::post('activate-account', 'AuthController@postActivate');
 
+
+Route::group(['middleware' => 'auth', 'prefix' => 'organization'], function(){
+    Route::get('/', 'Admin\OrganizationSettingsController@index');
+    Route::get('/edit-user/{id}', 'Admin\OrganizationSettingsController@editUser')->name('admin.user.edit');
+    Route::post('/edit-user/{id}', 'Admin\OrganizationSettingsController@storeUser');
+    Route::resource('/users', 'Admin\UserController');
+});
+
+
 //// Password reset link request routes...
 //Route::get('password/email', 'Auth\PasswordController@getEmail');
 //Route::post('password/email', 'Auth\PasswordController@postEmail');
@@ -26,9 +35,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/client/import-table', 'Admin\ClientController@importTable');
     Route::get('admin/client/upgrade/{id}', 'Admin\ClientController@upgrade')->name('admin.client.upgrade');
 
-    Route::resource('/auth/user-groups/', 'Auth\UserGroupController');
-    Route::post('/auth/user-groups/add-user-to-group', 'Auth\UserGroupController@addUserToGroup');
-    Route::post('/auth/user-groups/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup');
+    Route::resource('/auth/group', 'Auth\UserGroupController');
+    Route::post('/auth/group/add-user-to-group', 'Auth\UserGroupController@addUserToGroup')->name('group.addUser');
+    Route::post('/auth/group/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup')->name('group.removeUser');
     Route::get('/admin', 'AdminController@index');
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
@@ -97,3 +106,6 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('test', function(){
     return view('welcome');
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

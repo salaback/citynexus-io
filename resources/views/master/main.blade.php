@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/vendor/animsition.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/citynexus.css">
+    <link rel="stylesheet" href="/css/animate.css">
 
     @stack('style')
 
@@ -52,6 +53,8 @@
                                     @include('master.notifications.dataProcessed')
                                 @elseif($notification->type == 'App\Notifications\ReplyToComment')
                                     @include('master.notifications.replyToComment')
+                                @elseif($notification->type == 'App\Notifications\AddedToNewOrganization')
+                                    @include('master.notifications.addedToNewOrganization')
                                 @endif
                             @empty
                             @endforelse
@@ -60,7 +63,7 @@
                     </div>
                 </li>
                 <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
-                <li><a href="{{route('logout')}}"><i class="fa fa-sign-out"></i></a></li>
+                <li><a href="/auth/logout"><i class="fa fa-sign-out"></i></a></li>
             </ul>
             <!-- Right-side navigation end -->
         </header>
@@ -310,7 +313,9 @@
 <!--  Custom JavaScripts -->
 <script src="/assets/js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="/js/bootstrap-notify.min.js"></script>
 
+@include('master.snipits._alerts')
 
 <script>
     var results = new Bloodhound({

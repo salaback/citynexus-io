@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -45,6 +46,14 @@ class User extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    /**
+     * Returns a true or false for if a user has the permission
+     * being tested.
+     *
+     * @param $set
+     * @param $permission
+     * @return bool
+     */
     public function allowed($set, $permission)
     {
         $permissions = $this->getGroupPermissions();
@@ -52,6 +61,15 @@ class User extends Authenticatable
         else return false;
     }
 
+    /**
+     *
+     * Returns true or false based on the user
+     * not having a permission.
+     *
+     * @param $set
+     * @param $permission
+     * @return bool
+     */
     public function disallowed($set, $permission)
     {
         $permissions = $this->getGroupPermissions();
@@ -59,11 +77,24 @@ class User extends Authenticatable
         else return false;
     }
 
+    /**
+     *
+     * All groups user is a member of
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groups()
     {
         return $this->belongsToMany(UserGroup::class);
     }
 
+    /**
+     *
+     * Array of all the permissions belonging to
+     * the groups a user is a member of
+     *
+     * @return array
+     */
     public function getGroupPermissions()
     {
         $groups = $this->groups;
@@ -75,6 +106,29 @@ class User extends Authenticatable
         return $permissions;
     }
 
+    public function getInfoAttribute()
+    {
+        $info = new \stdClass();
+
+        if(isset($this->memberships[config('schema')]['title']))
+            $info->title = $this->memberships[config('schema')]['title'];
+        else
+            $info->title = null;
+
+        if(isset($this->memberships[config('schema')]['department']))
+            $info->department = $this->memberships[config('schema')]['department'];
+        else
+            $info->department = null;
+
+        return $info;
+    }
+
+    /**
+     *
+     * Add a new membership array to the memberships
+     *
+     * @param $memberships
+     */
     public function addMemberships($memberships)
     {
         $current = $this->memberships;
@@ -117,6 +171,34 @@ class User extends Authenticatable
         }
 
         return $old;
+    }
+
+    public static function fromClient()
+    {
+
+        $users = [];
+        foreach(User::all() as $user)
+        {
+            $memberships = $user->memberships;
+            if(isset($memberships[config('schema')]))
+            {
+                $users[] = $user->id;
+            }
+        }
+
+        return User::findMany($users);
+    }
+
+    public function isMember(UserGroup $userGroup)
+    {
+        if(DB::table('user_user_group')->where('user_id', $this->id)->where('user_group_id', $userGroup->id)->count() > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
