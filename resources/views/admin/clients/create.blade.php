@@ -1,20 +1,22 @@
 @extends('master.main')
 
+@section('title', 'Create Client')
 
 @section('main')
+<form action="{{route('client.store')}}" id="createGroup" onsubmit="return validateForm()" method="POST" class="form-horizontal" role="form">
+    {{csrf_field()}}
 
-    <form action="{{route('client.store')}}" method="POST" class="form-horizontal" role="form">
-        {{csrf_field()}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="panel-title">Create Client</span>
-            </div>
+    <section class="boxs ">
+        <div class="boxs-header dvd dvd-btm">
+            <h1 class="custom-font"><strong>Create</strong> Client</h1>
+        </div>
+        <div class="boxs-body">
             <div class="panel-body">
                 <h4>Client Information</h4>
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Client Name</label>
                     <div class="col-sm-10">
-                        <input type="text" name="client[name]" id="inputID" class="form-control" value="" title="" required="required" >
+                        <input type="text" name="client[name]" id="name" class="form-control" value="" title="" required="required" >
                     </div>
                 </div>
                 <div class="form-group">
@@ -22,9 +24,11 @@
                     <div class="col-sm-10">
                         <div class="input-group">
                             <div class="input-group-addon">https://</div>
-                            <input type="text" class="form-control" id="" name="client[domain]" placeholder="subdomain">
+                            <input type="text" class="form-control" name="client[domain]" id="domain" placeholder="sub-domain">
                             <div class="input-group-addon">.citynexus.io</div>
                         </div>
+                        <p class="help-block mb-0">Choose a sub domain with lowercase letters, numbers, and hyphens</p>
+
                     </div>
                 </div>
             </div>
@@ -51,10 +55,39 @@
                 </div>
 
             </div>
-            <div class="panel-footer">
-                <button type="submit" class="btn btn-raised btn-primary">Create Client</button>
-            </div>
         </div>
-    </form>
+        <div class="boxs-footer">
+            <button type="submit" class="btn btn-raised btn-primary">Create Client</button>
+        </div>
+    </section>
+</form>
 
 @endsection
+
+@push('scripts')
+<script>
+    function validUrl(string) {
+        return /[^a-zA-Z0-9-]/.test( string );
+    }
+
+    function validateForm() {
+        var url = document.forms["createGroup"]["domain"].value;
+        if (validUrl(url)) {
+            alert("warning", "That sub domain doesn't appear to be valid.");
+            return false;
+        }
+        if (url == null) {
+            alert("warning", "Please create a sub domain");
+            return false;
+        }
+        if(document.forms["createGroup"]["name"].value == null) {
+            alert("warning", "Please name the group.");
+            return false;
+        }
+
+    }
+
+
+
+</script>
+@endpush

@@ -1,5 +1,7 @@
 @extends('master.main')
 
+@section('title', 'Client Admin')
+
 @section('main')
 
     <div class="col-lg-8">
