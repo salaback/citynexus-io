@@ -6,6 +6,7 @@ use App\Client;
 use App\Events\UserCreated;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
+use App\Notifications\AddedToNewOrganization;
 use App\Services\MultiTenant;
 use App\User;
 use CityNexus\CityNexus\TableBuilder;
@@ -332,8 +333,10 @@ class ClientController extends Controller
 
             event(new UserCreated($userModel));
         }
-
-        // TODO: If user already exists, send notification that they have been assigned a new organization
+        else
+        {
+            $user->notify(new AddedToNewOrganization($client));
+        }
 
         $membership = [
             $client->domain => [

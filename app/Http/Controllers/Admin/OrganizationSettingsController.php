@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\UserGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrganizationSettingsController extends Controller
 {
@@ -17,12 +18,8 @@ class OrganizationSettingsController extends Controller
         $users = User::fromClient();
 
         $groups = UserGroup::all();
+
         return view('admin.organization.index', compact('users', 'groups'));
     }
 
-
-    public function storeUser(User $user, Request $request)
-    {
-
-    }
 }

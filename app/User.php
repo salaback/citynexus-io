@@ -106,6 +106,23 @@ class User extends Authenticatable
         return $permissions;
     }
 
+    public function getInfoAttribute()
+    {
+        $info = new \stdClass();
+
+        if(isset($this->memberships[config('schema')]['title']))
+            $info->title = $this->memberships[config('schema')]['title'];
+        else
+            $info->title = null;
+
+        if(isset($this->memberships[config('schema')]['department']))
+            $info->department = $this->memberships[config('schema')]['department'];
+        else
+            $info->department = null;
+
+        return $info;
+    }
+
     /**
      *
      * Add a new membership array to the memberships

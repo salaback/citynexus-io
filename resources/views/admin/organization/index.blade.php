@@ -1,5 +1,7 @@
 @extends('master.main')
 
+@section('title', 'Organization Settings')
+
 @section('main')
     <div class="row">
         <div class="col-md-6">
@@ -22,8 +24,8 @@
                         @foreach($users->sortBy('last_name') as $user)
                             <tr>
                                 <td>{{$user->fullname}}</td>
-                                <td>{{$user->department}}</td>
-                                <td>{{$user->title}}</td>
+                                <td>{{$user->info->department}}</td>
+                                <td>{{$user->info->title}}</td>
                                 <td><a href="{{route('users.edit', [$user->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
                             </tr>
                         @endforeach
@@ -51,7 +53,7 @@
                         @foreach($groups->sortBy('name') as $group)
                             <tr>
                                 <td>{{$group->name}}</td>
-                                <td>{{$group->users->count()}}</td>
+                                <td>{{$group->userCount}}</td>
                                 <td><a href="{{route('group.edit', [$group->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
                             </tr>
                         @endforeach

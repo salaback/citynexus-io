@@ -22,8 +22,6 @@ class UserGroupController extends Controller
     {
         $this->authorize('citynexus', ['org-admin', 'groups']);
 
-        Session::flash('flash_success', 'Good');
-
         return view('auth.user_group.create');
     }
 
@@ -43,12 +41,15 @@ class UserGroupController extends Controller
                 'permissions'   => 'required'
             ]);
 
-        if($group = UserGroup::create($request->all()))
+        if($userGroup = UserGroup::create($request->all()))
         {
-            return redirect(action('Auth\UserGroupController@show', [$group->id]));
+            return redirect('/organization');
         }
         else
             Session::flash('flash_error', 'Something went wrong.');
+
+        session()->flash('flash_info', $userGroup->name . ' has been created.');
+
         return redirect('/organization');
     }
 
@@ -84,6 +85,9 @@ class UserGroupController extends Controller
 
         $userGroup->update($request->all());
 
+        session()->flash('flash_info', $userGroup->name . ' has been updated.');
+
+
         return redirect('/organization');
 
     }
@@ -96,11 +100,20 @@ class UserGroupController extends Controller
      */
     public function destroy($id)
     {
+
         $this->authorize('citynexus', ['org-admin', 'groups']);
 
-        UserGroup::find($id)->delete();
+        $userGroup = UserGroup::find($id);
 
-        return response('deleted');
+        DB::table('user_user_group')->where("user_group_id", $userGroup->id)->delete();
+
+        $name = $userGroup->name;
+
+        $userGroup->delete();
+
+        session()->flash('flash_info', $name . ' has been deleted.');
+
+        return redirect('/organization');
     }
 
     /**
@@ -169,4 +182,5 @@ class UserGroupController extends Controller
         return response('User successfully detached.', 200);
 
     }
+
 }

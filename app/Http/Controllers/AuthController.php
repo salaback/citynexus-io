@@ -44,7 +44,7 @@ class AuthController extends Controller
             {
                 $app_key = config('app.key');
                 config(['app.key' => $client->settings['app_key']]);
-                if (Hash::check($request->get('password'), $user->memberships[$client->schema]['password'])) {
+                if (isset($user->memberships[$client->schema]['password']) && Hash::check($request->get('password'), $user->memberships[$client->schema]['password'])) {
                     // Reapply key
                     config(['app.key' => $app_key]);
                     Auth::login($user);

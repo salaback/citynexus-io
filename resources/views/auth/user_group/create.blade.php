@@ -31,15 +31,21 @@ $permission_sets = [
                                 'key' => 'edit-users'
                         ],
                         [
+                                'permission' => "Remove Users",
+                                'key' => 'remove-users'
+                        ],
+                        [
                                 'permission' => "Assign Users to Groups",
                                 'key' => 'assign-groups'
                         ],
                 ]
-        ]
+        ],
 ]
 @endphp
 
 @section('main')
+
+    {{dd($userGroup->users)}}
 
     <div class="row">
         <div class="col-sm-12">
@@ -105,17 +111,25 @@ $permission_sets = [
 
                             </div>
                         </div>
-                <div class="boxs-footer">
-                    @unless(isset($userGroup))
-                    <input type="submit" class="btn btn-raised btn-primary" value="Create Group">
-                    @else
-                    <input type="submit" class="btn btn-raised btn-primary" value="Update Group">
-                    @endunless
+                    <div class="boxs-footer">
+                        @unless(isset($userGroup))
+                        <input type="submit" class="btn btn-raised btn-primary" value="Create Group">
+                        @else
+                        <input type="submit" class="btn btn-raised btn-primary" value="Update Group">
+                        @endunless
+                    </div>
                 </div>
             </section>
+        </form>
+        @if(isset($userGroup))
+        <div class="boxs-footer">
+            <form action="{{action('Auth\UserGroupController@destroy', [$userGroup->id])}}" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="_method" value="delete">
+                <button class="btn btn-raised btn-danger">Delete Group</button>
             </form>
-
         </div>
+        @endif
     </div>
 
 @stop

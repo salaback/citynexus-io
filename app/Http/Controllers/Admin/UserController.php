@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Client;
 use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
+use App\Notifications\AddedToNewOrganization;
 use App\User;
 use App\UserGroup;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -27,6 +30,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('citynexus', ['org-admin', 'create-users']);
+
         $userGroups = UserGroup::all();
         return view('admin.users.create', compact('userGroups'));
     }
@@ -39,6 +44,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('citynexus', ['org-admin', 'create-users']);
+
         $this->validate($request, [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -63,6 +70,11 @@ class UserController extends Controller
             // fire new user event
             event(new UserCreated($user));
         }
+        else
+        {
+            $client = Client::where('schema', config('schema'))->first();
+            $user->notify(new AddedToNewOrganization($client));
+        }
 
         // Add membership information
         $user->addMemberships([config('schema') => [
@@ -80,17 +92,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -98,9 +99,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('citynexus', ['org-admin', 'edit-users']);
+
         $user = User::find($id);
         $groups = UserGroup::all();
-        $membership = $user->memeberships[config('schema')];
+        $membership = $user->memberships[config('schema')];
         return view('admin.users.edit', compact('user', 'membership', 'groups'));
     }
 
@@ -113,9 +116,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $this->authorize('citynexus', ['org-admin', 'edit-users']);
+
         $user = User::find($id);
 
-        $user->update($request->get('user'));
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
+        $memberships = $user->memberships;
+        $memberships[config('schema')]['title'] = $request->get('title');
+        $memberships[config('schema')]['department'] = $request->get('department');
+        $user->memberships = $memberships;
+
+        session()->flash('flash_success','User ' . $user->fullname . ' updated.');
+
+        $user->save();
 
         return redirect(action('Admin\OrganizationSettingsController@index'));
     }
@@ -128,6 +143,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('citynexus', ['org-admin', 'remove-users']);
+
+        $user = User::find($id);
+
+        $memberships = $user->memberships;
+        unset($memberships[config('schema')]);
+        $user->memberships = $memberships;
+
+        $user->save();
+
+        session()->flash('flash_info', $user->fullname . ' has been removed from the organization');
+
+        return redirect('/organization');
     }
 }

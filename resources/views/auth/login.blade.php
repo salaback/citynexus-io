@@ -35,6 +35,6 @@
         <div class="footer text-center">
             <button role="button" class="btn btn-primary btn-raised">Login<div class="ripple-container"></div></button>
         </div>
-        <a href="{{ url('/password/email') }}" class="btn btn-primary btn-wd btn-lg">Forgot Password?</a>
+        <a href="{{ '/password/reset' }}" class="btn btn-primary btn-wd btn-lg">Forgot Password?</a>
     </form>
 @endsection

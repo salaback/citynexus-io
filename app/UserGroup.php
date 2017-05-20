@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class UserGroup extends Model
 {
@@ -14,6 +15,11 @@ class UserGroup extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany('App\User');
+    }
+
+    public function getUserCountAttribute()
+    {
+        return DB::table('user_user_group')->where('user_group_id', $this->id)->count();
     }
 }
