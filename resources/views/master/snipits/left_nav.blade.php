@@ -1,15 +1,15 @@
 <ul id="navigation">
     <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-    <li><a href="{{route('properties.index')}}"><i class="fa fa-home"></i> <span>Properties</span></a></li>
-    <li><a href="{{route('entities.index')}}"><i class="fa fa-user"></i> <span>Entities</span></a></li>
-    <li> <a role="button" tabindex="0"><i class="fa fa-bar-chart-o"></i> <span>Data Visualization</span></a>
-        <ul>
-            <li><a href="{{route('map')}}"><i class="fa fa-angle-right"></i>Mapping</a></li>
-        </ul>
-    </li>
-    <li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>
+    {{--<li><a href="{{route('properties.index')}}"><i class="fa fa-home"></i> <span>Properties</span></a></li>--}}
+    {{--<li><a href="{{route('entities.index')}}"><i class="fa fa-user"></i> <span>Entities</span></a></li>--}}
+    {{--<li> <a role="button" tabindex="0"><i class="fa fa-bar-chart-o"></i> <span>Data Visualization</span></a>--}}
+        {{--<ul>--}}
+            {{--<li><a href="{{route('map')}}"><i class="fa fa-angle-right"></i>Mapping</a></li>--}}
+        {{--</ul>--}}
+    {{--</li>--}}
+    {{--<li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>--}}
     @can('citynexus', ['client-admin', 'view'])<li><a href="/organization"><i class="fa fa-group"></i> <span>Organization Settings</span></a></li>@endcan
-    <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li>
+    @can('superUser') <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li> @endcan
 
 </ul>
 <!--/ NAVIGATION Content -->
