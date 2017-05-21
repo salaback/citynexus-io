@@ -20,6 +20,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 
 class ClientController extends Controller
@@ -63,9 +64,17 @@ class ClientController extends Controller
             'user.email' => 'required|email|max:255'
         ]);
 
-        $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
+        try
+        {
+            $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
 
-        $this->createOwnerUser($client, $request->get('user'));
+            $this->createOwnerUser($client, $request->get('user'));
+        }
+        catch (\Exception $e)
+        {
+            session()->flash('flash_warning', 'Uh oh, something went wrong. <br> Error Code 6145');
+            return redirect()->back()->withInput(Input::all());
+        }
 
         return redirect(action('AdminController@index'));
     }
@@ -312,16 +321,10 @@ class ClientController extends Controller
         }
         else
         {
-            $user->notify(new AddedToNewOrganization($client));
+            $userModel->notify(new AddedToNewOrganization($client));
         }
 
-        $membership = [
-            $client->domain => [
-                'account_owner' => true
-            ]
-        ];
-
-        $userModel->addMemberships($membership);
+        $userModel->addMembership($client->domain, ['account_owner' => true]);
 
         return $userModel;
     }
