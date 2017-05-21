@@ -173,21 +173,6 @@ class ClientController extends Controller
             $results[$item->table_name] = DB::connection('import')->table($item->table_name)->count();
         }
 
-//        foreach($import_tables as $table)
-//        {
-//            dd(DB::table("citynexus_notes")->count());
-//            if(DB::table($table)->count() > 0)
-//            {
-//            }
-//        }
-//
-//        $tabler = new Table();
-//        $tabler->setConnection('import');
-//        $tables = $tabler->whereNotNull('scheme')->get();
-//        foreach ($tables as $table) {
-//            $this->dispatch(new ImportData($table, $importDb, $client->schema));
-//        }
-
         return view('admin.clients.import', compact('importDb', 'results', 'client', 'current', 'datasets'));
     }
 
@@ -298,14 +283,6 @@ class ClientController extends Controller
         }
 
                 $this->dispatch(new ImportDb($request->get('table'), $importDb, $client->schema));
-
-//            $data = DB::connection('import')->table($request->get('table'))->get();
-//
-//            $data = collect($data)->map(function ($x) {
-//                return (array)$x;
-//            })->toArray();
-//
-//            DB::connection('tenant')->table($request->get('table'))->insert($data);
 
             return 'Queued';}
     }

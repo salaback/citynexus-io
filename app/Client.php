@@ -35,11 +35,40 @@ class Client extends Model
             'client.id' => $this->id,
             'database.connections.tenant.schema' => $this->schema,
             'schema' => $this->schema,
+            'domain' => $this->domain,
         ]);
 
         DB::disconnect('tenant');
         DB::reconnect('tenant');
 
         return true;
+    }
+
+    /**
+     *
+     * Add user to organization
+     *
+     * @param $user
+     * @param array $options
+     * @return string
+     */
+    public function addUser($user, $options = array())
+    {
+        try {
+
+            $options = [
+                'title' => $options['title'] ?: null,
+                'department' => $options['department'] ?: null
+            ];
+
+            $user->addMembership($this->domain, $options, true);
+
+        }
+        catch (\Exception $e)
+        {
+            return 'error';
+        }
+
+        return 'added';
     }
 }

@@ -110,43 +110,47 @@ class User extends Authenticatable
     {
         $info = new \stdClass();
 
-        if(isset($this->memberships[config('schema')]['title']))
-            $info->title = $this->memberships[config('schema')]['title'];
+        if(isset($this->memberships[config('domain')]['title']))
+            $info->title = $this->memberships[config('domain')]['title'];
         else
             $info->title = null;
 
-        if(isset($this->memberships[config('schema')]['department']))
-            $info->department = $this->memberships[config('schema')]['department'];
+        if(isset($this->memberships[config('domain')]['department']))
+            $info->department = $this->memberships[config('domain')]['department'];
         else
             $info->department = null;
 
         return $info;
     }
 
+    public function addMembership($domain, $options = array(), $force = false)
+    {
+        $memberships = $this->memberships;
+        if(!$force && isset($memberships[$domain]))
+            App::abort(500, "Membership already exists");
+
+        else
+        {
+            $memberships[$domain] = $options;
+            $this->memberships = $memberships;
+            $this->save();
+            return 'added';
+        }
+
+    }
     /**
      *
      * Add a new membership array to the memberships
      *
      * @param $memberships
      */
-    public function addMemberships($memberships)
+    public function addMemberships($memberships, $force = false)
     {
-        $current = $this->memberships;
         foreach($memberships as $key => $value)
         {
-            if(isset($current[$key]))
-            {
-                App::abort(500, "Membership already exists");
-            }
-            else
-            {
-                $current[$key] = $value;
-
-            }
+            $this->addMembership($key, $value, $force);
         }
 
-        $this->memberships = $current;
-        $this->save();
     }
 
     private function mergePermissions($new, $old)
@@ -180,7 +184,7 @@ class User extends Authenticatable
         foreach(User::all() as $user)
         {
             $memberships = $user->memberships;
-            if(isset($memberships[config('schema')]))
+            if(isset($memberships[config('domain')]))
             {
                 $users[] = $user->id;
             }
