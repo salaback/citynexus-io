@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Client;
 use App\Services\IndexSearch;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class BuildSearchIndex extends Command
 {
@@ -13,7 +15,7 @@ class BuildSearchIndex extends Command
      *
      * @var string
      */
-    protected $signature = 'citynexus:searchindex {client_id}';
+    protected $signature = 'citynexus:searchindex';
 
     /**
      * The console command description.
@@ -39,6 +41,9 @@ class BuildSearchIndex extends Command
      */
     public function handle(IndexSearch $indexSearch)
     {
-        $indexSearch->run($this->argument('client_id'));
+        foreach(Client::all() as $client)
+        {
+            $indexSearch->run($client->id);
+        }
     }
 }

@@ -53,7 +53,7 @@ class ClientInfoUpdate extends Command
 
             foreach($users as $user)
             {
-                if(isset($user->memberships[$client->schema])) $info['user_count'] = $info['user_count'] + 1;
+                if(isset($user->memberships[$client->domain])) $info['user_count'] = $info['user_count'] + 1;
             }
 
             $info['dataset_count'] = DB::table($client->schema . '.cn_datasets')->whereNotNull('deleted_at')->count();

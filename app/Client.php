@@ -71,4 +71,5 @@ class Client extends Model
 
         return 'added';
     }
+
 }
