@@ -45,9 +45,13 @@ class BuildSearchIndex extends Command
         {
             $indexSearch->run($this->argument('client_id'));
         }
-        foreach(Client::all() as $client)
+        else
         {
-            $indexSearch->run($client->id);
+            foreach(Client::all() as $client)
+            {
+                $indexSearch->run($client->id);
+            }
         }
+
     }
 }

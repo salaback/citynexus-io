@@ -64,15 +64,19 @@ class ClientController extends Controller
             'user.email' => 'required|email|max:255'
         ]);
 
+
+
         try
         {
             $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
 
             $this->createOwnerUser($client, $request->get('user'));
+
+            session()->flash('flash_success', 'Client created.');
         }
         catch (\Exception $e)
         {
-            session()->flash('flash_warning', 'Uh oh, something went wrong. <br> Error Code 6145');
+            session()->flash('flash_warning', 'Uh oh, something went wrong. Error Code 6145');
             return redirect()->back()->withInput(Input::all());
         }
 
@@ -317,14 +321,17 @@ class ClientController extends Controller
             $userModel->password = str_random(24);
             $userModel->save();
 
+            $userModel->addMembership($client->domain, ['account_owner' => true]);
+
             event(new UserCreated($userModel));
         }
         else
         {
+            $userModel->addMembership($client->domain, ['account_owner' => true]);
+
             $userModel->notify(new AddedToNewOrganization($client));
         }
 
-        $userModel->addMembership($client->domain, ['account_owner' => true]);
 
         return $userModel;
     }

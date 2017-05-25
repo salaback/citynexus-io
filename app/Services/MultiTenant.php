@@ -45,6 +45,16 @@ class MultiTenant
         else
         {
             $client->name = $name;
+
+            /******
+             *
+             * Set Version number
+             *
+             * *******/
+
+            $client->version_id = 1;
+
+
             $client->schema = strtolower(trim(str_replace('-', '_', $subdomain))) .'_' . random_int(10000,99999);
             $client->save();
             $this->createSchema($client->schema);
