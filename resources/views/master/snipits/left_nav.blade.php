@@ -9,7 +9,7 @@
     {{--</li>--}}
     {{--<li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>--}}
     @can('citynexus', ['client-admin', 'view'])<li><a href="/organization"><i class="fa fa-group"></i> <span>Organization Settings</span></a></li>@endcan
-    <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li>
+    @can('super-admin') <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li> @endcan
 
 </ul>
 <!--/ NAVIGATION Content -->
