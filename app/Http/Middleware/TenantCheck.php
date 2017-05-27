@@ -16,6 +16,7 @@ class TenantCheck
     {
         $this->except_urls = [
             '/login',
+            '/logout'
         ];
     }
 

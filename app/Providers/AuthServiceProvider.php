@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Dataset Permissions
         Gate::define('citynexus', function($user, $group, $method){
-            if(isset($user->memberships[config('schema')]['account_owner']))
+            if(isset($user->memberships[config('domain')]['account_owner']))
             {
                 return true;
             }
