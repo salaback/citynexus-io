@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'organization'], function(){
 //Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','tenant']], function () {
     Route::resource('admin/client', 'Admin\ClientController');
     Route::get('admin/client/reset-db/{id}', 'Admin\ClientController@resetDb')->name('admin.client.resetDb');
     Route::post('admin/client/import-db/', 'Admin\ClientController@importDb')->name('admin.client.importDb');
