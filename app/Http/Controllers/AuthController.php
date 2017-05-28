@@ -70,7 +70,7 @@ class AuthController extends Controller
 
     public function activate(Request $request)
     {
-        $user = User::where('activation', $request->get('key'))->first();
+        $user = User::where('email', $request->get('key'))->first();
         $terms = Terms::orderBy('adopted_at')->first();
 
         return view('auth.activate', compact('user', 'terms'))->with('key', $request->get('key'));
