@@ -44,7 +44,7 @@ $permission_sets = [
 @endphp
 
 @section('main')
-    
+
     <div class="row">
         <div class="col-sm-12">
             @unless(isset($userGroup))

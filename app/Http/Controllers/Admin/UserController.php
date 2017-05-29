@@ -103,7 +103,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         $groups = UserGroup::all();
-        $membership = $user->memberships[config('schema')];
+        $membership = $user->memberships[config('domain')];
         return view('admin.users.edit', compact('user', 'membership', 'groups'));
     }
 
