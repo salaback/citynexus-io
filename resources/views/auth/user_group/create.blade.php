@@ -45,8 +45,6 @@ $permission_sets = [
 
 @section('main')
 
-    {{dd($userGroup->users)}}
-
     <div class="row">
         <div class="col-sm-12">
             @unless(isset($userGroup))
