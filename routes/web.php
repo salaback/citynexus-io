@@ -35,9 +35,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('admin/client/import-table', 'Admin\ClientController@importTable');
     Route::get('admin/client/upgrade/{id}', 'Admin\ClientController@upgrade')->name('admin.client.upgrade');
 
-    Route::resource('/auth/group', 'Auth\UserGroupController');
-    Route::post('/auth/group/add-user-to-group', 'Auth\UserGroupController@addUserToGroup')->name('group.addUser');
-    Route::post('/auth/group/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup')->name('group.removeUser');
+    Route::resource('/auth/groups', 'Auth\UserGroupController');
+    Route::post('/auth/groups/add-user-to-group', 'Auth\UserGroupController@addUserToGroup')->name('group.addUser');
+    Route::post('/auth/groups/remove-user-from-group', 'Auth\UserGroupController@removeUserFromGroup')->name('group.removeUser');
     Route::get('/admin', 'AdminController@index');
 
     Route::get('/', 'DashboardController@index')->name('dashboard');

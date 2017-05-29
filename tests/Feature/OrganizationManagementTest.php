@@ -65,4 +65,61 @@ class OrganizationManagementTest extends TestCase
         $this->get('/organization/users/' . $user->id . '/edit')->assertSee('CityNexus | ' . $user->fullname . ' Settings');
     }
 
+    /**
+     * Test access to manage a group
+     *
+     * @group organization
+     *
+     * @return void
+     */
+    public function testManageGroup()
+    {
+        $this->client->loginAsClient();
+        $user = factory(User::class)->create();
+        $user->addMembership($this->client->domain);
+        $group = UserGroup::create(['name' => 'testGroup', 'permissions' => ['org-admin' => ['groups' => true]]]);
+        DB::table('user_user_group')->insert(['user_id' => $user->id, 'user_group_id' => $group->id]);
+        $this->be($user);
+
+        $this->get('/auth/groups/' . $group->id . '/edit')->assertSee('CityNexus | Edit ' . $group->name . ' Group');
+    }
+
+    /**
+     * Test access to create a group
+     *
+     * @group organization
+     *
+     * @return void
+     */
+    public function testCreateGroup()
+    {
+        $this->client->loginAsClient();
+        $user = factory(User::class)->create();
+        $user->addMembership($this->client->domain);
+        $group = UserGroup::create(['name' => 'testGroup', 'permissions' => ['org-admin' => ['groups' => true]]]);
+        DB::table('user_user_group')->insert(['user_id' => $user->id, 'user_group_id' => $group->id]);
+        $this->be($user);
+
+        $this->get('/auth/groups/create')->assertSee('CityNexus | Create New Group');
+    }
+
+    /**
+     * Test access to manage a group
+     *
+     * @group organization
+     *
+     * @return void
+     */
+    public function testCreateUser()
+    {
+        $this->client->loginAsClient();
+        $user = factory(User::class)->create();
+        $user->addMembership($this->client->domain);
+        $group = UserGroup::create(['name' => 'testGroup', 'permissions' => ['org-admin' => ['create-users' => true]]]);
+        DB::table('user_user_group')->insert(['user_id' => $user->id, 'user_group_id' => $group->id]);
+        $this->be($user);
+
+        $this->get('/organization/users/create')->assertSee('CityNexus | Invite New User');
+    }
+
 }

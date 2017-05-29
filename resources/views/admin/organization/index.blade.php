@@ -38,7 +38,7 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Organization</strong> Groups</h1>
-                    <a class="badge bg-green pull-right" href="{{route('group.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Add Group </a>
+                    <a class="badge bg-green pull-right" href="{{route('groups.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Add Group </a>
                 </div>
                 <div class="boxs-body p-0">
                     <table class="table">
@@ -54,7 +54,7 @@
                             <tr>
                                 <td>{{$group->name}}</td>
                                 <td>{{$group->userCount}}</td>
-                                <td><a href="{{route('group.edit', [$group->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
+                                <td><a href="{{route('groups.edit', [$group->id])}}" class="btn btn-raised btn-primary btn-sm">Manage</a></td>
                             </tr>
                         @endforeach
                         </tbody>
