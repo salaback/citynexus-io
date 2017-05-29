@@ -8,7 +8,14 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Organization</strong> Users</h1>
-                    <a class="badge bg-green pull-right" href="{{route('users.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Invite User </a>
+                    @can('citynexus', ['org-admin', 'users-create'])
+                        <ul class="controls">
+                            @can('citynexus', ['org-admin', 'users-create'])
+                            <li><a href="{{route('users.create')}}"><i class="fa fa-plus mr-5"></i> Invite New User</a></li>
+                            @endcan
+
+                        </ul>
+                    @endcan
                 </div>
                 <div class="boxs-body p-0" style="max-height: 400px; overflow: scroll;">
                     <table class="table">
@@ -38,7 +45,14 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Organization</strong> Groups</h1>
-                    <a class="badge bg-green pull-right" href="{{route('groups.create')}}"> <i id="group-span-icon" class="fa fa-plus"></i> Add Group </a>
+                    @can('citynexus', ['org-admin', 'groups'])
+                        <ul class="controls">
+                            @can('citynexus', ['org-admin', 'groups'])
+                                <li><a href="{{route('groups.create')}}"><i class="fa fa-plus mr-5"></i> Create New Group</a></li>
+                            @endcan
+
+                        </ul>
+                    @endcan
                 </div>
                 <div class="boxs-body p-0">
                     <table class="table">
