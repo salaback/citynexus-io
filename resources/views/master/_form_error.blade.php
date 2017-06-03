@@ -1,9 +1,7 @@
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
+<script>
+@if(count($errors) > 0)
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                alert('warning', '{{ $error }}');
             @endforeach
-        </ul>
-    </div>
 @endif
+</script>

@@ -316,7 +316,7 @@
 <script src="/js/bootstrap-notify.min.js"></script>
 
 @include('master.snipits._alerts')
-
+@include('master._form_error')
 <script>
     var results = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),

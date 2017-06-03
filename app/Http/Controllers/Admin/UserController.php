@@ -77,7 +77,7 @@ class UserController extends Controller
         }
 
         // Add membership information
-        $user->addMemberships([config('schema') => [
+        $user->addMemberships([config('domain') => [
             'title' => $request->get('title'),
             'department' => $request->get('department')
         ]]);
@@ -124,8 +124,8 @@ class UserController extends Controller
         $user->first_name = $request->get('first_name');
         $user->last_name = $request->get('last_name');
         $memberships = $user->memberships;
-        $memberships[config('schema')]['title'] = $request->get('title');
-        $memberships[config('schema')]['department'] = $request->get('department');
+        $memberships[config('domain')]['title'] = $request->get('title');
+        $memberships[config('domain')]['department'] = $request->get('department');
         $user->memberships = $memberships;
 
         session()->flash('flash_success','User ' . $user->fullname . ' updated.');
@@ -148,7 +148,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         $memberships = $user->memberships;
-        unset($memberships[config('schema')]);
+        unset($memberships[config('domain')]);
         $user->memberships = $memberships;
 
         $user->save();

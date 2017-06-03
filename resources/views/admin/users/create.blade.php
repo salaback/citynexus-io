@@ -12,9 +12,7 @@
                     <h1 class="custom-font"><strong>Invite</strong> New User</h1>
                 </div>
                 <div class="boxs-body">
-
-                    @include('master._form_error')
-                        <div class="row">
+                     <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="first_name" class="col-sm-4 control-label">First Name</label>
