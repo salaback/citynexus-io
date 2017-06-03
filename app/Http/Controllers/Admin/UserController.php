@@ -124,8 +124,8 @@ class UserController extends Controller
         $user->first_name = $request->get('first_name');
         $user->last_name = $request->get('last_name');
         $memberships = $user->memberships;
-        $memberships[config('schema')]['title'] = $request->get('title');
-        $memberships[config('schema')]['department'] = $request->get('department');
+        $memberships[config('domain')]['title'] = $request->get('title');
+        $memberships[config('domain')]['department'] = $request->get('department');
         $user->memberships = $memberships;
 
         session()->flash('flash_success','User ' . $user->fullname . ' updated.');
