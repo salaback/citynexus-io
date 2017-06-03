@@ -77,7 +77,7 @@ class UserController extends Controller
         }
 
         // Add membership information
-        $user->addMemberships([config('schema') => [
+        $user->addMemberships([config('domain') => [
             'title' => $request->get('title'),
             'department' => $request->get('department')
         ]]);
@@ -148,7 +148,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         $memberships = $user->memberships;
-        unset($memberships[config('schema')]);
+        unset($memberships[config('domain')]);
         $user->memberships = $memberships;
 
         $user->save();
