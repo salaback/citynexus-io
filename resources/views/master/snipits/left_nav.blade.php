@@ -7,7 +7,15 @@
             {{--<li><a href="{{route('map')}}"><i class="fa fa-angle-right"></i>Mapping</a></li>--}}
         {{--</ul>--}}
     {{--</li>--}}
-    <li><a href="{{route('dataset.index')}}"><i class="fa fa-database"></i> <span>Data Sets</span></a></li>
+    @can('citynexus', ['datasets', 'view'])
+        <li> <a role="button" tabindex="0"><i class="fa fa-database"></i> <span>Data Sets</span></a>
+            <ul>
+                <li><a href="{{route('dataset.index')}}"><i class="fa fa-angle-right"></i>All Data Sets</a></li>
+                @can('citynexus', ['datasets', 'create'])<li><a href="{{route('dataset.create')}}"><i class="fa fa-angle-right"></i>Create New Data Set</a></li>@endcan
+
+            </ul>
+        </li>
+    @endcan
     @can('citynexus', ['client-admin', 'view'])<li><a href="/organization"><i class="fa fa-group"></i> <span>Organization Settings</span></a></li>@endcan
     @can('super-admin') <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li> @endcan
 

@@ -3,12 +3,13 @@
 namespace App\DataStore\Jobs;
 
 use App\Client;
+use App\DataStore\TableBuilder;
 use App\Organization;
 use Carbon\Carbon;
-use CityNexus\DataStore\Uploader;
-use CityNexus\DataStore\Store;
-use CityNexus\DataStore\Upload;
-use CityNexus\PropertyMgr\Sync;
+use App\DataStore\Model\Uploader;
+use App\DataStore\Store;
+use App\DataStore\Model\Upload;
+use App\PropertyMgr\Sync;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -67,10 +68,10 @@ class ProcessData implements ShouldQueue
             $final_data[] = $new_row;
         }
 
-        foreach ($uploader->syncs as $sync){
-
-            if($sync['class'] == 'address') $final_data = $syncHelper->address($final_data, (object) $sync);
-        }
+//        foreach ($uploader->syncs as $sync){
+//
+//            if($sync['class'] == 'address') $final_data = $syncHelper->address($final_data, (object) $sync);
+//        }
 
         $max_id = DB::table($table_name)->max('id');
 

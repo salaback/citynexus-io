@@ -41,14 +41,14 @@ class Uploader extends Model
      *
      */
 
-    public function data()
+    public function dataset()
     {
-        return $this->hasMany('\CityNexus\DataStore\Model\DataSet');
+        return $this->belongsTo(DataSet::class, 'dataset_id');
     }
 
     public function uploads()
     {
-        return $this->hasMany('\CityNexus\DataStore\Model\Upload');
+        return $this->hasMany(Upload::class);
     }
 
     /**
@@ -87,9 +87,5 @@ class Uploader extends Model
         return false;
     }
 
-    public function dataset()
-    {
-        return $this->belongsTo('\App\DataStore\Model\DataSet');
-    }
 
 }

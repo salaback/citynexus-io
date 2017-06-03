@@ -9,6 +9,36 @@
 
 @php
 $permission_sets = [
+        [
+                'title' => 'Data Sets',
+                'key' => 'datasets',
+                'permissions' => [
+                        [
+                                'permission' => "View Data Set List",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Create Data Set",
+                                'key' => 'create'
+                        ],
+                        [
+                                'permission' => "Edit Data Sets",
+                                'key' => 'edit'
+                        ],
+                        [
+                                'permission' => "Upload Data",
+                                'key' => 'upload'
+                        ],
+                        [
+                                'permission' => "Rollback Uploads",
+                                'key' => 'rollback'
+                        ],
+                        [
+                                'permission' => "Delete Data Set",
+                                'key' => 'delete'
+                        ],
+                ]
+        ],
 
         [
                 'title' => 'Organization Admin',
@@ -40,6 +70,7 @@ $permission_sets = [
                         ],
                 ]
         ],
+
 ]
 @endphp
 

@@ -3,6 +3,7 @@
 namespace App\PropertyMgr;
 
 
+use App\PropertyMgr\Model\Property;
 use Geocoder\Laravel\Facades\Geocoder;
 use Illuminate\Support\Facades\DB;
 use Phaza\LaravelPostgis\Geometries\LineString;

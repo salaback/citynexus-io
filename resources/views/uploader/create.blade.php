@@ -1,18 +1,10 @@
 @extends("master.main")
 
-@section('title', "Create New Data Set")
+@section('title', "Create New Uploader")
 
 @section('main')
 
-    <div class="col-sm-offset-1 col-sm-10">
-        <section class="boxs">
-            <div class="boxs-body">
-                <div class="slide-contents" id="slide-content">
-                    @include('uploader.slides.information')
-                </div>
-            </div>
-        </section>
-    </div>
+
 
 @endsection
 

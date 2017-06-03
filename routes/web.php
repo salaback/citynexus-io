@@ -46,8 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('properties/geocode/{id}', 'PropertyController@geocode')->name('property.geocode');
 
     // dataset routes
-    Route::get('/dataset/any-data', 'DatasetController@anyData')->name('dataset.anydata');
-    Route::resource('/dataset', 'DatasetController');
+    Route::get('/dataset/any-data', 'Frontend\DatasetController@anyData')->name('dataset.anydata');
+    Route::resource('/dataset', 'Frontend\DatasetController');
 
 
     // Comments
@@ -67,14 +67,22 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search/', 'SearchController@search')->name('search.search');
 
     // Uploaders routes
-    Route::resource('dataset/upload', 'UploadController');
-    Route::resource('uploader', 'UploaderController');
-    Route::post('/uploader/schema', 'UploaderController@schema')->name('uploader.schema');
-    Route::get('/uploader/address-sync/{id}', 'UploaderController@addressSync')->name('uploader.addressSync');
-    Route::get('/uploader/entity-sync/{id}', 'UploaderController@entitySync')->name('uploader.entitySync');
-    Route::get('/uploader/filters/{id}', 'UploaderController@filters')->name('uploader.filters');
+    Route::resource('datasets/upload', 'Frontend\UploadController');
+    Route::resource('uploader', 'Frontend\UploaderController');
+    Route::get('/uploader/create-schema/{id}', 'Frontend\UploaderController@createMap')->name('uploader.createMap');
 
-    Route::post('/uploader/post', 'UploaderController@post')->name('uploader.post');
+    Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
+    Route::post('/uploader/schema', 'Frontend\UploaderController@schema')->name('uploader.schema');
+
+    Route::get('/uploader/address-sync/{id}', 'Frontend\UploaderController@addressSync')->name('uploader.addressSync');
+    Route::get('/uploader/entity-sync/{id}', 'Frontend\UploaderController@entitySync')->name('uploader.entitySync');
+    Route::get('/uploader/filters/{id}', 'Frontend\UploaderController@filters')->name('uploader.filters');
+
+    Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');
+
+    Route::post('/uploader/post', 'Frontend\UploaderController@post')->name('uploader.post');
+
+    Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 
     Route::get('view/map', 'Frontend\ViewController@map')->name('map');
     Route::post('view/map', 'Frontend\ViewController@mapData');

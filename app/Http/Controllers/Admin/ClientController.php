@@ -141,7 +141,15 @@ class ClientController extends Controller
 
     public function migrateDb($id, MultiTenant $multiTenant)
     {
-        return $multiTenant->migrate(Client::find($id));
+        if($multiTenant->migrate(Client::find($id)) == 'migrated')
+        {
+            session()->flash('flash_success', "Client successfully migrated.");
+            return redirect()->back();
+        }
+        else
+        {
+            session()->flash('flash_warning', "Uh oh. Client did not successfully migrate.");
+        }
     }
 
     public function importDb(Request $request, MultiTenant $multiTenant)

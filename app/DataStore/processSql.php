@@ -9,6 +9,8 @@
 namespace App\DataStore;
 
 
+use App\DataStore\Model\Uploader;
+
 class processSql extends DataProcessor
 {
     public function sql(Uploader $uploader)

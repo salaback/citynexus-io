@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
-use App\Jobs\StartImport;
+use App\DataStore\Jobs\ProcessUpload;
+use App\Http\Controllers\Controller;
+use App\DataStore\Jobs\StartImport;
 use App\DataStore\Model\DataSet;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
@@ -54,12 +56,14 @@ class UploadController extends Controller
         $upload = $request->all();
         $upload['user_id'] = Auth::id();
         $upload = Upload::create($upload);
-
-        $this->storeHelper->processUpload($upload->id);
         if($request->ajax())
-            return view('uploader.types._upload', compact('upload'));
+            return $upload;
         else
+        {
+            $this->storeHelper->processUpload($upload->id);
             return redirect(route('uploader.show', $upload->uploader->id));
+        }
+
     }
 
     /**
@@ -108,6 +112,14 @@ class UploadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function process($id)
+    {
+        $upload = Upload::find($id);
+        $this->dispatch(new ProcessUpload(config('client.id'), $upload));
+
+        return 'queued';
     }
 
     public function post(Request $request)

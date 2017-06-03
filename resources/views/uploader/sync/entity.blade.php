@@ -20,7 +20,7 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="unparsed">
-                                <form action="{{action('UploaderController@post')}}" class="form-horizontal" method="post">
+                                <form action="{{route('uploader.storeSync')}}" class="form-horizontal" method="post">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="slug" value="sync">
                                     <input type="hidden" name="sync[class]" value="entity">
@@ -33,7 +33,7 @@
                                                 <select name="sync[full_name]" class="form-control col-sm-9">
                                                     <option value="">Select Field</option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -52,7 +52,7 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane" id="parsed">
-                                <form action="{{action('UploaderController@post')}}" class="form-horizontal" method="post">
+                                <form action="{{route('uploader.storeSync')}}" class="form-horizontal" method="post">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="slug" value="sync">
                                     <input type="hidden" name="sync[class]" value="entity">
@@ -65,7 +65,7 @@
                                                 <select name="sync[entity][title]" class="form-control col-sm-9">
                                                     <option value=""></option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -76,7 +76,7 @@
                                                 <select name="sync[entity][first_name]" class="form-control col-sm-9">
                                                     <option value=""></option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -87,7 +87,7 @@
                                                 <select name="sync[entity][middle_name]" class="form-control col-sm-9">
                                                     <option value=""></option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -98,7 +98,7 @@
                                                 <select name="sync[entity][last_name]" class="form-control col-sm-9">
                                                     <option value=""></option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -109,7 +109,7 @@
                                                 <select name="sync[entity][suffix]" class="form-control col-sm-9">
                                                     <option value=""></option>
                                                     @foreach($fields as $field)
-                                                        <option value="{{$field['key']}}">{{$field['name']}} <{{$field['value']}}></option>
+                                                        <option value="{{$field['key']}}">{{$field['name']}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

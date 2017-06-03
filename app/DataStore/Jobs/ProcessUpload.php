@@ -3,9 +3,10 @@
 namespace App\DataStore\Jobs;
 
 use App\Client;
-use CityNexus\DataStore\DataProcessor;
-use CityNexus\DataStore\processSql;
-use CityNexus\DataStore\Uploader;
+use App\DataStore\DataProcessor;
+use App\DataStore\processSql;
+use App\DataStore\Model\Upload;
+use App\DataStore\Store;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
@@ -18,7 +19,7 @@ class ProcessUpload implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $uploader;
+    private $upload;
     private $settings;
     private $client_id;
 
@@ -29,10 +30,10 @@ class ProcessUpload implements ShouldQueue
      * @param Uploader $uploader
      * @param array $settings
      */
-    public function __construct($client_id, Uploader $uploader, $settings = [])
+    public function __construct($client_id, Upload $upload, $settings = [])
     {
         $this->client_id = $client_id;
-        $this->uploader = $uploader;
+        $this->upload = $upload;
         $this->settings = $settings;
     }
 
@@ -43,19 +44,23 @@ class ProcessUpload implements ShouldQueue
      */
     public function handle()
     {
-        Client::find($this->id)->logInAsClient();
+        Client::find($this->client_id)->logInAsClient();
 
-        switch ($this->uploader->type)
+        $store = new Store();
+
+        switch ($this->upload->uploader->type)
         {
             case 'sql':
-                $sql = new processSql();
-                $data = $sql->sql($this->uploader);
+                $data = $store->processSQL->sql($this->upload->uploader);
                 $data = array_chunk($data, 50);
                 foreach($data as $i)
                 {
 
                 }
                 break;
+
+            case 'csv':
+                $store->processCSV($this->upload);
         }
 
     }

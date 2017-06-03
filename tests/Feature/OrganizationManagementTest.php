@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class OrganizationManagementTest extends TestCase
 {
     protected $client;
-    protected $user;
+
     protected  $connectionsToTransact = [
         'public',
         'tenant'

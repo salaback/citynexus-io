@@ -138,6 +138,15 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
         <section class="boxs">
             <div class="boxs-header dvd dvd-btm">
                 <h1 class="custom-font"><strong>Data Sync Methods</strong></h1>
+                <ul class="controls">
+                    <li class="dropdown"> <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-plus"></i> Create New Sync<i class="fa fa-angle-down ml-5"></i></a>
+                        <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                            <li><a href="{{route('uploader.addressSync', [$uploader->id])}}"> Create Address Sync</a></li>
+                            <li><a href="{{route('uploader.entitySync', [$uploader->id])}}"> Create Entity Sync</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
             </div>
             <div class="boxs-body">
 
@@ -379,26 +388,27 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
     });
 </script>
 
-{{--<script>--}}
+<script>
 
-{{--var refreshUpload = function(id)--}}
-{{--{--}}
-{{--var icon = $('#icon-' + id);--}}
+var refreshUpload = function(id)
+{
+var icon = $('#icon-' + id);
 
-{{--icon.addClass('fa-spinner fa-spin').removeClass('fa-navicon');--}}
-{{--$.ajax({--}}
-{{--url: "{{action('DataStoreController@post', ['process-upload'])}}/" + id,--}}
-{{--success: function () {--}}
-{{--icon.removeClass('fa-spinner fa-spin').addClass('fa-navicon');--}}
-{{--},--}}
-{{--fail: function(data) {--}}
-{{--console.log(data);--}}
-{{--alert('An error has occured in refreshing data. Please see console');--}}
-{{--icon.removeClass('fa-spinner fa-spin').addClass('fa-alert');--}}
+icon.addClass('fa-spinner fa-spin').removeClass('fa-navicon');
+$.ajax({
+url: "{{route('upload.process')}}/" + id,
+success: function () {
+icon.removeClass('fa-spinner fa-spin').addClass('fa-navicon');
+    alert('success', 'Upload queued for processing.')
+},
+fail: function(data) {
+console.log(data);
+alert('warning', 'An error has occurred in processing the data. Please see console');
+icon.removeClass('fa-spinner fa-spin').addClass('fa-alert');
 
-{{--}--}}
-{{--})--}}
-{{--}--}}
+}
+})
+}
 
-{{--</script>--}}
+</script>
 @endpush

@@ -7,14 +7,16 @@
     <td><input type="checkbox" name="map[{{$i['key']}}][show]" @if(isset($schema[$key]) && isset($schema[$key]['show'])) checked @elseif(!isset($schema[$key])) checked @endif></td>
     <td><input type="text" id="name-{{$i['key']}}" name="map[{{$i['key']}}][name]" class="form-control"
                value="@if(isset($schema[$key]) && isset($schema[$key]['name'])) {{$schema[$key]['name']}} @else {{$i['name']}} @endif"></td>
-
+    <td>
+        {{$key}}
+    </td>
     <td>
         @if(isset($schema[$key]) && isset($schema[$key]['key']))
-            <select name="map[{{$key}}][key]" id="">
+            <select name="map[{{$key}}][key] mapsto" id="mapsto-{{$key}}">
                 <option value="create">Create New Field</option>
                 <option value="ignore">Ignore</option>
             @foreach($schema as $item)
-                    <option value="{{$item['key']}}">{{$item['name']}}</option>
+                    <option value="{{$item['key']}}" @if($item['key'] == $key) selected @endif>{{$item['name']}}</option>
                 @endforeach
             </select>
         @else
@@ -24,9 +26,9 @@
     </td>
     <td>
         @if(isset($schema[$key]) && isset($schema[$key]['key']))
-            <input type="text" name="map[{{$i['key']}}][key]">
+            <input type="text" name="map[{{$i['key']}}][newKey]" value="" id="newkey-{{$key}}">
         @else
-
+            <input type="text" name="map[{{$i['key']}}][newKey]" value="{{$i['key']}}" id="newkey-{{$key}}">
         @endif
     </td>
     <td>
@@ -49,3 +51,9 @@
         @endif
     </td>
 </tr>
+
+<script>
+    $('.mapsto').change(function(action){
+
+    });
+</script>
