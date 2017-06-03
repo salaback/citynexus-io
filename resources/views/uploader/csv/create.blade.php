@@ -119,7 +119,7 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
                                         <input type="hidden" name="upload[note]" id="uploadNote">
                                         <input type="hidden" name="upload[file_type]" id="uploadType">
                                         <input type="hidden" name="type" value="csv">
-                                        <input type="hidden" name="dataset_id" value="{{$_GET['dataset_id']}}">
+                                        <input type="hidden" name="dataset_id" value="{{$dataset->id}}">
                                 </div>
                                 <div class="boxs-footer">
                                     <span id="uploadFirst" class="alert alert-info">Upload a CSV/Excel File before saving.</span>

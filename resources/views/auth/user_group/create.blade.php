@@ -34,6 +34,10 @@ $permission_sets = [
                                 'key' => 'rollback'
                         ],
                         [
+                                'permission' => 'Create Uploader',
+                                'key' => 'create-uploader'
+                        ],
+                        [
                                 'permission' => "Delete Data Set",
                                 'key' => 'delete'
                         ],

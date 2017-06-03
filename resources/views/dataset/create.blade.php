@@ -7,24 +7,6 @@
     <form action="{{route('dataset.store')}}" method="post" class="form-horizontal">
         {{csrf_field()}}
         <input type="hidden" name="type" id="type" value="{{old('type')}}">
-<<<<<<< HEAD
-=======
-        <div class="col-lg-offset-1 col-lg-10 animated" id="slide-card">
-            <div class="card-box p-b-0">
-                <div class="slide-contents" id="slide-content">
-                    <div class="row">
-                        <div class="row">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-2">
-                                        Data Set Name
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="name" id="name" value="{{old('name')}}">
-                                    </div>
-                                </div>
->>>>>>> master
-
         <div class="col-sm-offset-1 col-sm-10">
             <section class="boxs">
                 <div class="boxs-header dvd dvd-btm">

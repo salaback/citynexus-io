@@ -55,10 +55,42 @@
                         <div class="alert alert-info">
                             <div class="alert-body">
                                 You don't have any uploaders yet! Create your first one.
-                                <a href="{{route('uploader.create')}}?dataset_id={{$dataset->id}}" class="btn btn-primary btn-raised">Create Uploader</a>
                             </div>
                         </div>
                     @endif
+                </div>
+
+            </section>
+        </div>
+        <div class="col-sm-6">
+            <section class="boxs">
+                <div class="boxs-header dvd dvd-btm">
+                    <h1 class="custom-font">
+                        Data Fields
+                    </h1>
+                </div>
+                <div class="boxs-body">
+                    <table class="table m-b-0">
+                        <thead>
+                        <tr>
+                            <th>Visible</th>
+                            <th>Field Name</th>
+                            <th>Key</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($dataset->schema as $item)
+                            <tr class="">
+                                <td>@if(isset($item['show']) && $item['show'] =='on') <i class="fa fa-check"></i> @endif</td>
+                                <td>{{$item['name']}}</td>
+                                <td>{{$item['key']}}</td>
+                                <td>{{$item['type']}}</td>
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
                 </div>
             </section>
         </div>
