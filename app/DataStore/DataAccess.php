@@ -9,8 +9,8 @@
 namespace App\DataStore;
 
 
-use CityNexus\CityNexus\Table;
-use App\PropertyMgr\Property;
+use App\DataStore\Model\DataSet;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;

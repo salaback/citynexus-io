@@ -54,6 +54,8 @@ class UploaderController extends Controller
 
     public function create(Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $type = $request->get('type');
         $dataset = DataSet::find($request->get('dataset_id'));
         return view('uploader.' . $type . '.create', compact('dataset'));
@@ -61,6 +63,8 @@ class UploaderController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         switch ($request->get('type'))
         {
             case 'csv':
@@ -71,6 +75,8 @@ class UploaderController extends Controller
 
     public function show($id)
     {
+        $this->authorize('citynexus', ['datasets', 'upload']);
+
         $uploader = Uploader::find($id);
         $uploads = $uploader->uploads;
         return view('uploader.types.' . $uploader->type, compact('uploader', 'uploads'));
@@ -79,6 +85,8 @@ class UploaderController extends Controller
 
     public function createMap($upload_id)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $upload = Upload::find($upload_id);
         $uploader = $upload->uploader;
         if($uploader->map == null)
@@ -94,6 +102,7 @@ class UploaderController extends Controller
      */
     public function storeMap(Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
 
         $uploader = Uploader::find($request->get('uploader_id'));
         $map = $request->get('map');
@@ -128,45 +137,17 @@ class UploaderController extends Controller
 
     public function storeSync(Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $uploader = Uploader::find($request->get('uploader_id'));
         $uploader->addSync($request->get('sync'));
         return redirect(route('uploader.show', [$uploader->id]));
     }
 
-//    public function schema(Request $request)
-//    {
-//        $uploader = Uploader::find($request->get('uploader_id'));
-//
-//        // if post include a data map save to the uploader.
-//        if($request->exists('map'))
-//        {
-//            $uploader->map = $request->get('map');
-//
-//            return redirect(route('uploader.show', [$uploader->id]));
-//        } else{
-//
-//            // TODO add method to add a map which maps to existing data fields
-//
-//            // else process the data upload to return a draft map
-//
-//            $upload = Upload::find($request->get('upload_id'));
-//            $table = $this->store->analyizeFile($upload->source, $upload->file_type);
-//            if($uploader->dataset->schema == null) { $uploader->dataset->schema = $table; $uploader->dataset->save(); }
-//            $uploader->map = $table;
-//            $uploader->save();
-//            $dataset = DataSet::find($request->get('dataset_id'));
-//            if($dataset->schema != null)
-//            {
-//                return view('uploader.slides.datafields', compact('table', 'uploader', 'dataset', 'upload'));
-//            }
-//
-//            return view('uploader.slides.datafields', compact('table', 'uploader', 'upload'));
-//        }
-//
-//    }
-
     public function addressSync($id)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $uploader = Uploader::find($id);
         $fields = $uploader->map;
         return view('uploader.sync.address', compact('uploader', 'fields'));
@@ -174,6 +155,8 @@ class UploaderController extends Controller
 
     public function entitySync($id)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $uploader = Uploader::find($id);
         $fields = $uploader->map;
         return view('uploader.sync.entity', compact('uploader', 'fields'));
@@ -181,6 +164,8 @@ class UploaderController extends Controller
 
     public function removeSync($id, Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $uploader = Uploader::find($id);
         $syncs = $uploader->syncs;
         $target = json_decode($request->get('sync'));
@@ -202,6 +187,8 @@ class UploaderController extends Controller
 
     public function filters($id)
     {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
         $uploader = Uploader::find($id);
         $datafields = $uploader->map;
         return view('uploader.slides.filters', compact('uploader', 'datafields'));
@@ -209,6 +196,7 @@ class UploaderController extends Controller
 
     private function storeCsv(Request $request)
     {
+
         $uploader = Uploader::create($request->all());
         $upload = $request->get('upload');
         $upload['uploader_id'] = $uploader->id;
@@ -217,120 +205,4 @@ class UploaderController extends Controller
 
         return redirect(route('uploader.createMap', [$upload->id]));
     }
-
-//
-//    public function post(Request $request)
-//    {
-//
-//        switch ($request->get('slug'))
-//        {
-//            case 'import-sql':
-//                dispatch(new StartImport(config('client.id'), 'sql', $request->get('uploader_id')));
-//                session(['flash_success' => 'SQL Import has been queued.']);
-//                Log::info('Got to the end');
-//                return redirect()->back();
-//                break;
-//
-//            case 'create':
-//                $uploader = Uploader::create($request->all());
-//                return response()->json($uploader);
-//                break;
-//
-//            case 'slide':
-//                return view('uploader.slides.' . $request->get('slide'));
-//                break;
-//
-//            case 'upload':
-//                $upload = $request->all();
-//                $upload['user_id'] = Auth::id();
-//                $upload = Upload::create($upload);
-//                return response()->json($upload);
-//                break;
-//
-//            case 'set-data-type':
-//
-//                // load dataset
-//                $dataset = $request->all();
-//
-//                // create table name;
-//                $dataset['table_name'] = $this->store->tableNameMaker($dataset['name']);
-//
-//                // save dataset
-//                $dataset = DataSet::create($dataset);
-//
-//                // update upload with dataset info
-//                $upload = Upload::find($request->get('upload_id'));
-//                $upload->dataset_id = $dataset->id;
-//                $upload->save();
-//
-//                // Update uploader with dataset info
-//                $uploader = Uploader::find($request->get('uploader_id'));
-//                $uploader->dataset_id = $dataset->id;
-//                $uploader->save();
-//
-//                // return dataset id
-//                return response()->json($dataset);
-//                break;
-//
-//            case 'get_filters':
-//
-//                $uid = str_random(16);
-//                switch ($request->get('data_type'))
-//                {
-//                    case 'string':
-//                        return view('uploader.slides.filters.string', compact('uid'));
-//                        break;
-//
-//                    default: return response('Filter not found', 404);
-//                }
-//
-//                break;
-//
-//            case 'add_filter':
-//                $uid = str_random(16);
-//                $key = $request->get('key');
-//                return view('uploader.slides.filters.' . $request->get('filter'), compact('key', 'uid'));
-//                break;
-//
-//            case 'save_filter':
-//                $filters = $request->get('filter');
-//                return view('uploader.slides.filters.filter-preview', compact('filters'));
-//                break;
-//
-//            case 'commit_filters':
-//                $uploader = Uploader::find($request->get('uploader_id'));
-//                $uploader->filters = $request->get('filters');
-//                $uploader->save();
-//                return redirect(route('uploader.show', [$uploader->id]));
-//                break;
-//
-//            case 'datafields':
-//                $uploader = Uploader::find($request->get('uploader_id'));
-//                $upload = Upload::find($request->get('upload_id'));
-//                $dataset_id = $request->get('dataset_id');
-//                $table = $this->store->analyizeFile($upload->source);
-//                $uploader->map = $table;
-//                $uploader->save();
-//                $table = json_decode($uploader->map);
-//
-//                return view('uploader.slides.datafields', compact('table', 'dataset_id', 'uploader'));
-//                break;
-//
-//            case 'save_schema':
-//                $dataset = DataSet::find($request->get('dataset_id'));
-//                $dataset->schema = $request->get('map');
-//                $dataset->save();
-//                return redirect(route('uploader.show', [$request->get('uploader_id')]));
-//                break;
-//
-//            case 'sync':
-//                $uploader = Uploader::find($request->get('uploader_id'));
-//                $uploader->addSync($request->get('sync'));
-//                return redirect(route('uploader.show', [$uploader->id]));
-//                break;
-//
-//            default: return response('Slide not found', 404);
-//        }
-//    }
-
 }

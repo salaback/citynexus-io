@@ -2,7 +2,7 @@
     <div class="boxs-body">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             @foreach($datasets as $key => $dataset)
-                @php($table = \CityNexus\DataStore\DataSet::find($key))
+                @php($table = \App\DataStore\Model\DataSet::find($key))
                 @php($schema = $table->schema)
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="{{$key}}_tab">

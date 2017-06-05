@@ -9,6 +9,32 @@
 
 @php
 $permission_sets = [
+         [
+                'title' => 'Properties',
+                'key' => 'properties',
+                'permissions' => [
+                        [
+                                'permission' => "View Properties",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Create Properties",
+                                'key' => 'create'
+                        ],
+                        [
+                                'permission' => "Edit & Merge Properties",
+                                'key' => 'edit'
+                        ],
+                        [
+                                'permission' => "Comment on Properties",
+                                'key' => 'comment'
+                        ],
+                        [
+                                'permission' => "Tag Properties",
+                                'key' => 'tag'
+                        ]
+                ]
+        ],
         [
                 'title' => 'Data Sets',
                 'key' => 'datasets',
@@ -43,7 +69,6 @@ $permission_sets = [
                         ],
                 ]
         ],
-
         [
                 'title' => 'Organization Admin',
                 'key' => 'org-admin',

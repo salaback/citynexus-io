@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function()
 {
-    Route::resource('properties', 'Api\PropertyController');
+    Route::resource('properties', 'API\PropertyController');
 
 });

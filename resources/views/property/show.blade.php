@@ -11,7 +11,11 @@
         <div class="row">
             <div class="col-md-12 address-wrapper">
                 <span class="address">
-                    {{title_case($property->OneLineAddress)}} @if($property->is_unit) <a href="{{route('properties.show', [$property->building_id])}}"><i class="fa fa-building"></i></a> @endif
+                    @if($property->is_unit)
+                        <a href="{{route('properties.show', [$property->building_id])}}">{{title_case($property->building->OneLineAddress)}} </a> > Unit {{$property->unit}}
+                    @else
+                    {{title_case($property->OneLineAddress)}}
+                    @endif
                 </span>
 
             </div>
