@@ -4,8 +4,11 @@
 namespace App\DataStore;
 
 
+use App\DataStore\Model\DataSet;
+use App\Exceptions\TableBuilder\CreateTableBuilderException;
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -19,23 +22,20 @@ class TableBuilder
             $table_name = $table->table_name;
         }
         else{
-            $table_name = 'cnd_' . $this->cleanName($table->table_title);
+            $table_name = 'cnd_' . $this->cleanName($table->name);
+
+            $table->table_name = $table_name;
+            $table->save();
+
         }
 
-        $fields = $table->schema;
-
         if(!$this->tableExists($table_name)) {
-            Schema::create($table_name, function (Blueprint $table) use ($fields) {
+            Schema::create($table_name, function (Blueprint $table) {
                 // Create table's index id file
                 $table->increments('id');
                 $table->integer('upload_id');
                 $table->integer('property_id')->unsigned()->nullable();
                 $table->integer('entity_id')->unsigned()->nullable();
-
-                foreach ($fields as $field) {
-                    $type = $field['type'];
-                    $table->$type($field['key'])->nullable();
-                }
                 $table->timestamps();
             });
         }
@@ -55,14 +55,39 @@ class TableBuilder
                 foreach ($table->schema as $key => $field) {
                     if(!Schema::hasColumn($table->table_name, $key))
                     {
-                        $type = $field->type;
-                        $blueprint->$type($field->key)->nullable();
+                        $type = $field['type'];
+                        $blueprint->$type($field['key'])->nullable();
                     }
                 }
             });
         }
 
         return $table->table_name;
+    }
+
+    public function addToTable(DataSet $dataset, $fields = [])
+    {
+        $schema = $dataset->schema;
+
+        foreach($fields as $field)
+        {
+            if(isset($schema[$field['key']]))
+            {
+                throw new CreateTableBuilderException('field_exists');
+            }
+            else
+            {
+                $schema[$field['key']] = $field;
+            }
+        }
+
+        $dataset->schema = $schema;
+        $dataset->save();
+
+        $this->syncTable($dataset);
+
+
+        return 'success';
     }
 
     public function cleanName($name)

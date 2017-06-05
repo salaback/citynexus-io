@@ -10,7 +10,9 @@ namespace App\PropertyMgr;
 
 
 use App\Jobs\Geocode;
-use App\DataStore\Upload;
+use App\DataStore\Model\Upload;
+use App\PropertyMgr\Model\Address;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Support\Facades\DB;
 
 class PropertySync
@@ -18,17 +20,22 @@ class PropertySync
     public function addPropertyID($data, $sync)
     {
         // find raw address element and send to address sync
-
         $return = [];
         if(isset($sync['full_address']))
 
         foreach ($data as $row) {
-            $row['property_id'] = $this->unparsedAddress($row, $sync);
+            if($results = $this->unparsedAddress($row, $sync))
+            {
+                $row['property_id'] = $results;
+            }
             $return[] = $row;
 
         } else {
             foreach ($data as $row) {
-                $row['property_id'] = $this->parsedAddress($row, $sync);
+                if($results = $this->parsedAddress($row, $sync))
+                {
+                    $row['property_id'] = $results;
+                }
                 $return[] = $row;
             }
         }
@@ -37,11 +44,23 @@ class PropertySync
 
     public function parseFullAddress($address)
     {
-        $address = str_replace("'", "", $address);
+        $address = $this->addressFilters($address);
+
         return (array) DB::connection('public')->select("SELECT * FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz', 'tiger.pagc_rules', '" . $address . "')")[0];
     }
 
+    public function addressFilters($address)
+    {
+        $address = str_replace("'", "", $address);
 
+        $filters = ['LYNN ST EXT' => 'LYNN STREET EXTENSION'];
+
+        foreach($filters as $needle => $thread)
+        {
+            $address = str_replace($needle, $thread, $address);
+        }
+        return $address;
+    }
     public function unparsedAddress($row, $sync)
     {
         $address = $this->rawUnparsedAddress($row, $sync);
@@ -114,37 +133,46 @@ class PropertySync
     public function getPropertyId($address)
     {
 
-        if(is_string($address))
+        try
+
         {
-            $address = $this->parseFullAddress($address);
+            if(is_string($address))
+            {
+                $address = $this->parseFullAddress($address);
+            }
+
+            // first or create  address record
+            $addy = array_filter($address);
+            if(!isset($addy['unit']))
+                $addy['unit'] = null;
+            else
+                $addy['unit'] = $this->cleanUnit($addy['unit']);
+
+            $addy = Address::firstOrCreate($addy);
+
+            // if property id is set, return id
+            if($addy->property_id != null) return $addy->property_id;
+
+            // if address has unit create unit
+            if($address['unit'] != null) $property_id = $this->createNewUnit($addy->toArray());
+
+            // if not a unit create a building
+            else{
+
+                $property_id = $this->createNewBuilding($address);
+
+            }
+
+            $addy->property_id = $property_id;
+            $addy->save();
+
+            return $property_id;
         }
 
-        // first or create  address record
-        $addy = array_filter($address);
-        if(!isset($addy['unit']))
-            $addy['unit'] = null;
-        else
-            $addy['unit'] = $this->cleanUnit($addy['unit']);
-
-        $addy = Address::firstOrCreate($addy);
-
-        // if property id is set, return id
-        if($addy->property_id != null) return $addy->property_id;
-
-        // if address has unit create unit
-        if($address['unit'] != null) $property_id = $this->createNewUnit($addy->toArray());
-
-        // if not a unit create a building
-        else{
-
-            $property_id = $this->createNewBuilding($address);
-
+        catch (\Exception $e)
+        {
+            return false;
         }
-
-        $addy->property_id = $property_id;
-        $addy->save();
-
-        return $property_id;
 
     }
 
@@ -169,7 +197,10 @@ class PropertySync
 
         $address['unit'] = null;
 
-        $building = Property::find($this->getPropertyId($address));
+        if($this->getPropertyId($address))
+            $building = Property::find($this->getPropertyId($address));
+        else
+            return false;
 
         $unit['building_id'] = $building->id;
         if($building->location != null) $unit['location'] = $building->location;
@@ -215,7 +246,6 @@ class PropertySync
         if($property->location == null) {
             dispatch(new Geocode($property->id));
         }
-
         return $property->id;
     }
 
@@ -257,7 +287,6 @@ class PropertySync
 
         // make uppercase
         $full_address = strtoupper(trim($row[$sync['full_address']]));
-
 
         // if a city is set and is not null, use it.
         if (isset($sync['city']) && isset($row[$sync['city']]) && $row[$sync['city']] != null)

@@ -1,6 +1,6 @@
 @extends('master.main')
 
-@section('title', 'All Datasets')
+@section('title', 'All Data Sets')
 
 @section('main')
 
@@ -9,7 +9,10 @@
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
                     <h1 class="custom-font"><strong>Data</strong> Sets</h1>
-
+                    @can('citynexus', ['datasets', 'create'])<ul class="controls">
+                        @can('citynexus', ['datasets', 'create'])<li><a href="{{route('dataset.create')}}"><i class="fa fa-plus mr-5"></i> Create New Data Set</a></li>@endcan
+                    </ul>
+                    @endcan
                 </div>
                 <div class="boxs-body">
                     <table id="datasets" class="table table-custom">
@@ -17,6 +20,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Updated At</th>
+                            <th>Owner</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -48,6 +52,7 @@
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'updated', name: 'updated_at'},
+                {data: 'owner', name: 'owner'},
                 {data: 'settings', name:'settings'}
             ],
             dom: "Bfrtip",

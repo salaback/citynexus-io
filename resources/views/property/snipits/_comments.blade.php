@@ -47,7 +47,7 @@
                 comment: comment,
                 posted_by: {{\Illuminate\Support\Facades\Auth::id()}},
                 reply_to: $('#reply_comment_id').val(),
-                cn_commentable_type: 'CityNexus\\PropertyMgr\\Property',
+                cn_commentable_type: 'App\\PropertyMgr\\Model\\Property',
                 cn_commentable_id: {{$property->id}},
             }
         }).success(function( data )
@@ -55,6 +55,7 @@
             if($('#reply_comment_id').val() != '')
             {
                 $('#reply-comments-' + $('#reply_comment_id').val()).prepend( data ).removeClass('hidden');
+                removeReplyToComment();
             }
             else {
                 $('#comments').prepend( data );

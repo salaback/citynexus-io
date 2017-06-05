@@ -8,10 +8,9 @@
 
 namespace App\DataStore;
 
-use App\DataStore\DataProcessor;
 use App\DataStore\Model\DataSet;
 use App\DataStore\Model\Upload;
-use CityNexus\DataStore\ProcessData;
+use App\DataStore\Model\Uploader;
 use Carbon\Carbon;
 use App\PropertyMgr\Model\Property;
 use App\PropertyMgr\Sync;
@@ -166,25 +165,22 @@ class Store extends DataProcessor
         return $results;
     }
 
-    public function processUpload($id)
+    public function processUpload(Upload $upload)
     {
-        $upload = Upload::find($id);
-
-        $this->clearUpload($id);
+        $this->clearUpload($upload);
 
         if($upload->file_type == 'text/csv') $this->processCSV($upload);
 
     }
 
 
-    public function clearUpload($id)
+    public function clearUpload(Upload $upload)
     {
-        $upload = Upload::find($id);
-        if($upload->uploader->dataset->table_name != null) DB::table($upload->uploader->dataset->table_name)->where('upload_id', $id)->delete();
-        DB::table('cn_entitables')->where('upload_id', $id)->delete();
+        if($upload->uploader->dataset->table_name != null) DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->delete();
+        DB::table('cn_entitables')->where('upload_id', $upload->id)->delete();
     }
 
-    private function processCSV($upload)
+    public function processCSV($upload)
     {
         $file = $this->localFile($upload->source);
         Excel::load($file, function($reader) use($upload)
@@ -193,7 +189,7 @@ class Store extends DataProcessor
 
             foreach($data as $i)
             {
-                dispatch(new ProcessData(config('client.id'), $i, $upload->id));
+                dispatch(new Jobs\ProcessData(config('client.id'), $i, $upload->id));
             }
         });
 
@@ -380,5 +376,24 @@ class Store extends DataProcessor
         }
 
         return $dataset->table_name;
+    }
+
+    public function processSQL(Uploader $uploader)
+    {
+        // load source db
+        $sourceDb = [
+            'driver'   => $uploader->settings['driver'],
+            'host'     => $uploader->settings['host'],
+            'database' => $uploader->settings['database'],
+            'username' => $uploader->settings['username'],
+            'password' => $uploader->settings['password'],
+            'charset'  => $uploader->settings['charset'],
+            'prefix'   => $uploader->settings['prefix'],
+            'schema'   => $uploader->settings['schema'],
+        ];
+        config(['database.connections.source' => $sourceDb]);
+
+        $data = DB::connection('source')->table($uploader->settings['table_name'])->get();
+
     }
 }

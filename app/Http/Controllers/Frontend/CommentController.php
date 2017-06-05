@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\PropertyMgr\Model\Property;
+use App\Notifications\ReplyToComment;
+use App\PropertyMgr\Model\Comment;
 use Illuminate\Http\Request;
-use Yajra\Datatables\Facades\Datatables;
 
-class PropertyController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,18 +16,7 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::where('is_building', true);
-
-        return Datatables::of($properties)
-            ->addColumn('actions', function($property) {
-              return '<a href="' . route('properties.show', [$property->id]) . '" class="btn btn-raised btn-primary btn-sm">Profile</a>';
-            })
-            ->rawColumns(['actions'])
-            ->addColumn('units', function ($property) {
-               return $property->units->count();
-            })
-            ->editColumn('address', '{{title_case($address)}}')
-            ->make(true);
+        //
     }
 
     /**
@@ -48,7 +37,23 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'max:255',
+            'comment' => 'required'
+        ]);
+
+        $comment = Comment::create($request->all());
+
+        if($comment->reply_to != null)
+        {
+            $property_id = $comment->cn_commentable_id;
+            $comment->cn_commentable_id = $comment->reply_to;
+            $comment->cn_commentable_type = 'App\PropertyMgr\Model\Comment';
+            $comment->replyTo->poster->notify(new ReplyToComment($comment, 'property', $property_id));
+            $comment->save();
+        }
+
+        return view('property.snipits._comment', compact('comment'));
     }
 
     /**
@@ -59,7 +64,24 @@ class PropertyController extends Controller
      */
     public function show($id)
     {
-        //
+        $comment = $this->findComment(Comment::find($id));
+
+        switch ($comment->cn_commentable_type)
+        {
+            case 'App\PropertyMgr\Model\Property':
+                return redirect(route('properties.show', [$comment->commentable_id]) . '?tab=comments#comment-' . $comment->id);
+
+        }
+    }
+
+    private function findComment(Comment $comment)
+    {
+        if($comment->cn_commentable_type == 'App\PropertyMgr\Model\Comment')
+        {
+            return $this->findComment(Comment::find($comment->reply_to));
+        }
+        else
+            return $comment;
     }
 
     /**

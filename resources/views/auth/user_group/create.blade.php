@@ -9,7 +9,66 @@
 
 @php
 $permission_sets = [
-
+         [
+                'title' => 'Properties',
+                'key' => 'properties',
+                'permissions' => [
+                        [
+                                'permission' => "View Properties",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Create Properties",
+                                'key' => 'create'
+                        ],
+                        [
+                                'permission' => "Edit & Merge Properties",
+                                'key' => 'edit'
+                        ],
+                        [
+                                'permission' => "Comment on Properties",
+                                'key' => 'comment'
+                        ],
+                        [
+                                'permission' => "Tag Properties",
+                                'key' => 'tag'
+                        ]
+                ]
+        ],
+        [
+                'title' => 'Data Sets',
+                'key' => 'datasets',
+                'permissions' => [
+                        [
+                                'permission' => "View Data Set List",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Create Data Set",
+                                'key' => 'create'
+                        ],
+                        [
+                                'permission' => "Edit Data Sets",
+                                'key' => 'edit'
+                        ],
+                        [
+                                'permission' => "Upload Data",
+                                'key' => 'upload'
+                        ],
+                        [
+                                'permission' => "Rollback Uploads",
+                                'key' => 'rollback'
+                        ],
+                        [
+                                'permission' => 'Create Uploader',
+                                'key' => 'create-uploader'
+                        ],
+                        [
+                                'permission' => "Delete Data Set",
+                                'key' => 'delete'
+                        ],
+                ]
+        ],
         [
                 'title' => 'Organization Admin',
                 'key' => 'org-admin',
@@ -40,6 +99,7 @@ $permission_sets = [
                         ],
                 ]
         ],
+
 ]
 @endphp
 

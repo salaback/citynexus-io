@@ -60,19 +60,32 @@ permissions.
 ``` javascript
 {
     "demo.citynexus.io": {
-        "properties": {
-            "view": "true",
-            "show": "true",
-            "merge": "false",
-            "edit": "false",
-            "create": "false"
-        },
         "password": "################",
         "title": "Director of IT",
         "department": "Information Technology"
         }
 }
 ```
+### Storing Data
+
+Data storage in CityNexus is designed to be highly dynamic to the types of data
+sources being used by a city. This involves to layers of objects. The highest level 
+is a data set. A data set represents a single table of information. The second level is 
+an uploader, this is a method for bringing data into a data set. The settings for each
+uploader can be different, but they map to a single data set. For example, a custom form
+and a CSV uploader could both go into the same data set.
+
+#### Upload Process
+- Create a Data Set
+- Create an Uploader and select uploader type
+
+#####for CSV/Excel
+
+- CSV will be uploaded to AWS and the path to it returned
+- ``POST``  to ``/datasets/upload`` to create new Upload Object
+- 
+
+
 
 ### Background Jobs
 

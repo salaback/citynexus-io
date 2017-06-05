@@ -1,6 +1,18 @@
 <script>
     var alert = function(level, message)
     {
+        if(message == null)
+        {
+            customAlert('info', level);
+        }
+        else
+        {
+            customAlert(level, message)
+        }
+    };
+
+    var customAlert = function(level, message)
+    {
         $.notify({
             // options
             message: message,

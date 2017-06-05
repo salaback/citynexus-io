@@ -4,17 +4,19 @@
 namespace App\PropertyMgr;
 
 use App\Jobs\Geocode;
+use App\PropertyMgr\Model\RawEntity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class Sync
 {
 
-    public function address($data, $syncs)
-    {
-        $prop = new PropertySync();
-        return $prop->address($data, $syncs);
-    }
+//    public function address($data, $syncs)
+//    {
+//        $prop = new PropertySync();
+//        dd($data);
+//        return $prop->address($data, $syncs);
+//    }
 
     public function postSync($data, $syncs, $upload_id)
     {

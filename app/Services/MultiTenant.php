@@ -69,6 +69,19 @@ class MultiTenant
         try
         {
             DB::statement('CREATE SCHEMA ' . $schema);
+
+            $oldSchema = config('database.connections.tenant.schema');
+
+            config(['database.connections.tenant.schema' => $schema]);
+
+            Schema::connection('tenant')->create('migrations', function (Blueprint $table){
+                $table->increments('id');
+                $table->string('migration');
+                $table->integer('batch');
+            });
+
+            config(['database.connections.tenant.schema' => $oldSchema]);
+
         }
         catch(\Exception $e)
         {
@@ -86,15 +99,6 @@ class MultiTenant
     public function migrate(Client $client)
     {
         $client->logInAsClient();
-
-        if(!Schema::hasTable($client->schema . '.migrations'))
-        {
-            Schema::connection('tenant')->create('migrations', function (Blueprint $table){
-                $table->increments('id');
-                $table->string('migration');
-                $table->integer('batch');
-            });
-        }
 
         DB::statement('SET search_path TO ' . $client->schema . ',public');
 

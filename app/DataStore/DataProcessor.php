@@ -3,11 +3,14 @@
 
 namespace App\DataStore;
 
+use App\DataStore\Model\Upload;
+use App\DataStore\Model\Uploader;
 use App\PropertyMgr\PropertySync;
 use Illuminate\Support\Facades\DB;
 
 class DataProcessor
 {
+    protected $sync;
     public function __construct()
     {
         $this->sync = new PropertySync();
@@ -15,9 +18,11 @@ class DataProcessor
 
     public function processData($data , Uploader $uploader)
     {
+        $sync = new PropertySync();
+
         $data = $this->applyFilters($data, $uploader);
         if($uploader->hasSyncClass('address')){
-            $data = $this->sync->addPropertyID($data, $uploader->getSyncClass('address'));
+            $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
         return $data;
     }

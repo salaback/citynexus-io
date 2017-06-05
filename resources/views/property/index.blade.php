@@ -46,7 +46,7 @@
         $('#propertiesTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{!! route('api.properties.index') !!}',
+            ajax: '{!! route('property.allData') !!}',
             columns: [
                 { data: 'address', name: 'address' },
                 { data: 'units', name: 'units', orderable: false, searchable: false },

@@ -38,7 +38,7 @@
 
         var getSlide = function (slide) {
             $.ajax({
-                url: '{{action('UploaderController@post')}}',
+                url: '{{action('Frontend\UploaderController@post')}}',
                 type: 'POST',
                 data: {
                     _token: "{{csrf_token()}}",

@@ -2,6 +2,7 @@
 
 namespace App\DataStore\Model;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -22,6 +23,7 @@ class DataSet extends Model
         'access',
         'deny',
         'type',
+        'owner_id'
     ];
 
     protected $casts = [
@@ -35,4 +37,8 @@ class DataSet extends Model
         return $this->hasMany('\App\DataStore\Model\Uploader', 'dataset_id');
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }

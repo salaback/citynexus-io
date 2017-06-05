@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
 use App\DataStore\Model\DataSet;
+use App\DataStore\TableBuilder;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Facades\Datatables;
@@ -16,6 +19,8 @@ class DatasetController extends Controller
      */
     public function index()
     {
+        $this->authorize('citynexus', ['datasets', 'view']);
+
         return view('dataset.index');
     }
 
@@ -26,6 +31,9 @@ class DatasetController extends Controller
      */
     public function anyData()
     {
+
+        $this->authorize('citynexus', ['datasets', 'view']);
+
         return Datatables::of(DataSet::query())
             ->addColumn('settings', function($dataset) {
                 return '<a href="' . route('dataset.show', [$dataset->id]) . '" class="btn btn-raised btn-primary btn-sm">Settings</a>';
@@ -33,6 +41,12 @@ class DatasetController extends Controller
             ->rawColumns(['settings'])
             ->addColumn('updated', function ($dataset) {
                 return $dataset->updated_at->diffForHumans();
+            })
+            ->addColumn('owner', function ($dataset) {
+                if($dataset->owner_id != null)
+                    return $dataset->owner->fullname;
+                else
+                    return '';
             })
             ->make(true);
     }
@@ -44,7 +58,11 @@ class DatasetController extends Controller
      */
     public function create()
     {
-        return view('dataset.create');
+
+        $this->authorize('citynexus', ['datasets', 'create']);
+
+        $users = User::fromClient(config('client'));
+        return view('dataset.create', compact('users'));
     }
 
     /**
@@ -55,14 +73,21 @@ class DatasetController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('citynexus', ['datasets', 'create']);
+
         $this->validate($request, [
             'name' => 'required|max:255',
-            'type' => 'required'
+            'type' => 'required',
+            'owner_id' => 'required'
         ]);
 
         $dataset = $request->all();
 
         $dataset = DataSet::create($dataset);
+
+        $tableBuilder = new TableBuilder();
+
+        $tableBuilder->createTable($dataset);
 
         Session::flash('flash_success', 'Data Set successfully created');
 

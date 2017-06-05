@@ -1,4 +1,4 @@
- <h1 class="custom-font"><strong>Create</strong> New Uploader</h1>
+ <h4 class="custom-font"><strong>Create</strong> New Uploader</h1>
 
     <div class="form-horizontal">
         <div class="form-group">
