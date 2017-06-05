@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // Comments
-    Route::resource('/comments', 'CommentController');
+    Route::resource('/comments', 'Frontend\CommentController');
 
     // Files
     Route::resource('/files', 'FileController');

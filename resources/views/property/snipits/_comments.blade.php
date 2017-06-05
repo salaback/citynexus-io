@@ -47,7 +47,7 @@
                 comment: comment,
                 posted_by: {{\Illuminate\Support\Facades\Auth::id()}},
                 reply_to: $('#reply_comment_id').val(),
-                cn_commentable_type: 'CityNexus\\PropertyMgr\\Property',
+                cn_commentable_type: 'App\\PropertyMgr\\Model\\Property',
                 cn_commentable_id: {{$property->id}},
             }
         }).success(function( data )
