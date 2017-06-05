@@ -34,11 +34,50 @@ class IndexSearch
         {
             $client->logInAsClient();
 
-            $this->indexProperties();
-            $this->indexTags();
-            $this->indexDataSets();
-            $this->indexFiles();
-            $this->indexComments();
+            try
+            {
+                $this->indexProperties();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
+
+            try
+            {
+                $this->indexTags();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
+
+            try
+            {
+                $this->indexFiles();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
+
+            try
+            {
+                $this->indexDataSets();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
+
+            try
+            {
+                $this->indexComments();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
         }
     }
 
@@ -61,6 +100,7 @@ class IndexSearch
             }
 
             DB::table('search_results')->where('type', 'Building')->delete();
+            DB::table('search_results')->where('type', 'House')->delete();
             DB::table('search_results')->insert($index);
         }
     }

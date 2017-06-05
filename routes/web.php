@@ -65,8 +65,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/tag', 'TagController');
 
     // Search
-    Route::get('/search/suggestions/{query?}', 'SearchController@suggestions')->name('search.suggestions');
-    Route::get('/search/', 'SearchController@search')->name('search.search');
+    Route::get('/search/suggestions/{query?}', 'Frontend\SearchController@suggestions')->name('search.suggestions');
+    Route::get('/search/', 'Frontend\SearchController@search')->name('search.search');
 
     // Uploaders routes
     Route::resource('datasets/upload', 'Frontend\UploadController');
