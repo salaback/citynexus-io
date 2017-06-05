@@ -22,7 +22,6 @@ class DataAccess
         // Get property model
         $property = Property::find($id);
 
-
         // Set id of building
         $ids[] = intval($id);
 

@@ -22,7 +22,7 @@ class ReplyToComment extends Notification
      *
      * @return void
      */
-    public function __construct($comment)
+    public function __construct($comment, $type, $id)
     {
         if($comment->title != null) $this->preview = $comment->title;
         else $this->preview = str_limit($comment->comment, 100, '...');
@@ -32,10 +32,10 @@ class ReplyToComment extends Notification
 
         $this->from = $comment->poster->fullname;
 
-        switch ($comment->cn_commentable_type)
+        switch ($type)
         {
-            case 'CityNexus\PropertyMgr\Property':
-                $this->clickBack = route('properties.show', [$comment->cn_commentable_id]) . '?tab=comments#comment-' . $comment->reply_to;
+            case 'property':
+                $this->clickBack = route('properties.show', [$id]) . '?tab=comments#comment-' . $comment->reply_to;
                 break;
         }
     }

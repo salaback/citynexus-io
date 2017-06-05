@@ -35,7 +35,7 @@
                         <div id="map" style="height: 250px"></div>
                     </div>
                 @else
-                    <a href="{{route('property.geocode', [$property->id])}}">Geocode Property</a>
+                    {{--<a href="{{route('property.geocode', [$property->id])}}">Geocode Property</a>--}}
                 @endif
 
             </div>

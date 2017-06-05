@@ -55,6 +55,7 @@
             if($('#reply_comment_id').val() != '')
             {
                 $('#reply-comments-' + $('#reply_comment_id').val()).prepend( data ).removeClass('hidden');
+                removeReplyToComment();
             }
             else {
                 $('#comments').prepend( data );
