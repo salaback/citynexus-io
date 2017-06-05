@@ -123,18 +123,6 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
     </div>
 
     <div class="col-md-6">
-        <div class="dropdown pull-right">
-            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                <i class="zmdi zmdi-more-vert"></i>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-                @unless($uploader->hasSyncClass('address'))<li><a href="{{route('uploader.addressSync', [$uploader->id])}}">Add Address Sync</a></li>@endunless
-                <li><a href="{{route('uploader.entitySync', [$uploader->id])}}">Add Entity Sync</a></li>
-                {{--<li><a href="{{action('UploaderController@get', ['address-sync', $uploader->id])}}">Add Lot Sync</a></li>--}}
-                {{--<li><a href="{{action('UploaderController@get', ['address-sync', $uploader->id])}}">Add Point Sync</a></li>--}}
-
-            </ul>
-        </div>
         <section class="boxs">
             <div class="boxs-header dvd dvd-btm">
                 <h1 class="custom-font"><strong>Data Sync Methods</strong></h1>
@@ -143,7 +131,6 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
                         <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
                             <li><a href="{{route('uploader.addressSync', [$uploader->id])}}"> Create Address Sync</a></li>
                             <li><a href="{{route('uploader.entitySync', [$uploader->id])}}"> Create Entity Sync</a></li>
-
                         </ul>
                     </li>
                 </ul>
@@ -152,9 +139,14 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
 
                 <div class="inbox-widget nicescroll" style="height: 315px; overflow: hidden; outline: none;" tabindex="5000">
                     @if($uploader->syncs != null)
-                        @foreach($uploader->syncs as $class => $sync)
-                            <a href="#">
+                        @foreach($uploader->syncs as $sync)
+
                                 <div class="inbox-item">
+                                    <form action="{{route('uploader.removeSync', [$uploader->id])}}" method="post">
+                                        {{csrf_field()}}
+                                        <button role="button" href="#" class="pull-right"><span class="fa fa-trash"></span></button>
+                                        <input type="hidden" name="sync" value="{{json_encode($sync)}}">
+                                    </form>
                                     <div class="col-xs-2">
                                         @if($sync['class'] == 'address')
                                             <span class="fa fa-building fa-2x inbox-item-img"></span><br>
@@ -193,7 +185,6 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
 
                                     </div>
                                 </div>
-                            </a>
                         @endforeach
                     @else
                         <div class="alert alert-info">

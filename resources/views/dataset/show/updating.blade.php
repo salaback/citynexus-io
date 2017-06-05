@@ -88,7 +88,6 @@
                                 <td>{{$item['type']}}</td>
                             </tr>
                         @endforeach
-
                         </tbody>
                     </table>
                 </div>

@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/uploader/filters/{id}', 'Frontend\UploaderController@filters')->name('uploader.filters');
 
     Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');
+    Route::post('/uploader/remove-sync/{id}', 'Frontend\UploaderController@removeSync')->name('uploader.removeSync');
 
     Route::post('/uploader/post', 'Frontend\UploaderController@post')->name('uploader.post');
 
