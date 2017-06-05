@@ -64,7 +64,24 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        $comment = $this->findComment(Comment::find($id));
+
+        switch ($comment->cn_commentable_type)
+        {
+            case 'App\PropertyMgr\Model\Property':
+                return redirect(route('properties.show', [$comment->commentable_id]) . '?tab=comments#comment-' . $comment->id);
+
+        }
+    }
+
+    private function findComment(Comment $comment)
+    {
+        if($comment->cn_commentable_type == 'App\PropertyMgr\Model\Comment')
+        {
+            return $this->findComment(Comment::find($comment->reply_to));
+        }
+        else
+            return $comment;
     }
 
     /**
