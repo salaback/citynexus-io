@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Client;
 use App\Events\UserCreated;
+use App\Exceptions\TableBuilder\CreateTableBuilderException;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use App\Notifications\AddedToNewOrganization;
@@ -64,8 +65,6 @@ class ClientController extends Controller
             'user.email' => 'required|email|max:255'
         ]);
 
-
-
         try
         {
             $client = $multiTenant->createClient($request->get('client')['name'], $request->get('client')['domain']);
@@ -74,10 +73,15 @@ class ClientController extends Controller
 
             session()->flash('flash_success', 'Client created.');
         }
+        catch (CreateTableBuilderException $e)
+        {
+            session()->flash('flash_warning', $e->getMessage());
+            return redirect()->back()->withInput($request->all());
+        }
         catch (\Exception $e)
         {
             session()->flash('flash_warning', 'Uh oh, something went wrong. Error Code 6145');
-            return redirect()->back()->withInput(Input::all());
+            return redirect()->back()->withInput($request->all());
         }
 
         return redirect(action('AdminController@index'));

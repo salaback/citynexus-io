@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Client;
+use App\Exceptions\TableBuilder\CreateTableBuilderException;
 use App\Jobs\ImportData;
 use App\Jobs\ImportDb;
 use Carbon\Carbon;
@@ -66,30 +67,36 @@ class MultiTenant
 
     public function createSchema($schema)
     {
+
         try
         {
             DB::statement('CREATE SCHEMA ' . $schema);
 
+        }
+        catch(\Exception $e) {
+            throw new CreateTableBuilderException('create_schema_failed');
+        }
+
+
+        try
+        {
             $oldSchema = config('database.connections.tenant.schema');
 
             config(['database.connections.tenant.schema' => $schema]);
 
-            Schema::connection('tenant')->create('migrations', function (Blueprint $table){
+            Schema::connection('tenant')->create($schema . '.migrations', function (Blueprint $table){
                 $table->increments('id');
                 $table->string('migration');
                 $table->integer('batch');
             });
 
             config(['database.connections.tenant.schema' => $oldSchema]);
-
         }
-        catch(\Exception $e)
-        {
-            return $e;
+        catch(\Exception $e) {
+            throw new CreateTableBuilderException('migration_table_failed');
         }
 
         return true;
-
     }
 
     /**

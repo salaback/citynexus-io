@@ -34,6 +34,13 @@ abstract class TableBuilderException extends Exception
         $data= [
             'field_exists' => [
                 'context'  => 'Data set already has a field with that name.',
+            ],
+            'create_schema_failed' =>
+            [
+                'context' => 'The schema for the client you are trying to create could not be built'
+            ],
+            'migration_table_failed' => [
+                'context' => 'Creating a migration table in the schema specified was not possible.'
             ]
         ];
         return $data[$id];
