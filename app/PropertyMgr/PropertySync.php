@@ -21,20 +21,23 @@ class PropertySync
     {
         // find raw address element and send to address sync
         $return = [];
-        if(isset($sync['full_address']))
+        if(isset($sync['full_address'])) {
 
-        foreach ($data as $row) {
-            if($results = $this->unparsedAddress($row, $sync))
-            {
-                $row['property_id'] = $results;
+            foreach ($data as $row) {
+                if ($results = $this->unparsedAddress($row, $sync)) {
+                    $row['property_id'] = $results;
+                } else {
+                    $row['property_id'] = null;
+                }
+                $return[] = $row;
             }
-            $return[] = $row;
-
-        } else {
+        }else {
             foreach ($data as $row) {
                 if($results = $this->parsedAddress($row, $sync))
                 {
                     $row['property_id'] = $results;
+                } else {
+                    $row['property_id'] = null;
                 }
                 $return[] = $row;
             }
@@ -132,7 +135,6 @@ class PropertySync
      */
     public function getPropertyId($address)
     {
-
         try
 
         {
@@ -242,7 +244,7 @@ class PropertySync
 
         $property->save();
 
-        // if a new property, geocode it
+        // if ungeocoded, geocode it
         if($property->location == null) {
             dispatch(new Geocode($property->id));
         }

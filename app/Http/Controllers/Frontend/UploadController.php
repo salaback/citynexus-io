@@ -117,6 +117,7 @@ class UploadController extends Controller
     public function process($id)
     {
         $upload = Upload::find($id);
+
         $this->dispatch(new ProcessUpload(config('client.id'), $upload));
 
         return 'queued';

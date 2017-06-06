@@ -18,12 +18,16 @@ class DataProcessor
 
     public function processData($data , Uploader $uploader)
     {
+
         $sync = new PropertySync();
 
         $data = $this->applyFilters($data, $uploader);
+
         if($uploader->hasSyncClass('address')){
+
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
+
         return $data;
     }
 

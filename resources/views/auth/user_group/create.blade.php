@@ -10,6 +10,20 @@
 @php
 $permission_sets = [
          [
+                'title' => 'Data Visualization',
+                'key' => 'dataviz',
+                'permissions' => [
+                        [
+                                'permission' => "View Module",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Map Builder",
+                                'key' => 'maps'
+                        ]
+                ]
+         ],
+         [
                 'title' => 'Properties',
                 'key' => 'properties',
                 'permissions' => [

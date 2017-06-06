@@ -48,6 +48,10 @@ class ProcessUpload implements ShouldQueue
 
         $store = new Store();
 
+        DB::table($this->upload->uploader->dataset->table_name)
+            ->where('upload_id', $this->upload->id)
+            ->delete();
+
         switch ($this->upload->uploader->type)
         {
             case 'sql':

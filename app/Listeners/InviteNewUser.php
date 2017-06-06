@@ -29,8 +29,6 @@ class InviteNewUser
     public function handle(UserCreated $event)
     {
 
-
-
         Mail::to($event->user->email)->send(new InviteUser($event->user));
     }
 }

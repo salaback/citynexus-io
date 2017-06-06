@@ -68,11 +68,6 @@ class ProcessData implements ShouldQueue
             $final_data[] = $new_row;
         }
 
-//        foreach ($uploader->syncs as $sync){
-//
-//            if($sync['class'] == 'address') $final_data = $syncHelper->address($final_data, (object) $sync);
-//        }
-
         $max_id = DB::table($table_name)->max('id');
 
         DB::table($table_name)->insert($final_data);
