@@ -80,6 +80,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @if(count($dataset->schema) > 0)
                         @foreach($dataset->schema as $item)
                             <tr class="">
                                 <td>@if(isset($item['show']) && $item['show'] =='on') <i class="fa fa-check"></i> @endif</td>
@@ -88,6 +89,7 @@
                                 <td>{{$item['type']}}</td>
                             </tr>
                         @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
