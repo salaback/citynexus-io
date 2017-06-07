@@ -63,7 +63,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') active @endif" id="comments">
                                     <div class="wrap-reset">
-                                        @include('property.snipits._comments')
+                                        @include('snipits._comments', ['comments' => $property->comments, 'model' => 'App\\PropertyMgr\\Model\\Property', 'model_id' => $property->id])
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') active @endif" id="files">

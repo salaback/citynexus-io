@@ -1,6 +1,6 @@
 @extends('master.main')
 
-@section('title', 'All Properties')
+@section('title', 'All Entities')
 
 @section('main')
 
@@ -8,16 +8,17 @@
         <div class="col-md-12">
             <section class="boxs ">
                 <div class="boxs-header dvd dvd-btm">
-                    <h1 class="custom-font"><strong>All </strong>Properties</h1>
+                    <h1 class="custom-font"><strong>All </strong>Entities</h1>
 
                 </div>
                 <div class="boxs-body">
                     <table id="propertiesTable" class="table table-custom">
                         <thead>
                         <tr>
-                            <th>Address</th>
-                            <th>Units</th>
-                            <th>Action</th>
+                            <th>Name</th>
+                            <th>Related Buildings</th>
+                            <th>Related Units</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,9 +47,10 @@
         $('#propertiesTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{!! route('property.allData') !!}',
+            ajax: '{!! route('entity.allData') !!}',
             columns: [
-                { data: 'address', name: 'address' },
+                { data: 'name', name: 'name' },
+                { data: 'buildings', name: 'buildings', searchable: false },
                 { data: 'units', name: 'units', searchable: false },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false}
             ]

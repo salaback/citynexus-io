@@ -35,4 +35,9 @@ class Address extends Model
     protected $table = 'cn_addresses';
 
     public $timestamps = false;
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
 }

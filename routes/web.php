@@ -59,7 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/files', 'FileController');
 
     // Entities
-    Route::resource('/entities', 'EntityController');
+    Route::resource('/entity', 'Frontend\EntityController');
+    Route::get('entity\all-data', 'Frontend\EntityController@allData')->name('entity.allData');
+
 
     // Tags
     Route::resource('/tag', 'TagController');

@@ -2,8 +2,10 @@
 
 namespace App\PropertyMgr\Model;
 
+use App\DataStore\Model\DataSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
 
 class Entity extends Model
@@ -25,9 +27,18 @@ class Entity extends Model
 
     public function properties()
     {
-        return $this->morphedByMany('App\PropertyMgr\Model\Property', 'entitables', 'cn_entitables');
+        return $this->morphedByMany('App\PropertyMgr\Model\Property', 'entitables', 'cn_entitables')->withPivot('role', 'upload_id');
     }
 
+    public function getBuildingsAttribute()
+    {
+        return $this->properties->where('is_building', true);
+    }
+
+    public function getUnitsAttribute()
+    {
+        return $this->properties->where('is_unit', true);
+    }
 
     public function getNameAttribute()
     {
@@ -39,5 +50,26 @@ class Entity extends Model
         {
             return trim($this->first_name . ' ' . trim($this->middle_name . ' ' . $this->last_name));
         }
+    }
+
+    public function getDatasetsAttribute()
+    {
+
+        $datasets = [];
+
+        $ids = $this->properties()->pluck('id');
+
+        foreach(DataSet::all() as $dataset)
+        {
+            $datasets[$dataset->id] = DB::table($dataset->table_name)->where('property_id', $ids)->get();
+            if($datasets[$dataset->id]->count() == null) unset($datasets[$dataset->id]);
+        }
+
+        return $datasets;
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'cn_commentable');
     }
 }

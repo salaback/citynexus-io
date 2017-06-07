@@ -1,7 +1,7 @@
 <ul id="navigation">
     {{--<li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>--}}
     @can('citynexus', ['properties', 'view'])<li><a href="{{route('properties.index')}}"><i class="fa fa-home"></i> <span>Properties</span></a></li> @endcan
-    {{--<li><a href="{{route('entities.index')}}"><i class="fa fa-user"></i> <span>Entities</span></a></li>--}}
+    @can('citynexus', ['entities', 'view'])<li><a href="{{route('entity.index')}}"><i class="fa fa-user"></i> <span>Entities</span></a></li> @endcan
     @can('citynexus', ['dataviz', 'view'])
         <li> <a role="button" tabindex="0"><i class="fa fa-bar-chart-o"></i> <span>Data Visualization</span></a>
             <ul>

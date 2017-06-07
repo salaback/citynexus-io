@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Controller;
+use App\PropertyMgr\Model\Entity;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Facades\Datatables;
 
 class EntityController extends Controller
 {
@@ -13,7 +16,30 @@ class EntityController extends Controller
      */
     public function index()
     {
-        //
+        return view('entity.index');
+    }
+
+    public function allData()
+    {
+        $entities = Entity::all();
+
+        return Datatables::of($entities)
+            ->addColumn('name', function($entity) {
+               return $entity->name;
+            })
+
+            ->rawColumns(['actions'])
+            ->addColumn('buildings', function ($entity) {
+                return $entity->buildings->count();
+            })
+            ->addColumn('units', function ($entity) {
+                return $entity->units->count();
+            })
+            ->editColumn('name', '{{title_case($name)}}')
+            ->addColumn('actions', function($entity) {
+                return '<a href="' . route('entity.show', [$entity->id]) . '" class="btn btn-raised btn-primary btn-sm">Profile</a>';
+            })
+            ->make(true);
     }
 
     /**
@@ -45,7 +71,9 @@ class EntityController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = Entity::find($id);
+
+        return view('entity.show', compact('entity'));
     }
 
     /**
