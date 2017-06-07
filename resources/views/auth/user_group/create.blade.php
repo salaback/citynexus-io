@@ -24,6 +24,28 @@ $permission_sets = [
                 ]
          ],
          [
+                'title' => 'Entities',
+                'key' => 'entities',
+                'permissions' => [
+                        [
+                                'permission' => "View Entities",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Create Entities",
+                                'key' => 'create'
+                        ],
+                        [
+                                'permission' => "Edit Entities",
+                                'key' => 'edit'
+                        ],
+                        [
+                                'permission' => "Delete Entities",
+                                'key' => 'delete'
+                        ],
+                ]
+         ],
+         [
                 'title' => 'Properties',
                 'key' => 'properties',
                 'permissions' => [

@@ -50,6 +50,7 @@
                                 <li role="presentation" @if(!isset($_GET['tab'])) class="active" @endif><a href="#datasets" aria-controls="datasets" role="tab" data-toggle="tab">Data Sets</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') class="active" @endif><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'files') class="active" @endif><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                                <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') class="active" @endif><a href="#entities" aria-controls="files" role="tab" data-toggle="tab">Entities</a></li>
                                 <li role="presentation"><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
                             </ul>
 
@@ -68,6 +69,11 @@
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') active @endif" id="files">
                                     <div class="wrap-reset">
                                         @include('property.snipits._files')
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') active @endif" id="entities">
+                                    <div class="wrap-reset">
+                                        @include('property.snipits._entities')
                                     </div>
                                 </div>
                             </div>

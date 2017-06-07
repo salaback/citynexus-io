@@ -169,9 +169,9 @@
                                 <input type="hidden" name="uploader_id" value="{{$uploader->id}}">
                                 <div class="row">
                                     <div class="form-group">
-                                        <label for="street_number" class="col-sm-3 control-label">Street Number</label>
+                                        <label for="house_number" class="col-sm-3 control-label">House Number</label>
                                         <div class="col-sm-4">
-                                            <select name="sync[street_number]" class="form-control">
+                                            <select name="sync[house_number]" class="form-control">
                                                 <option value="">Select Field</option>
                                                 @foreach($fields as $field)
                                                     <option value="{{$field['key']}}">{{$field['name']}} </option>

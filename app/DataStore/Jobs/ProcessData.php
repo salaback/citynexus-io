@@ -55,7 +55,6 @@ class ProcessData implements ShouldQueue
         $data = $store->processData($this->data , $uploader);
         $table_name = $tableBuilder->syncTable($uploader->dataset);
         $final_data = [];
-
         // load data
         foreach($data as $row)
         {

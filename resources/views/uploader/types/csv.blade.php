@@ -160,7 +160,7 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
                                             @if(isset($sync['full_address']))
                                                 Full Address: <span class="label label-default">{{$sync['full_address']}}</span>
                                             @else
-                                                @if(isset($sync['street_number']))Street Number: <span class="label label-default">{{$sync['street_number']}}</span>@endif
+                                                @if(isset($sync['house_number']))Street Number: <span class="label label-default">{{$sync['house_number']}}</span>@endif
                                                 @if(isset($sync['street_name']))Street Name: <span class="label label-default">{{$sync['street_name']}}</span>@endif
                                                 @if(isset($sync['street_type']))Street Type: <span class="label label-default">{{$sync['street_type']}}</span>@endif
                                                 @if(isset($sync['unit']))Unit: <span class="label label-default">{{$sync['unit']}}</span>@endif

@@ -4,6 +4,7 @@
 namespace App\PropertyMgr;
 
 use App\Jobs\Geocode;
+use App\PropertyMgr\Model\Entity;
 use App\PropertyMgr\Model\RawEntity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;

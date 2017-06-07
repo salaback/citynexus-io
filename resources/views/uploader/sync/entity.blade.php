@@ -14,7 +14,7 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#unparsed" aria-controls="home" role="tab" data-toggle="tab">Unparsed Entity Name</a></li>
-                        <li role="presentation"><a href="#parsed" aria-controls="profile" role="tab" data-toggle="tab">Parsed Address</a></li>
+                        <li role="presentation"><a href="#parsed" aria-controls="profile" role="tab" data-toggle="tab">Parsed Entity Name</a></li>
                     </ul>
 
                     <!-- Tab panes -->
