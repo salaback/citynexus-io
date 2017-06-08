@@ -47,7 +47,7 @@
                 comment: comment,
                 posted_by: {{\Illuminate\Support\Facades\Auth::id()}},
                 reply_to: $('#reply_comment_id').val(),
-                cn_commentable_type: '{{$model}}',
+                cn_commentable_type: '{!! $model !!}',
                 cn_commentable_id: {{$model_id}},
             }
         }).success(function( data )

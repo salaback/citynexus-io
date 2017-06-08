@@ -46,10 +46,11 @@ class CommentController extends Controller
 
         if($comment->reply_to != null)
         {
-            $property_id = $comment->cn_commentable_id;
+            $type = $comment->cn_commentable_type;
+            $commentable_id = $comment->cn_commentable_id;
             $comment->cn_commentable_id = $comment->reply_to;
             $comment->cn_commentable_type = 'App\PropertyMgr\Model\Comment';
-            $comment->replyTo->poster->notify(new ReplyToComment($comment, 'property', $property_id));
+            $comment->replyTo->poster->notify(new ReplyToComment($comment, $type, $commentable_id));
             $comment->save();
         }
 

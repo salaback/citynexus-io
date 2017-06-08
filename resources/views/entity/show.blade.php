@@ -56,11 +56,9 @@
                                             @include('entity.snipits._datasets')
                                         </div>
                                     </div>
-                                </div>
-                                <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') active @endif" id="comments">
                                         <div class="wrap-reset">
-                                            @include('snipits._comments', ['comments' => $entity->comments, 'model' => 'App\\PropertyMgr\\Model\\Entity', 'model_id' => $entity->id])
+                                            @include('snipits._comments', ['comments' => $entity->comments, 'model' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])
                                         </div>
                                     </div>
                                 </div>

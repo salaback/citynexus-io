@@ -34,8 +34,11 @@ class ReplyToComment extends Notification
 
         switch ($type)
         {
-            case 'property':
+            case 'App\PropertyMgr\Model\Property':
                 $this->clickBack = route('properties.show', [$id]) . '?tab=comments#comment-' . $comment->reply_to;
+                break;
+            case 'App\PropertyMgr\Model\Entity':
+                $this->clickBack = route('entity.show', [$id]) . '?tab=comments#comment-' . $comment->reply_to;
                 break;
         }
     }
