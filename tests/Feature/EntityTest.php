@@ -57,8 +57,9 @@ class EntityTest extends TestCase
 
         $result = $entity->datasets;
 
-        $this->assertTrue(isset($result[$dataSet->id]), "Dataset array key is set");
+        $this->assertTrue(isset($result[$dataSet->id]), "Data Set array key is set");
         $this->assertTrue(count($result[$dataSet->id]) == 1, 'Only one item in array');
         $this->assertTrue(count($result) == 1, 'Only one dataset provided');
+
     }
 }

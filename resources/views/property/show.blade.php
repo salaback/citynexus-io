@@ -7,15 +7,21 @@
     <!-- page content -->
     <div class="pagecontent">
 
+        <div class="col-sm-6 col-xs-12">
+            <h1 class="font-thin h3 m-0">
+                @if($property->is_unit)
+                    <a href="{{route('properties.show', [$property->building_id])}}">{{title_case($property->building->OneLineAddress)}} </a> > Unit {{$property->unit}}
+                @else
+                    {{title_case($property->OneLineAddress)}}
+                @endif
+            </h1>
+            @include('snipits._tags', ['tags' => $property->tags, 'trashedTags' => $property->trashedTags])
+        </div>
         <!-- row -->
         <div class="row">
             <div class="col-md-12 address-wrapper">
                 <span class="address">
-                    @if($property->is_unit)
-                        <a href="{{route('properties.show', [$property->building_id])}}">{{title_case($property->building->OneLineAddress)}} </a> > Unit {{$property->unit}}
-                    @else
-                    {{title_case($property->OneLineAddress)}}
-                    @endif
+
                 </span>
 
             </div>
@@ -51,7 +57,7 @@
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') class="active" @endif><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'files') class="active" @endif><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') class="active" @endif><a href="#entities" aria-controls="files" role="tab" data-toggle="tab">Entities</a></li>
-                                <li role="presentation"><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
+                                <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') class="active" @endif><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
                             </ul>
 
                             <!-- Tab panes -->
@@ -63,7 +69,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') active @endif" id="comments">
                                     <div class="wrap-reset">
-                                        @include('snipits._comments', ['comments' => $property->comments, 'model' => 'App\\PropertyMgr\\Model\\Property', 'model_id' => $property->id])
+                                        @include('snipits._comments', ['comments' => $property->comments, 'model' => 'App\\\PropertyMgr\\\Model\\\Property', 'model_id' => $property->id])
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') active @endif" id="files">
@@ -74,6 +80,11 @@
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') active @endif" id="entities">
                                     <div class="wrap-reset">
                                         @include('property.snipits._entities')
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') active @endif" id="actions">
+                                    <div class="wrap-reset">
+                                        @include('property.snipits._actions')
                                     </div>
                                 </div>
                             </div>

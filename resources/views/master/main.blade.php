@@ -36,7 +36,7 @@
 
             <!-- Search -->
             <form action="{{route('search.search')}}" class="search" id="main-search">
-                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Seach by property...">
+                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Search everything...">
                 <input type="submit" style="display:none"/>
             </form>
             <!-- Search end -->

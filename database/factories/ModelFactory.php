@@ -75,6 +75,6 @@ $factory->define(\App\PropertyMgr\Model\Entity::class, function(\Faker\Generator
 $factory->define(\App\DataStore\Model\DataSet::class, function(\Faker\Generator $faker){
     return [
         'name' => $faker->lastName,
-        'table_name' => $faker->lastName
+        'table_name' => 'test_table_' . random_int(1000,999999)
     ];
 });

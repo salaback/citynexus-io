@@ -21,11 +21,13 @@ class PropertySync
     {
         // find raw address element and send to address sync
         $return = [];
+
         if(isset($sync['full_address'])) {
 
             foreach ($data as $row) {
-                if ($results = $this->unparsedAddress($row, $sync)) {
-                    $row['property_id'] = $results;
+
+                if ($result = $this->unparsedAddress($row, $sync)) {
+                    $row['property_id'] = $result;
                 } else {
                     $row['property_id'] = null;
                 }
@@ -33,9 +35,9 @@ class PropertySync
             }
         }else {
             foreach ($data as $row) {
-                if($results = $this->parsedAddress($row, $sync))
+                if($result = $this->parsedAddress($row, $sync))
                 {
-                    $row['property_id'] = $results;
+                    $row['property_id'] = $result;
                 } else {
                     $row['property_id'] = null;
                 }
@@ -67,7 +69,6 @@ class PropertySync
     public function unparsedAddress($row, $sync)
     {
         $address = $this->rawUnparsedAddress($row, $sync);
-
         return $this->getPropertyId($address);
     }
 
@@ -135,40 +136,42 @@ class PropertySync
      */
     public function getPropertyId($address)
     {
-        try
-
+        if(is_string($address))
         {
-            if(is_string($address))
-            {
-                $address = $this->parseFullAddress($address);
-            }
+            $address = $this->parseFullAddress($address);
+        }
 
-            // first or create  address record
-            $addy = array_filter($address);
-            if(!isset($addy['unit']))
-                $addy['unit'] = null;
-            else
-                $addy['unit'] = $this->cleanUnit($addy['unit']);
+        // first or create  address record
+        $addy = array_filter($address);
+        if(!isset($addy['unit']))
+            $addy['unit'] = null;
+        else
+            $addy['unit'] = $this->cleanUnit($addy['unit']);
 
-            $addy = Address::firstOrCreate($addy);
+        $addy = Address::firstOrCreate($addy);
 
-            // if property id is set, return id
-            if($addy->property_id != null) return $addy->property_id;
+        // if property id is set, return id
+        if($addy->property_id != null) return $addy->property_id;
 
-            // if address has unit create unit
-            if($address['unit'] != null) $property_id = $this->createNewUnit($addy->toArray());
+        // if address has unit create unit
+        if($address['unit'] != null) $property_id = $this->createNewUnit($addy->toArray());
 
-            // if not a unit create a building
-            else{
+        // if not a unit create a building
+        else{
 
-                $property_id = $this->createNewBuilding($address);
+            $property_id = $this->createNewBuilding($address);
 
-            }
+        }
 
-            $addy->property_id = $property_id;
-            $addy->save();
+        $addy->property_id = $property_id;
+        $addy->save();
 
-            return $property_id;
+
+        return $property_id;
+
+        try
+        {
+
         }
 
         catch (\Exception $e)
@@ -200,12 +203,13 @@ class PropertySync
         $address['unit'] = null;
 
         if($this->getPropertyId($address))
+        {
             $building = Property::find($this->getPropertyId($address));
+        }
         else
             return false;
 
         $unit['building_id'] = $building->id;
-        if($building->location != null) $unit['location'] = $building->location;
 
         return $this->createProperty($unit);
     }
@@ -238,7 +242,9 @@ class PropertySync
         {
             $property->save();
             $upload = Upload::find(session('upload_id'));
-            $upload->new_property_ids[] = $property->id;
+            $new_ids = $upload->new_property_ids;
+            $new_ids[] = $property->id;
+            $upload->new_property_ids = $new_ids;
             $upload->save();
         }
 

@@ -1,8 +1,8 @@
 <ul class="list-group">
     @foreach($property->entities as $entity)
-        <li class="list-group-item">
-            {{$entity->name}} <small>{{$entity->title}}</small>
-        </li>
+        <a class="list-group-item" href="{{route('entity.show', [$entity->id])}}">
+            {{$entity->name}} <small>({{$entity->pivot->role}})</small>
+        </a>
     @endforeach
 </ul>
 

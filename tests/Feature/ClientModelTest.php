@@ -14,8 +14,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ClientModelTest extends TestCase
 {
-    use DatabaseTransactions;
-
     private $client;
     private $multiTenant;
 

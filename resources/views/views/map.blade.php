@@ -44,7 +44,7 @@
 
             <!-- Search -->
             <div class="search" id="main-search">
-                <input type="text" class="form-control underline-input" placeholder="Seach by property...">
+                <input type="text" class="form-control underline-input" placeholder="Search everything...">
             </div>
             <!-- Search end -->
 

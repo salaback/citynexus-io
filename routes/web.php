@@ -64,8 +64,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // Tags
-    Route::resource('/tag', 'TagController');
-
+    Route::resource('backend/tag', 'Backend\TagController');
+    Route::post('backend/tag/attach', 'Backend\TagController@attach')->name('backend.tag.attach');
+    Route::post('backend/tag/detach', 'Backend\TagController@detach')->name('backend.tag.detach');
     // Search
     Route::get('/search/suggestions/{query?}', 'Frontend\SearchController@suggestions')->name('search.suggestions');
     Route::get('/search/', 'Frontend\SearchController@search')->name('search.search');

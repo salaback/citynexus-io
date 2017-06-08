@@ -6,6 +6,7 @@ use App\DataStore\Model\DataSet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
 
 class Entity extends Model
@@ -61,8 +62,13 @@ class Entity extends Model
 
         foreach(DataSet::all() as $dataset)
         {
-            $datasets[$dataset->id] = DB::table($dataset->table_name)->where('property_id', $ids)->get();
-            if($datasets[$dataset->id]->count() == null) unset($datasets[$dataset->id]);
+            if($query = DB::table($dataset->table_name)->where('property_id', $ids)->get())
+            {
+                if($query->count() != 0)
+                {
+                    $datasets[$dataset->id] = $query;
+                }
+            }
         }
 
         return $datasets;
