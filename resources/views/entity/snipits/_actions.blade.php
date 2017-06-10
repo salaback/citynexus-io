@@ -1,0 +1,1 @@
+@include('snipits._add_tags', ['model' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])

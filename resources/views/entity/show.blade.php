@@ -9,7 +9,7 @@
 
             <div class="col-xs-12">
                 <h1 class="font-thin h3 m-0">{{$entity->name}}</h1>
-                <small class="text-muted"></small>
+                @include('snipits._tags', ['tags' => $entity->tags, 'trashedTags' => $entity->trashedTags])
             </div>
 
             <br>
@@ -59,6 +59,11 @@
                                     <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') active @endif" id="comments">
                                         <div class="wrap-reset">
                                             @include('snipits._comments', ['comments' => $entity->comments, 'model' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') active @endif" id="actions">
+                                        <div class="wrap-reset">
+                                            @include('entity.snipits._actions')
                                         </div>
                                     </div>
                                 </div>

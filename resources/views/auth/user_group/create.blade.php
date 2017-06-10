@@ -24,6 +24,24 @@ $permission_sets = [
                 ]
          ],
          [
+                'title' => 'Data Analytics',
+                'key' => 'analytics',
+                'permissions' => [
+                        [
+                                'permission' => "Create Scores",
+                                'key' => 'score-create'
+                        ],
+                        [
+                                'permission' => "Edit Scores",
+                                'key' => 'score-edit'
+                        ],
+                        [
+                                'permission' => "Delete Scores",
+                                'key' => 'score-delete'
+                        ]
+                ]
+         ],
+         [
                 'title' => 'Entities',
                 'key' => 'entities',
                 'permissions' => [

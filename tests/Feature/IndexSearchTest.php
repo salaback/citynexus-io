@@ -82,14 +82,13 @@ class IndexSearchTest extends TestCase
      */
     public function testIndexDataSets()
     {
-        $name = str_random();
-        DataSet::create(['name' => $name]);
+        $dataset = factory(DataSet::class)->create();
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
         $this->assertDatabaseHas('search_results', [
             'type' => 'Data Set',
-            'search' => $name
+            'search' => $dataset->name
         ]);
 
 //        $results = SearchResult::where('type', 'Data Set')->->count();

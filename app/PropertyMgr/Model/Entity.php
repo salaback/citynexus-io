@@ -3,6 +3,7 @@
 namespace App\PropertyMgr\Model;
 
 use App\DataStore\Model\DataSet;
+use App\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -62,12 +63,11 @@ class Entity extends Model
 
         foreach(DataSet::all() as $dataset)
         {
-            if($query = DB::table($dataset->table_name)->where('property_id', $ids)->get())
+            $query = DB::table($dataset->table_name)->where('property_id', $ids)->get();
+
+            if($query->count() != 0)
             {
-                if($query->count() != 0)
-                {
-                    $datasets[$dataset->id] = $query;
-                }
+                $datasets[$dataset->id] = $query;
             }
         }
 
@@ -77,5 +77,15 @@ class Entity extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'cn_commentable');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'tagables', 'cn_tagables')->whereNull('cn_tagables.deleted_at')->orderBy('cn_tagables.created_at')->withPivot('created_by', 'created_at', 'id');
+    }
+
+    public function trashedTags()
+    {
+        return $this->morphToMany(Tag::class, 'tagables', 'cn_tagables')->whereNotNull('cn_tagables.deleted_at')->orderBy('cn_tagables.deleted_at')->withPivot('deleted_at', 'deleted_by', 'created_by', 'created_at', 'id');
     }
 }

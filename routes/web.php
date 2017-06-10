@@ -63,6 +63,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('entity\all-data', 'Frontend\EntityController@allData')->name('entity.allData');
 
 
+    // Analytics
+    Route::resource('/analytics/score', 'Frontend\ScoreController');
+    Route::post('/analytics/score/create-element', 'Frontend\ScoreController@createElement')->name('analytics.score.create.element');
+
     // Tags
     Route::resource('backend/tag', 'Backend\TagController');
     Route::post('backend/tag/attach', 'Backend\TagController@attach')->name('backend.tag.attach');
