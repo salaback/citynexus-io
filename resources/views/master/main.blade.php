@@ -307,6 +307,7 @@
 <!--/ Application Content -->
 @stack('modal')
 <!--  Vendor JavaScripts  -->
+
 <script src="/assets/bundles/libscripts.bundle.js"></script>
 <script src="/assets/bundles/vendorscripts.bundle.js"></script>
 <!--/ vendor javascripts -->

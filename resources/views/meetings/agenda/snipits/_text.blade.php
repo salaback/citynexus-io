@@ -1,0 +1,3 @@
+<p>
+    {{$element['content']}}
+</p>

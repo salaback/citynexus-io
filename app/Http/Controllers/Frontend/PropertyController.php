@@ -18,12 +18,18 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $this->authorize('citynexus', ['properties', 'view']);
 
-        return view('property.index');
+        if($request->ajax())
+        {
+            return Property::all();
+        }
+        else
+        {
+            return view('property.index');
+        }
     }
 
     public function allData()

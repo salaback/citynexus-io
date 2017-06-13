@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/entity', 'Frontend\EntityController');
     Route::get('entity\all-data', 'Frontend\EntityController@allData')->name('entity.allData');
 
+    // Meetings
+    Route::resource('/meetings/agenda', 'Frontend\AgendaController');
 
     // Analytics
     Route::resource('/analytics/score', 'Frontend\ScoreController');
