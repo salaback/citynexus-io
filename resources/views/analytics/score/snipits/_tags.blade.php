@@ -92,15 +92,7 @@
 <i class="fa fa-trash" onclick="removeElement()" style="cursor: pointer"></i>
 
 
-@push('style')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
-@endpush
 @push('scripts')
-
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 
 <script>
 
@@ -122,6 +114,24 @@
     $( function() {
         var dateFormat = "mm/dd/yy",
                 from = $( "#from" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                numericFrom = $( "#numericFrom" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                numericTo = $( "#numericTo" )
                         .datepicker({
                             defaultDate: "+1w",
                             changeMonth: true,
@@ -232,31 +242,14 @@
             }
         };
 
-        $.ajax({
-            url: "{{route('analytics.score.create.element')}}",
-            type: 'POST',
-            data: {
-                _token: "{{csrf_token()}}",
-                element: element
-            },
-            success: function(data){
-                $('#score_elements_wrapper').removeClass('hidden');
-                $('#score_elements').append(data);
-                $('#counts').addClass('hidden');
-                $('#addTagFooter').addClass('hidden');
-                $('#factorWrapper').addClass('hidden');
-                $("#scoreEffect option[value='']").prop('selected', true);
-                $("#tags option[value='']").prop('selected', true);
-            },
-            error: function (error) {
-                alert('warning', 'Uh oh. Something went wrong.');
-            }
-        });
+        $('#counts').addClass('hidden');
+        $('#addTagFooter').addClass('hidden');
+        $('#factorWrapper').addClass('hidden');
+        $("#scoreEffect option[value='']").prop('selected', true);
+        $("#tags option[value='']").prop('selected', true);
+
+        addElement(element);
     };
 
-    var removeElement = function()
-    {
-        console.log(this);
-    }
 </script>
 @endpush

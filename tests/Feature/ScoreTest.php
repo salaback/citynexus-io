@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Client;
+use App\DataStore\TableBuilder;
 use App\User;
 use App\UserGroup;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,8 @@ class ScoreTest extends TestCase
     {
         parent::setUp();
         $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
+        $this->tableBuilder = new TableBuilder();
+
     }
 
     /**

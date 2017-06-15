@@ -11,6 +11,15 @@
             </ul>
         </li>
     @endcan
+    @can('citynexus', ['analytics', 'view'])
+        <li> <a role="button" tabindex="0"><i class="fa fa-area-chart"></i> <span>Data Analysis</span></a>
+            <ul>
+                @can('citynexus', ['analytics', 'score-create'])
+                    <li><a href="{{route('score.create')}}"><i class="fa fa-angle-right"></i>Create Score</a></li>
+                @endcan
+            </ul>
+        </li>
+    @endcan
     @can('citynexus', ['datasets', 'view'])
         <li> <a role="button" tabindex="0"><i class="fa fa-database"></i> <span>Data Sets</span></a>
             <ul>

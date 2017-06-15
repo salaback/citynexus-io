@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="option-tile col-sm-4" onclick="valueType('datapoint')" id="tag">
+                <div class="option-tile col-sm-4" data-toggle="modal" data-target="#datapointModal" id="datapoint">
                     <div class="option-wrapper">
                         <div class="option-header">
                             Data Point
@@ -110,16 +110,24 @@
     </form>
 
 
-@push('modal')
-    @include('analytics.score.snipits._tags')
-@endpush
 
 
 @endsection
 
+@push('modal')
+@include('analytics.score.snipits._tags')
+@include('analytics.score.snipits._datapoint')
+@endpush
+
+
+@push('style')
+@endpush
+
 @push('scripts')
 <script src="/assets/js/vendor/parsley/parsley.min.js"></script>
 <script src="/assets/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="/assets/bundles/flotscripts.bundle.js"></script>
+
 
 <script type="text/javascript">
     var setType = function(type) {
@@ -140,6 +148,30 @@
             }
         })
     })
+
+    var addElement = function(element)
+    {
+        $.ajax({
+            url: "{{route('analytics.score.create.element')}}",
+            type: 'POST',
+            data: {
+                _token: "{{csrf_token()}}",
+                element: element
+            },
+            success: function(data){
+                $('#score_elements_wrapper').removeClass('hidden');
+                $('#score_elements').append(data);
+            },
+            error: function (error) {
+                alert('warning', 'Uh oh. Something went wrong.');
+            }
+        });
+    };
+
+    var removeElement = function()
+    {
+        console.log(this);
+    }
 </script>
 
 @endpush

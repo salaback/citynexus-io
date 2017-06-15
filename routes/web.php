@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     // dataset routes
     Route::get('/dataset/any-data', 'Frontend\DatasetController@anyData')->name('dataset.anydata');
     Route::resource('/dataset', 'Frontend\DatasetController');
+    Route::get('/dataset/datapoint-info/{id?}/{key?}', 'Frontend\DatasetController@datapointInfo')->name('dataset.datapointInfo');
 
 
     // Comments
