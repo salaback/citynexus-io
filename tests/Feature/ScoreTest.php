@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\AnalysisMgr\MapHelper;
 use App\Client;
 use App\DataStore\TableBuilder;
 use App\User;
@@ -47,4 +48,5 @@ class ScoreTest extends TestCase
 
         $this->get('analytics/score/create')->assertSee('CityNexus | Create New Score');
     }
+    
 }

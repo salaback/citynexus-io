@@ -49,7 +49,7 @@
                                     <div class="togglebutton">
                                         <label>
                                             <input type="checkbox" name="datapointPropertyRange" id="datapoint_property_range">
-                                            Properties within <input type="text" name="datapoint_property_range_meters" id="datapoint_property_range_meters" value="50"> meters of properties with data point.</label>
+                                            Properties within <input type="number" class="range-field" name="datapoint_property_range_meters" id="datapoint_property_range_meters" value="50"> meters of properties with data point.</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -92,13 +92,13 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>From</label>
-                                            <input type="text" id="numericFrom" name="from" class="form-control datapointDate">
+                                            <input type="text" id="datapointFrom" name="from" class="form-control datapointDate">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>To</label>
-                                            <input type="text" id="numericTo" name="to" class="form-control datapointDate" >
+                                            <input type="text" id="datapointTo" name="to" class="form-control datapointDate" >
                                         </div>
                                     </div>
                                 </div>
@@ -273,8 +273,8 @@
             },
             timeRange: {
                 select: $('input[name="datapointMostRecent"]:checked').val(),
-                to: $('#to').val(),
-                from: $('#from').val()
+                to: $('#datatpointTo').val(),
+                from: $('#datapointFrom').val()
             },
             effect: {
                 type: $('#datapointScoreEffect').val(),

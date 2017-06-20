@@ -65,12 +65,12 @@
                             Data Point
                         </div>
                         <div class="option-icon">
-                            <i class="fa fa-area-chart fa-2x"></i><br>
+                            <i class="fa fa-database fa-2x"></i><br>
                             Score element based on imported data.
                         </div>
                     </div>
                 </div>
-                <div class="option-tile col-sm-4" onclick="valueType('comment')" id="tag">
+                <div class="option-tile col-sm-4" data-toggle="modal" data-target="#commentModal" id="comment">
                     <div class="option-wrapper">
                         <div class="option-header">
                             Comment
@@ -115,12 +115,24 @@
 @endsection
 
 @push('modal')
-@include('analytics.score.snipits._tags')
-@include('analytics.score.snipits._datapoint')
+    @include('analytics.score.snipits._tags')
+    @include('analytics.score.snipits._datapoint')
+    @include('analytics.score.snipits._comment')
 @endpush
 
 
 @push('style')
+
+<style>
+    .range-field
+    {
+        width: 60px;
+        border-top: transparent;
+        border-right: transparent;
+        border-left: transparent;
+        text-align: center;
+    }
+</style>
 @endpush
 
 @push('scripts')
@@ -172,6 +184,74 @@
     {
         console.log(this);
     }
+
+    $( function() {
+        var dateFormat = "mm/dd/yy",
+                from = $( "#from" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                datapointFrom = $( "#datapointFrom" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                datapointTo = $( "#datapointTo" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                commentFrom = $( "#commentFrom" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                commentTo = $( "#commentTo" )
+                        .datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3
+                        })
+                        .on( "change", function() {
+                            to.datepicker( "option", "minDate", getDate( this ) );
+                        }),
+                to = $( "#to" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 3
+                })
+                        .on( "change", function() {
+                            from.datepicker( "option", "maxDate", getDate( this ) );
+                        });
+
+        function getDate( element ) {
+            var date;
+            try {
+                date = $.datepicker.parseDate( dateFormat, element.value );
+            } catch( error ) {
+                date = null;
+            }
+
+            return date;
+        }
+    } );
 </script>
 
 @endpush

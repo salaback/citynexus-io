@@ -2,7 +2,7 @@
 
 <div class="list-group-item">
     <i class="fa fa-trash pull-right" onclick="$(this.parentElement).remove()" style="cursor: pointer"></i>
-    <input type="hidden" name="elements[]" value='{{ json_encode($element) }}'>
+    <input type="hidden" name="elements[]" value='{!! json_encode($element) !!}'>
     <div class="row">
         <div class="col-sm-1">
             <i class="fa fa-database fa-2x"></i>

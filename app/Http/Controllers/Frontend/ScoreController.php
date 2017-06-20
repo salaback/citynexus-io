@@ -47,6 +47,13 @@ class ScoreController extends Controller
         ]);
 
         $score = $request->all();
+        $elements = $request->get('elements');
+        foreach($elements as $key => $item)
+        {
+            $elements[$key] = json_decode($item);
+        }
+
+        $score['elements'] = $elements;
         $score['owned_by'] = Auth::id();
 
         $score = Score::create($score);
@@ -64,7 +71,9 @@ class ScoreController extends Controller
     {
         $this->authorize('citynexus', ['analytics', 'score-view']);
 
-        return 'Frontend\ScoreController@show';
+        $score = Score::find($id);
+
+        return $score;
     }
 
     /**

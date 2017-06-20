@@ -78,3 +78,16 @@ $factory->define(\App\DataStore\Model\DataSet::class, function(\Faker\Generator 
         'table_name' => 'test_table_' . random_int(1000,999999)
     ];
 });
+
+$factory->define(\App\AnalysisMgr\Model\Score::class, function(\Faker\Generator $faker){
+    return [
+        'name' => $faker->word,
+        'owned_by' => 1
+    ];
+});
+
+$factory->define(\App\PropertyMgr\Model\Tag::class, function(\Faker\Generator $faker){
+    return [
+      'tag' => $faker->word
+    ];
+});

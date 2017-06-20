@@ -41,7 +41,7 @@
                         <div class="togglebutton">
                             <label>
                                 <input type="checkbox" name="tagged_range" id="tagged_range" value="true">
-                                Properties within <input type="text" name="tag_range" id="tag_range" value="50"> meters of tagged properties</label>
+                                Properties within <input type="number" class="range-field" name="tag_range" id="tag_range" value="50"> meters of tagged properties</label>
                         </div>
                         <div class="togglebutton">
                             <label>
@@ -51,7 +51,7 @@
                         <div class="togglebutton">
                             <label>
                                 <input type="checkbox" name="trashed_range" id="trashed_range" value="true">
-                                Properties within <input type="text" name="trash_range" id="trash_range" value="50"> meters of previously tagged properties</label>
+                                Properties within <input type="number" class="range-field" name="trash_range" id="trash_range" value="50"> meters of previously tagged properties</label>
                         </div>
                         <div class="col-sm-12">
                             <strong>Score Effect</strong><br>
@@ -111,55 +111,7 @@
        }
 
     });
-    $( function() {
-        var dateFormat = "mm/dd/yy",
-                from = $( "#from" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                numericFrom = $( "#numericFrom" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                numericTo = $( "#numericTo" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                to = $( "#to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3
-                })
-                        .on( "change", function() {
-                            from.datepicker( "option", "maxDate", getDate( this ) );
-                        });
 
-        function getDate( element ) {
-            var date;
-            try {
-                date = $.datepicker.parseDate( dateFormat, element.value );
-            } catch( error ) {
-                date = null;
-            }
-
-            return date;
-        }
-    } );
 
     $('#tags').change(function () {
         var tag = $('#tags').val();

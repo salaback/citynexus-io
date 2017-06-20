@@ -28,6 +28,8 @@ class DataProcessor
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
+        $data = $sync->addCreatedAt($data, $uploader->getSyncClass('address'));
+
         return $data;
     }
 

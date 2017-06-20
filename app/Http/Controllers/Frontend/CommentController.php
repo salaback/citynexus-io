@@ -118,4 +118,18 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+
+        $query = "%" . $request->get('query') . "%";
+        $comments = Comment::where('comment', 'LIKE', $query)->get();
+
+        if($request->exists('range'))
+        {
+            $ids = $comments->get('id')->toArray();
+        }
+
+        return $comments;
+    }
 }

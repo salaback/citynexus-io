@@ -13,6 +13,7 @@ use App\Jobs\Geocode;
 use App\DataStore\Model\Upload;
 use App\PropertyMgr\Model\Address;
 use App\PropertyMgr\Model\Property;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PropertySync
@@ -45,6 +46,14 @@ class PropertySync
             }
         }
         return $return;
+    }
+
+    public function addCreatedAt($data, $sync)
+    {
+        foreach($data as $key => $item)
+        {
+            if(!isset($data[$key]['created_at'])) $data[$key]['created_at'] = Carbon::now();
+        }
     }
 
     public function parseFullAddress($address)

@@ -4,8 +4,9 @@
 
 @section('main')
 
-    @foreach($elements as $element)
-        @include('meetings.agenda.snipits._' . $element['type'])
-    @endforeach
-
+    <div class="col-md-10">
+        @foreach($elements as $element)
+            @include('meetings.agenda.snipits._' . $element['type'])
+        @endforeach
+    </div>
 @endsection
