@@ -4,6 +4,7 @@ namespace App\PropertyMgr\Model;
 
 use App\DataStore\Model\DataSet;
 use App\DocumentMgr\Model\DocumentTemplate;
+use App\TaskMgr\Model\TaskList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
@@ -112,4 +113,11 @@ class Property extends Model
             return $this->location;
         }
     }
+
+
+    public function taskLists()
+    {
+        return $this->morphMany(TaskList::class, 'taskable');
+    }
+
 }

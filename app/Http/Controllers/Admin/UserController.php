@@ -20,6 +20,22 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(isset($_GET['use']) && $_GET['use'] == 'select2')
+        {
+            foreach(User::fromClient() as $user)
+            {
+                $text = $user->fullname;
+                if($user->title != null && $user->department) $title = $user->title . ' - ' . $user->department;
+                elseif($user->title != null) $title = $user->title;
+                elseif($user->department != null) $title = $user->department;
+                if(isset($title)) $text .= ' (' . $title . ')';
+
+                $users[] = ['id' => $user->id, 'text' => $text ];
+            }
+
+            return $users;
+        }
+
         return User::fromClient();
     }
 

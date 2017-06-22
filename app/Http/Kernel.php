@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             TenantCheck::class,
         ],
         'api' => [
+            TenantCheck::class,
             'throttle:60,1',
             'bindings',
         ],

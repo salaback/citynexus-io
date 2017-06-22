@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <title>CityNexus | @yield('title')</title>
     <link rel="icon" type="image/ico" href="/favicon.ico" />
     <meta name="description" content="">
@@ -18,7 +20,7 @@
     @stack('style')
 
 </head>
-<body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
+<body id="body" class="main_Wrapper leftmenu-offcanvas">
 
 <!--  Application Content -->
 <div id="wrap" class="animsition">
@@ -310,6 +312,8 @@
 @stack('modal')
 <!--  Vendor JavaScripts  -->
 
+<script src="/js/app.js"></script>
+
 <script src="/assets/bundles/libscripts.bundle.js"></script>
 <script src="/assets/bundles/vendorscripts.bundle.js"></script>
 <!--/ vendor javascripts -->
@@ -318,6 +322,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="/js/bootstrap-notify.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js" integrity="sha256-+mWd/G69S4qtgPowSELIeVAv7+FuL871WXaolgXnrwQ=" crossorigin="anonymous"></script>
+
 
 
 @include('master.snipits._alerts')

@@ -78,7 +78,7 @@ class PropertyController extends Controller
      */
     public function show($id, DataAccess $dataAccess)
     {
-        $property = Property::find($id);
+        $property = Property::where('id', $id)->with('taskLists', 'units', 'comments')->first();
 
         $show_templates = [];
         $templates = DocumentTemplate::all();

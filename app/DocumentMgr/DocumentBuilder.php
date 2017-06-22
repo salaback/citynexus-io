@@ -112,7 +112,7 @@ class DocumentBuilder
         switch ($i)
         {
             case "address":
-                return $model->oneLineAddress;
+                return title_case($model->oneLineAddress);
                 break;
 
             case "units":
@@ -130,7 +130,7 @@ class DocumentBuilder
         switch ($i)
         {
             case "address":
-                return $model->oneLineAddress;
+                return title_case($model->oneLineAddress);
                 break;
 
             default:
@@ -143,7 +143,7 @@ class DocumentBuilder
         switch ($i)
         {
             case 'full_name':
-                return $model->name;
+                return title_case($model->name);
             default:
                 return $model->$i;
         }
