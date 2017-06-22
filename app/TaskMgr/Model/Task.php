@@ -2,6 +2,7 @@
 
 namespace App\TaskMgr\Model;
 
+use App\PropertyMgr\Model\Property;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use App\TaskMgr\Model\TaskList;

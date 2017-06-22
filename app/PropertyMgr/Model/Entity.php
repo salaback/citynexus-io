@@ -4,6 +4,7 @@ namespace App\PropertyMgr\Model;
 
 use App\DataStore\Model\DataSet;
 use App\Tag;
+use App\TaskMgr\Model\TaskList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -91,6 +92,21 @@ class Entity extends Model
     public function files()
     {
         return $this->morphMany('App\PropertyMgr\Model\File', 'cn_fileable');
+    }
+
+    public function taskLists()
+    {
+        return $this->morphMany(TaskList::class, 'taskable');
+    }
+
+    public function getTasksAttribute()
+    {
+        $lists = [];
+
+        foreach($this->properties as $property) $lists = array_merge($lists, $property->taskLists->pluck('id')->toArray());
+        $lists = array_merge($lists, $this->taskLists->pluck('id')->toArray());
+
+        return TaskList::findMany($lists);
     }
 
 }

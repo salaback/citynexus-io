@@ -85,7 +85,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') active @endif" id="tasks">
                                     <div class="wrap-reset">
-                                        @include('snipits._tasks', ['lists' => $property->taskLists, 'model_type' => 'App\\\PropertyMgr\\\Model\\\Property', 'model_id' => $property->id])
+                                        @include('snipits._tasks', ['lists' => $property->tasks, 'model_type' => 'App\\\PropertyMgr\\\Model\\\Property', 'model_id' => $property->id])
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') active @endif" id="actions">

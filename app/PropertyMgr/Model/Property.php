@@ -4,6 +4,7 @@ namespace App\PropertyMgr\Model;
 
 use App\DataStore\Model\DataSet;
 use App\DocumentMgr\Model\DocumentTemplate;
+use App\TaskMgr\Model\Task;
 use App\TaskMgr\Model\TaskList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -114,10 +115,21 @@ class Property extends Model
         }
     }
 
-
     public function taskLists()
     {
         return $this->morphMany(TaskList::class, 'taskable');
     }
 
+    public function getTasksAttribute()
+    {
+        $lists = [];
+        if($this->is_building && $this->units->count() > 0)
+        {
+            foreach($this->units as $unit) $lists = array_merge($lists, $unit->taskLists->pluck('id')->toArray());
+            $lists = array_merge($lists, $this->taskLists->pluck('id')->toArray());
+        }
+        else $lists =  $this->taskLists()->pluck('id')->toArray();
+
+        return TaskList::findMany($lists);
+    }
 }

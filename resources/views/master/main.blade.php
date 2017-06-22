@@ -50,21 +50,7 @@
                 <li class="dropdown notifications"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-bell"></i>
                         @if(\Illuminate\Support\Facades\Auth::user()->unreadNotifications->count() > 0)<div class="notify"><span class="heartbit"></span><span class="point"></span></div>@endif
                     </a>
-                    <div class="dropdown-menu pull-right with-arrow panel panel-default ">
-                        <ul class="list-group">
-                            @forelse(\Illuminate\Support\Facades\Auth::user()->notifications as $notification)
-                                @if($notification->type == 'App\Notifications\DataProcessed')
-                                    @include('master.notifications.dataProcessed')
-                                @elseif($notification->type == 'App\Notifications\ReplyToComment')
-                                    @include('master.notifications.replyToComment')
-                                @elseif($notification->type == 'App\Notifications\AddedToNewOrganization')
-                                    @include('master.notifications.addedToNewOrganization')
-                                @endif
-                            @empty
-                            @endforelse
-                        </ul>
-                        <div class="panel-footer"> <a role="button" tabindex="0">Show all notifications <i class="fa fa-angle-right pull-right"></i></a> </div>
-                    </div>
+                    @include('master.notifications._notifications')
                 </li>
                 <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
                 <li><a href="/auth/logout"><i class="fa fa-sign-out"></i></a></li>

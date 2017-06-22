@@ -1,10 +1,16 @@
-<div class="col-md-4 col-sm-6 col-xs-12">
+<div class="col-md-4 col-sm-6 col-xs-12" class="list-wrapper">
     <div class="boxs">
         <div class="boxs-header">
-            <h1 class="custom-font"> {{$list->name}} </h1>
+            <h1 class="custom-font">
+            @if($model_id != $list->taskable_id)
+                @if($list->taskable_type == 'App\PropertyMgr\Model\Property')
+                    <a href="{{route('properties.show', [$list->taskable_id])}}">Unit {{$list->property->unit}}</a> >
+                @endif
+            @endif
+                {{$list->name}} </h1>
         </div>
-        <div class="boxs-body">
-            <div class="list-group" id="tasks_{{$list->id}}">
+        <div class="boxs-body list-body">
+            <div class="list-group" class='tasks-well' id="tasks_{{$list->id}}">
                 @foreach($list->tasks as $task)
                     @include('snipits.tasks._task')
                 @endforeach

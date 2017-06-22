@@ -11,7 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class AssignedNewTask extends Notification
 {
     use Queueable;
-    private $click_back;
+    private $clickBack;
     private $task;
     private $client_id;
 
@@ -25,13 +25,13 @@ class AssignedNewTask extends Notification
         $this->task = $task->name;
         $this->client_id = config('client.id');
 
-        switch ($task->taskable_model)
+        switch ($task->taskList->taskable_type)
         {
             case 'App\PropertyMgr\Model\Property':
-                $this->clickBack = config('client')->domain . route('properties.show', [$task->taskable_id]) . '?tab=tasks';
+                $this->clickBack = config('client.domain') . route('properties.show', [$task->taskList->taskable_id]) . '?tab=tasks';
                 break;
             case 'App\PropertyMgr\Model\Entity':
-                $this->clickBack = config('client')->domain . route('entity.show', [$task->taskable_id]) . '?tab=tasks';
+                $this->clickBack = config('client.domain') . route('entity.show', [$task->taskList->taskable_id]) . '?tab=tasks';
                 break;
         }
 
@@ -58,7 +58,7 @@ class AssignedNewTask extends Notification
     {
         return (new MailMessage)
                     ->line('You have been assigned a new task')
-                    ->action($this->task, $this->click_back);
+                    ->action($this->task, $this->clickBack);
     }
 
     /**
@@ -72,7 +72,7 @@ class AssignedNewTask extends Notification
         return [
             'message' => 'You have been assigned a new task',
             'task' => $this->task,
-            'clickBack' => $this->click_back
+            'clickBack' => $this->clickBack
         ];
     }
 }

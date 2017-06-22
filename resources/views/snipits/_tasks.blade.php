@@ -124,6 +124,16 @@
     .fa-edit {
         cursor: pointer;
     }
+
+    .referral-list a {
+        font-size: 12px;
+        color: #707070;
+    }
+
+    .list-body {
+        height: 400px;
+        overflow: scroll;
+    }
 </style>
 @endpush
 
