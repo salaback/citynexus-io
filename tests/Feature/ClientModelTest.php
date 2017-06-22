@@ -14,7 +14,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ClientModelTest extends TestCase
 {
-    private $client;
     private $multiTenant;
 
     use DatabaseTransactions;
@@ -28,7 +27,6 @@ class ClientModelTest extends TestCase
     {
         parent::setUp();
         $this->multiTenant = new MultiTenant();
-        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
     }
 
     /**

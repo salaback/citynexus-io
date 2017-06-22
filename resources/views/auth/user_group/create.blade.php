@@ -64,6 +64,24 @@ $permission_sets = [
                 ]
          ],
          [
+                'title' => 'Files',
+                'key' => 'files',
+                'permissions' => [
+                        [
+                                'permission' => "View Files",
+                                'key' => 'view'
+                        ],
+                        [
+                                'permission' => "Upload Files",
+                                'key' => 'upload'
+                        ],
+                        [
+                                'permission' => "Delete Files",
+                                'key' => 'delete'
+                        ]
+                ]
+         ],
+         [
                 'title' => 'Properties',
                 'key' => 'properties',
                 'permissions' => [

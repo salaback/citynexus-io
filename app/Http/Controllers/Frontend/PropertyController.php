@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\DocumentMgr\Model\DocumentTemplate;
 use App\Http\Controllers\Controller;
 use App\Jobs\Geocode;
 use App\UserGroup;
@@ -78,9 +79,26 @@ class PropertyController extends Controller
     public function show($id, DataAccess $dataAccess)
     {
         $property = Property::find($id);
+
+        $show_templates = [];
+        $templates = DocumentTemplate::all();
+        foreach($templates as $template)
+        {
+            if($property->is_building && isset($template->visible_on['buildings']))
+            {
+                $show_templates[] = $template;
+            }
+            if($property->is_unit && isset($template->visible_on['units']))
+            {
+                $show_templates[] = $template;
+            }
+        }
+
+        $templates = $show_templates;
+
         $datasets = $dataAccess->getDataByPropertyID($id);
 
-        return view('property.show', compact('property', 'datasets'));
+        return view('property.show', compact('property', 'datasets', 'templates'));
     }
 
     /**
@@ -124,5 +142,16 @@ class PropertyController extends Controller
     {
         $this->dispatch(new Geocode($id));
         return redirect()->back();
+    }
+
+    public function getUnits($id)
+    {
+        $return =[];
+
+        $units = Property::find($id)->units;
+
+        foreach($units as $i) $return[] = ['id' => $i->id, 'text' => $i->unit];
+
+        return $return;
     }
 }

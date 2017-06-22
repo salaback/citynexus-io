@@ -22,7 +22,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class IndexSearchTest extends TestCase
 {
 
-    private $client;
 
     use DatabaseTransactions;
 
@@ -34,7 +33,6 @@ class IndexSearchTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
         $this->client->logInAsClient();
     }
 

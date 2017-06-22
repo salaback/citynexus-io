@@ -61,7 +61,10 @@ $factory->define(\App\Client::class, function(\Faker\Generator $faker){
 
 $factory->define(\App\PropertyMgr\Model\Property::class, function(\Faker\Generator $faker){
     return [
-            'address' => $faker->address
+            'address' => $faker->numberBetween(100, 10000). ' ' . $faker->streetName,
+            'city' => $faker->city,
+            'state' => 'MA',
+            'postcode' => $faker->postcode
     ];
 });
 
@@ -90,4 +93,12 @@ $factory->define(\App\PropertyMgr\Model\Tag::class, function(\Faker\Generator $f
     return [
       'tag' => $faker->word
     ];
+});
+
+$factory->define(\App\DocumentMgr\Model\DocumentTemplate::class, function(\Faker\Generator $faker){
+   return [
+       'type' => 'letter',
+       'name' => $faker->word,
+       'body' => '<p>' . $faker->words(10, true) . '</p>',
+   ];
 });

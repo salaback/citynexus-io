@@ -89,8 +89,6 @@
     </div>
 </div>
 
-<i class="fa fa-trash" onclick="removeElement()" style="cursor: pointer"></i>
-
 
 @push('scripts')
 

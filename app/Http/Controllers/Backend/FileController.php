@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\PropertyMgr\Model\File;
 use App\PropertyMgr\Model\FileVersion;
 use Illuminate\Http\Request;
@@ -47,6 +48,8 @@ class FileController extends Controller
         ]);
         $file->version_id = $version->id;
         $file->save();
+
+        session()->flash('flash_success', 'File added.');
 
         return redirect()->back();
     }
@@ -103,8 +106,15 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('citynexus', ['files', 'delete']);
+
         File::find($id)->delete();
 
-        return response();
+        return 'deleted';
+    }
+
+    public function download($id)
+    {
+        return redirect(File::find($id)->current->source);
     }
 }

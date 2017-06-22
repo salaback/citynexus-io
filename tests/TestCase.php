@@ -2,11 +2,18 @@
 
 namespace Tests;
 
+use App\Client;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
+    }
 
     /**
      * Call protected/private method of a class.

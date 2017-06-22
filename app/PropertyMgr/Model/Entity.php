@@ -88,4 +88,9 @@ class Entity extends Model
     {
         return $this->morphToMany(Tag::class, 'tagables', 'cn_tagables')->whereNotNull('cn_tagables.deleted_at')->orderBy('cn_tagables.deleted_at')->withPivot('deleted_at', 'deleted_by', 'created_by', 'created_at', 'id');
     }
+    public function files()
+    {
+        return $this->morphMany('App\PropertyMgr\Model\File', 'cn_fileable');
+    }
+
 }

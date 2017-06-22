@@ -11,7 +11,7 @@ class File extends Model
 {
     use SoftDeletes;
     protected $table = 'cn_files';
-    protected $fillable = ['name', 'description', 'version_id', 'location_id', 'property_id'];
+    protected $fillable = ['caption', 'description', 'version_id', 'cn_fileable_id', 'cn_fileable_type'];
 
     public function getTypeAttribute()
     {
@@ -21,7 +21,7 @@ class File extends Model
     public function getImage()
     {
         $return['source'] = $this->current->source;
-        $return['name'] = $this->name;
+        $return['caption'] = $this->caption;
         $return['description'] = $this->description;
         return $return;
     }

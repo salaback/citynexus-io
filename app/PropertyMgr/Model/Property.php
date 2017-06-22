@@ -3,6 +3,7 @@
 namespace App\PropertyMgr\Model;
 
 use App\DataStore\Model\DataSet;
+use App\DocumentMgr\Model\DocumentTemplate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
@@ -97,6 +98,8 @@ class Property extends Model
     {
         return $this->morphMany('App\PropertyMgr\Model\File', 'cn_fileable');
     }
+
+
 
     public function getPointAttribute()
     {

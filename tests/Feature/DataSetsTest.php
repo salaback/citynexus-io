@@ -17,18 +17,10 @@ class DataSetsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $client;
-
     protected  $connectionsToTransact = [
         'public',
         'tenant'
     ];
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
-    }
 
     /**
      * View datasets

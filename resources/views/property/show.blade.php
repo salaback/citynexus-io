@@ -55,7 +55,7 @@
                             <ul class="nav nav-tabs tabs-dark-t" role="tablist">
                                 <li role="presentation" @if(!isset($_GET['tab'])) class="active" @endif><a href="#datasets" aria-controls="datasets" role="tab" data-toggle="tab">Data Sets</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') class="active" @endif><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
-                                <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'files') class="active" @endif><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                                @can('citynexus', ['files', 'view']) <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'files') class="active" @endif><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li> @endcan
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') class="active" @endif><a href="#entities" aria-controls="files" role="tab" data-toggle="tab">Entities</a></li>
                                 <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') class="active" @endif><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
                             </ul>
@@ -74,7 +74,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') active @endif" id="files">
                                     <div class="wrap-reset">
-                                        @include('property.snipits._files')
+                                        @include('snipits._files', ['files' => $property->files, 'model_id' => $property->id, 'model_type' => 'App\\PropertyMgr\\Model\\Property'])
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'entities') active @endif" id="entities">

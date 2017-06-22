@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    Route::get('/properties/get-units/{id?}', 'Frontend\PropertyController@getUnits')->name('property.getUnits');
     Route::resource('properties', 'Frontend\PropertyController');
     Route::get('properties\all-data', 'Frontend\PropertyController@allData')->name('property.allData');
 
@@ -57,7 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/comments', 'Frontend\CommentController');
 
     // Files
-    Route::resource('/files', 'FileController');
+    Route::get('/files/download/{id?}', 'Backend\FileController@download')->name('files.download');
+    Route::resource('/files', 'Backend\FileController');
 
     // Entities
     Route::resource('/entity', 'Frontend\EntityController');
@@ -92,8 +94,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');
     Route::post('/uploader/remove-sync/{id}', 'Frontend\UploaderController@removeSync')->name('uploader.removeSync');
-
     Route::post('/uploader/post', 'Frontend\UploaderController@post')->name('uploader.post');
+
+    Route::post('documents/templates/get-form/{id?}', 'Frontend\DocumentTemplateController@getForm')->name('templates.getForm');
+    Route::resource('documents/templates', 'Frontend\DocumentTemplateController');
+    Route::resource('documents', 'Frontend\DocumentController');
 
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 
