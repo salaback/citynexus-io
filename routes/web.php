@@ -101,6 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('documents/queue', 'Frontend\PrintQueueController');
     Route::resource('documents', 'Frontend\DocumentController');
 
+    Route::resource('form', 'Frontend\FormController');
+
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 
     Route::get('view/map', 'Frontend\ViewController@map')->name('map');
