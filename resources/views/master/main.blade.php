@@ -20,7 +20,7 @@
     @stack('style')
 
 </head>
-<body id="body" class="main_Wrapper leftmenu-offcanvas">
+<body id="body" class="main_Wrapper theme-default header-fixed aside-fixed rightmenu-hidden leftmenu-sm">
 
 <!--  Application Content -->
 <div id="wrap" class="animsition">
@@ -52,7 +52,7 @@
                     </a>
                     @include('master.notifications._notifications')
                 </li>
-                <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
+                {{--<li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>--}}
                 <li><a href="/auth/logout"><i class="fa fa-sign-out"></i></a></li>
             </ul>
             <!-- Right-side navigation end -->

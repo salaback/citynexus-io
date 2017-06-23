@@ -6,7 +6,7 @@
         <select name="issue_document" id="issue_document" class="form-control">
             <option value="">Select One</option>
             @foreach($templates as $template)
-                <option value="{{$template->id}}">{{$template->id}}</option>
+                <option value="{{$template->id}}">{{$template->name}}</option>
             @endforeach
         </select>
     </div>
@@ -16,8 +16,6 @@
 @endpush
 @push('scripts')
 <script>
-
-
     $('#issue_document').change(function(){
         var doc = $('#issue_document').val();
         if(doc != "")

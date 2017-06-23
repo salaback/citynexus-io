@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('documents/templates/get-form/{id?}', 'Frontend\DocumentTemplateController@getForm')->name('templates.getForm');
     Route::resource('documents/templates', 'Frontend\DocumentTemplateController');
+    Route::resource('documents/queue', 'Frontend\PrintQueueController');
     Route::resource('documents', 'Frontend\DocumentController');
 
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');

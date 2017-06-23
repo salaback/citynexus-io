@@ -20,6 +20,21 @@
             </ul>
         </li>
     @endcan
+    @can('citynexus', ['documents', 'view'])
+        <li> <a role="button" tabindex="0"><i class="fa fa-file-text-o"></i> <span>Document Manager</span></a>
+            <ul>
+                @can('citynexus', ['documents', 'view'])
+                    <li><a href="{{route('templates.index')}}"><i class="fa fa-angle-right"></i>Form Letters</a></li>
+                @endcan
+                @can('citynexus', ['documents', 'create'])
+                    <li><a href="{{route('templates.create')}}"><i class="fa fa-angle-right"></i>Create Form Letter Templates</a></li>
+                @endcan
+                @can('citynexus', ['documents', 'print'])
+                    <li><a href="{{route('queue.index')}}"><i class="fa fa-angle-right"></i>Print Queue</a></li>
+                @endcan
+            </ul>
+        </li>
+    @endcan
     @can('citynexus', ['datasets', 'view'])
         <li> <a role="button" tabindex="0"><i class="fa fa-database"></i> <span>Data Sets</span></a>
             <ul>

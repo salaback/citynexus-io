@@ -5,21 +5,22 @@
 @section('main')
 
     <div class="col-xs-12">
-        <h1 class="font-thin h3 m-0">Create Document Template</h1>
+        <h1 class="font-thin h3 m-0">Edit Document Template</h1>
     </div>
-    <form action="{{route('templates.store')}}" method="post">
+    <form action="{{route('templates.update', [$template->id])}}" method="post">
 
     <div class="boxs">
         <div class="boxs-body">
                 {{csrf_field()}}
-                <input type="hidden" id="body-content" name="body">
+                {{method_field('patch')}}
+                <input type="hidden" id="body" name="body" value="{!! $template->body !!}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="name">
                                 Document Name
                             </label>
-                            <input type="text" name="name" class="form-control" id="name" value="{{old('name')}}">
+                            <input type="text" name="name" class="form-control" id="name" value="@if(old('name') != null){{old('name')}}@else{{$template->name}}@endif">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -30,8 +31,8 @@
 
                             <select name="type" id="type" class="form-control">
                                     <option value="">Select One</option>
-                                    <option value="letter">Letter</option>
-                                    <option value="email">Email</option>
+                                    <option value="letter" @if($template->type == 'letter') selected @endif>Letter</option>
+                                    <option value="email"@if($template->type == 'email') selected @endif>Email</option>
                                 </select>
                         </div>
                     </div>
@@ -41,22 +42,22 @@
                         </label>
                         <div class='togglebutton'>
                             <label>
-                                <input type="checkbox" name="visible_on[buildings]" id="buildings" value="true">
+                                <input type="checkbox" name="relations[buildings]" id="buildings" @if(isset($template->visible_on['buildings'])) checked @endif value="true">
                                 Buildings</label>
                         </div>
                         <div class='togglebutton'>
                             <label>
-                                <input type="checkbox" name="visible_on[units]" id="units" value="true">
+                                <input type="checkbox" name="relations[units]" id="units" @if(isset($template->visible_on['units'])) checked @endif value="true">
                                 Units</label>
                         </div>
                         <div class='togglebutton'>
                             <label>
-                                <input type="checkbox" name="visible_on[entities]" id="entities" value="true">
+                                <input type="checkbox" name="relations[entities]" id="entities" @if(isset($template->visible_on['entities'])) checked @endif value="true">
                                 Entities</label>
                         </div>
                     </div>
                 </div>
-            <input type="submit" class="btn btn-primary btn-raised" value="Create Template">
+            <input type="submit" class="btn btn-primary btn-raised" value="Update Template">
         </div>
     </div>
     </form>
@@ -76,19 +77,7 @@
                 </div>
                 <div class="boxs-body">
                     <div id="editor">
-                        <p><<- entity:full_name ->></p>
-                        <p><<- entity:mailing_address ->></p>
-                        <p><br></p>
-                        <p><<- entity:full_name ->>;</p>
-                        <p><br></p>
-                        <p>This letter is to inform you of an issue in unit  <<- unit:unit ->> of your building at  <<- building:address ->>.</p>
-                        <p><br></p>
-                        <p>Please contact me at your earliest convenience.</p>
-                        <p><br></p>
-                        <p>Regards,</p>
-                        <p><br></p>
-                        <p><<- sender:full_name ->></p>
-                        <p><<- sender:title ->>, <<- sender:department ->></p>
+                        {!! $template->body !!}
                     </div>
                 </div>
             </div>
@@ -108,8 +97,7 @@
     });
 
     quill.on('text-change', function () {
-        $('#body-content').val(quill.root.innerHTML);
-        console.log(quill.root.innerHTML);
+        $('#body').val(quill.root.innerHTML);
     });
 
     function insertTag(text)

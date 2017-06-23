@@ -24,6 +24,7 @@
                             <li class="dropdown"> <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-plus"></i> Create New <i class="fa fa-angle-down ml-5"></i></a>
                                 <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
                                     <li><a href="{{route('uploader.create')}}?dataset_id={{$dataset->id}}&type=csv"> CSV/Excel Uploader</a></li>
+                                    <li><a href="{{route('uploader.create')}}?dataset_id={{$dataset->id}}&type=sql"> SQL Uploader</a></li>
                                 </ul>
                             </li>
                         @endcan

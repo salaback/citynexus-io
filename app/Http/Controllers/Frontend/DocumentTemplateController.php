@@ -20,7 +20,9 @@ class DocumentTemplateController extends Controller
      */
     public function index()
     {
-        //
+        $templates = DocumentTemplate::all();
+
+        return view('documents.templates.index', compact('templates'));
     }
 
     /**
@@ -67,7 +69,9 @@ class DocumentTemplateController extends Controller
      */
     public function edit($id)
     {
-        //
+        $template = DocumentTemplate::orderBy('name')->paginate(15);
+
+        return view('documents.templates.edit', compact('template'));
     }
 
     /**
@@ -79,7 +83,12 @@ class DocumentTemplateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $template = DocumentTemplate::find($id);
+
+        $template->update($request->all());
+
+        session()->flash('flash_success', "Changes to template have been saved.");
+        return redirect(route('templates.index'));
     }
 
     /**
