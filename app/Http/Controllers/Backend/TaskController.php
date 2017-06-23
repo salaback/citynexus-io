@@ -91,7 +91,10 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        Task::find($id)->delete();
+        $task = Task::find($id);
+        $task->deleted_by = Auth::id();
+        $task->deleted_at = Carbon::now();
+        $task->save();
 
         return 'deleted';
     }

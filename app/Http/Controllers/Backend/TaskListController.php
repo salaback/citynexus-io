@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\TaskMgr\Model\TaskList;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskListController extends Controller
 {
@@ -97,6 +99,14 @@ class TaskListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $list = TaskList::find($id);
+        foreach($list->task as $i) {
+            $i->deleted_by = Auth::id();
+            $i->deleted_at = Carbon::now();
+            $i->save();
+        }
+        $list->delete();
+
+        return 'deleted';
     }
 }
