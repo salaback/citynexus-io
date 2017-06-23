@@ -46,7 +46,11 @@ class TaskListController extends Controller
      */
     public function store(Request $request)
     {
-        return view('snipits.tasks._task_list')->with('list', TaskList::create($request->all()));
+        $list = TaskList::create($request->all());
+        return view('snipits.tasks._task_list')
+            ->with('list', $list)
+            ->with('model_type', $list->taskable_type)
+            ->with('model_id', $list->takable_id);
     }
 
     /**

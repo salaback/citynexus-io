@@ -236,5 +236,20 @@
             })
         }, 500)
     }
+
+    function hideList(id)
+    {
+        $('#list_wrapper_' + id).fadeOut();
+        $.ajax({
+            url: "{{route('list.index')}}/" + id,
+            type: "post",
+            data:{
+                _method: 'delete',
+            },
+            error: function (data) {
+                alert('warning', JSON.stringify(data))
+            }
+        })
+    }
 </script>
 @endpush

@@ -1,6 +1,6 @@
 <div class="list-group-item @if(isset($task->due_at) && $task->due_at->isPast()) overdue @endif " id="task_wrapper_{{$task->id}}">
     <div class="checkbox">
-        <i class="pull-right fa fa-edit" onclick="editTask({{$task->id}})"></i>
+        {{--<i class="pull-right fa fa-edit" onclick="editTask({{$task->id}})"></i>--}}
         <label>
             <input type="checkbox" name="datapointPropertyRange" id="task_{{$task->id}}" onclick="completeTask({{$task->id}})">
         </label>
