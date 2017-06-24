@@ -24,10 +24,10 @@
         <li> <a role="button" tabindex="0"><i class="fa fa-file-text-o"></i> <span>Document Manager</span></a>
             <ul>
                 @can('citynexus', ['documents', 'view'])
-                    <li><a href="{{route('templates.index')}}"><i class="fa fa-angle-right"></i>Form Letters</a></li>
+                    <li><a href="{{route('templates.index')}}"><i class="fa fa-angle-right"></i>Letter Templates</a></li>
                 @endcan
                 @can('citynexus', ['documents', 'create'])
-                    <li><a href="{{route('templates.create')}}"><i class="fa fa-angle-right"></i>Create Form Letter Templates</a></li>
+                    <li><a href="{{route('templates.create')}}"><i class="fa fa-angle-right"></i>Create Letter Templates</a></li>
                 @endcan
                 @can('citynexus', ['documents', 'print'])
                     <li><a href="{{route('queue.index')}}"><i class="fa fa-angle-right"></i>Print Queue</a></li>

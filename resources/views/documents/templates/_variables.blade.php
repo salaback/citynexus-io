@@ -39,9 +39,8 @@
 <div id="misc-variables">
     <h4>Misc. Variables</h4>
     <div class="variables">
+        <div class="label label-default variable" draggable="true" onclick="insertTag('misc:template_id')"> Template ID </div>
         <div class="label label-default variable" draggable="true" onclick="insertTag('misc:document_id')"> Document ID </div>
-        <div class="label label-default variable" draggable="true" onclick="insertTag('misc:queue_id')"> Queue ID </div>
-        <div class="label label-default variable" draggable="true" onclick="insertTag('misc:printed_at')"> Time Stamp when Printed </div>
-        <div class="label label-default variable" draggable="true" onclick="insertTag('misc:created_at')"> Time Stamp when Queued </div>
+        <div class="label label-default variable" draggable="true" onclick="insertTag('misc:created_at')"> Time Stamp when Created </div>
     </div>
 </div>

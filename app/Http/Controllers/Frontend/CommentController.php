@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\ReplyToComment;
 use App\PropertyMgr\Model\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -54,7 +55,7 @@ class CommentController extends Controller
             $comment->save();
         }
 
-        return view('property.snipits._comment', compact('comment'));
+        return view('snipits._comment', compact('comment'));
     }
 
     /**
@@ -116,7 +117,15 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+
+        if(Auth::id() == $comment->posted_by || Auth::user()->can('citynexus', ['admin', 'delete-comments']))
+        {
+            if(Comment::find($id)->delete()) return 'deleted';
+        }
+        else
+            return response(403, 'Not Authorized');
+
     }
 
     public function search(Request $request)

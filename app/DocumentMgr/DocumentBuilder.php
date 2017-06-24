@@ -13,15 +13,19 @@ class DocumentBuilder
     {
         $template = DocumentTemplate::find($id);
         $data = $this->createDataArray($template->body);
-        $data = $this->loadDataArray($data, $models);
-        $body = $this->createBody($template->body, $data);
-
-        return Document::create([
+        $document = Document::create([
             'cn_document_template_id' => $template->id,
-            'body' => $body,
+            'body' => 'temp',
             'history' => [Carbon::now()->toDateTimeString() => ['action' => 'created']],
             'created_by' => Auth::id()
         ]);
+
+        $models['document'] = $document;
+        $data = $this->loadDataArray($data, $models);
+        $document->body = $this->createBody($template->body, $data);
+        $document->save();
+
+        return $document;
     }
     public function createDataArray($body)
     {
@@ -112,7 +116,7 @@ class DocumentBuilder
         switch ($i)
         {
             case "address":
-                return title_case($model->oneLineAddress);
+                return strtoupper($model->oneLineAddress);
                 break;
 
             case "units":
@@ -120,7 +124,7 @@ class DocumentBuilder
                 break;
 
             default:
-                return $model->$i;
+                return strtoupper($model->$i);
         }
     }
 
@@ -130,11 +134,11 @@ class DocumentBuilder
         switch ($i)
         {
             case "address":
-                return title_case($model->oneLineAddress);
+                return strtoupper($model->oneLineAddress);
                 break;
 
             default:
-                return $model->$i;
+                return strtoupper($model->$i);
         }
     }
 
@@ -143,9 +147,9 @@ class DocumentBuilder
         switch ($i)
         {
             case 'full_name':
-                return title_case($model->name);
+                return strtoupper($model->name);
             default:
-                return $model->$i;
+                return strtoupper($model->$i);
         }
     }
 
@@ -166,19 +170,20 @@ class DocumentBuilder
     {
         switch ($i)
         {
-            case 'document_id':
-                if(isset($models['template']))
-                    return $models['template']->id;
+            case 'template':
+                if(isset($models['document']))
+                    return $models['document']->cn_document_template_id;
                 else
                     return null;
                 break;
 
-            case 'queue_id':
-                if(isset($models['queue']))
-                    return $models['queue']->id;
+            case 'document_id':
+                if(isset($models['document']))
+                    return $models['document']->id;
                 else
                     return null;
                 break;
+
 
             case 'printed_at':
                 if(isset($models['queue']) && $models['queue']->printed_at)

@@ -77,11 +77,11 @@ class DocumentBuilderTest extends TestCase
         $data = $this->documentBuilder->createDataArray($body);
         $result = $this->documentBuilder->loadDataArray($data, ['property' => $property,]);
 
-        $this->assertSame($result['building']['address'], $property->oneLineAddress);
-        $this->assertSame($result['building']['units'], 1);
-        $this->assertSame($result['building']['city'], $property->city);
-        $this->assertSame($result['building']['state'], $property->state);
-        $this->assertSame($result['building']['postcode'], $property->postcode);
+        $this->assertSame(strtoupper($property->oneLineAddress), $result['building']['address'], $property->oneLineAddress);
+        $this->assertSame(1, $result['building']['units'], 1);
+        $this->assertSame(strtoupper($property->city), $result['building']['city'], $property->city);
+        $this->assertSame(strtoupper($property->state), $result['building']['state'], $property->state);
+        $this->assertSame(strtoupper($property->postcode), $result['building']['postcode'], $property->postcode);
     }
 
     public function testLoadDataArrayWithUnit()
@@ -102,13 +102,13 @@ class DocumentBuilderTest extends TestCase
         $data = $this->documentBuilder->createDataArray($body);
         $result = $this->documentBuilder->loadDataArray($data, ['property' => $unit,]);
 
-        $this->assertSame($result['building']['address'], $property->oneLineAddress);
-        $this->assertSame($result['building']['units'], 1);
-        $this->assertSame($result['building']['city'], $property->city);
-        $this->assertSame($result['building']['state'], $property->state);
-        $this->assertSame($result['building']['postcode'], $property->postcode);
-        $this->assertSame($result['unit']['unit'], $unit->unit);
-        $this->assertSame($result['unit']['address'], $unit->oneLineAddress);
+        $this->assertSame(strtoupper($property->oneLineAddress), $result['building']['address'], $property->oneLineAddress, 'Property one line address');
+        $this->assertSame(1, $result['building']['units'], 1);
+        $this->assertSame(strtoupper($property->city), $result['building']['city'], $property->city);
+        $this->assertSame(strtoupper($property->state), $result['building']['state'], $property->state);
+        $this->assertSame(strtoupper($property->postcode), $result['building']['postcode'], $property->postcode);
+        $this->assertSame(strtoupper($unit->unit), $result['unit']['unit'], $unit->unit, 'Unit number');
+        $this->assertSame(strtoupper($unit->oneLineAddress), $result['unit']['address'], $unit->oneLineAddress, 'Unit one line address');
     }
 
     public function testLoadDataArrayWithEntity()
@@ -125,9 +125,9 @@ class DocumentBuilderTest extends TestCase
         $entity = factory(Entity::class)->create();
         $result = $this->documentBuilder->loadDataArray($data, ['entity' => $entity,]);
 
-        $this->assertSame($result['entity']['first_name'], $entity->first_name);
-        $this->assertSame($result['entity']['last_name'], $entity->last_name);
-        $this->assertSame($result['entity']['full_name'], $entity->name);
+        $this->assertSame(strtoupper($entity->first_name), $result['entity']['first_name'], 'First name of entity');
+        $this->assertSame(strtoupper($entity->last_name), $result['entity']['last_name'], 'Last name of entity');
+        $this->assertSame(strtoupper($entity->name), $result['entity']['full_name'], 'Full name of entity');
 
 
 
@@ -144,7 +144,7 @@ class DocumentBuilderTest extends TestCase
         $body = "<p>This is a building address &lt;&lt;- building:address -&gt;&gt;.</p>";
 
 
-        $expected = "<p>This is a building address " . $property->oneLineAddress . ".</p>";
+        $expected = "<p>This is a building address " . strtoupper($property->oneLineAddress) . ".</p>";
 
         $template = factory(DocumentTemplate::class)->create(['body' => $body]);
         $result = $this->documentBuilder->buildDocument($template->id, ['property' => $property]);
