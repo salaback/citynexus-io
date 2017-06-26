@@ -96,7 +96,9 @@ class EntityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Entity::find($id)->update($request->all());
+
+        session()->flash('flash_success', 'Entity Updated');
     }
 
     /**

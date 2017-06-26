@@ -8,7 +8,7 @@
         <div class="pagecontent">
 
             <div class="col-xs-12">
-                <h1 class="font-thin h3 m-0">{{$entity->name}}</h1>
+                <h1 class="font-thin h3 m-0">{{$entity->name}} <small><i role="button" class="fa fa-pencil" data-toggle="modal" data-target="#editEntity"></i></small></h1>
                 @include('snipits._tags', ['tags' => $entity->tags, 'trashedTags' => $entity->trashedTags])
             </div>
 
@@ -92,3 +92,43 @@
         <!-- /page content -->
     </div>
 @endsection
+
+@push('modal')
+
+<div class="modal fade" id="editEntity">
+	<div class="modal-dialog">
+		<div class="modal-content">
+            <form action="{{route('entity.store', [$entity->id])}}" method="POST" role="form">
+
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Edit Entity</h4>
+			</div>
+			<div class="modal-body">
+                    {{csrf_field()}}
+                    {{method_field('patch')}}
+
+					<div class="form-group">
+						<label for="first_name">First Name</label>
+						<input type="text" class="form-control" name="first_name" id="first_name" value="{{$entity->first_name}}">
+					</div>
+                    <div class="form-group">
+                        <label for="middle_name">Middle Name</label>
+                        <input type="text" name="middle_name" id="middle_name" class="form-control" value="{{$entity->middle_name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name" value="{{$entity->last_name}}">
+                    </div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-raised" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-raised">Save changes</button>
+			</div>
+            </form>
+        </div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@endpush

@@ -5,6 +5,7 @@ namespace App\PropertyMgr\Model;
 use App\DataStore\Model\DataSet;
 use App\Tag;
 use App\TaskMgr\Model\TaskList;
+use App\Traits\SaveToUpper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
 class Entity extends Model
 {
     use SoftDeletes;
-
+    use SaveToUpper;
+    
     protected $fillable = [
         'title',
         'first_name',
