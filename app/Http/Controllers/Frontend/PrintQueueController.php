@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use App\DocumentMgr\Model\PrintQueue;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class PrintQueueController extends Controller
 {
@@ -15,7 +18,7 @@ class PrintQueueController extends Controller
      */
     public function index()
     {
-        $printJobs = PrintQueue::orderBy('created_at')->get();
+        $printJobs = PrintQueue::orderBy('created_at')->whereNull('printed_at')->get();
 
         return view('queue.index', compact('printJobs'));
     }
@@ -84,5 +87,34 @@ class PrintQueueController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function clearFromQueue(Request $request)
+    {
+        $jobs = PrintQueue::findMany($request->get('ids'));
+
+        foreach($jobs as $i)
+        {
+            $i->printed_by = Auth::id();
+            $i->printed_at = Carbon::now();
+            $i->save();
+        }
+
+        return 'cleared';
+    }
+
+    public function printQueue($id = null, Request $request)
+    {
+        if($id != null)
+        {
+
+        }
+        elseif($request->exists('jobs'))
+        {
+            $jobs = PrintQueue::with('document')->find($request->get('jobs'));
+
+            $pdf = \PDF::loadHTML(view('documents.pdf', compact('jobs')));
+            return $pdf->stream();
+        }
     }
 }

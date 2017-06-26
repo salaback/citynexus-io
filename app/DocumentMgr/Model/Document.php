@@ -9,11 +9,12 @@ class Document extends Model
 {
     protected $table = 'cn_documents';
 
-    protected $fillable = ['cn_document_template_id', 'documented_id', 'documented_type', 'history', 'created_by', 'status', 'sender_id', 'body'];
+    protected $fillable = ['cn_document_template_id', 'documented_id', 'documented_type', 'history', 'created_by', 'status', 'sender_id', 'body', 'related'];
 
     protected $casts = [
         'elements' => 'array',
-        'history' => 'array'
+        'history' => 'array',
+        'related' => 'array'
     ];
 
     public function template()

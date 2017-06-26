@@ -43,7 +43,9 @@
         </div>
         <div class="col-md-6">
             <section class="boxs">
-                <form role="form">
+                <form role="form"  action="{{route('client.update', [config('client.id')])}}" method="post" class='horizontal-form' enctype="multipart/form-data">
+                    {{csrf_field()}}
+                    {{method_field('patch')}}
                     <div class="boxs-header dvd dvd-btm">
                         <h1 class="custom-font"><strong>General </strong>Settings</h1>
                     </div>
@@ -82,11 +84,33 @@
 
                                     </select>
                                 </div>
+                            <bold>Template Settings</bold>
+
+                        <div class="row">
+                                <label for="logo" class="col-sm-4 control-label">Agency Logo</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="logo">
+                                </div>
+                        </div>
+                            <div class="row">
+                                <div class="form-group ">
+                                    <label for="logo" class="col-sm-4 control-label">Agency Address</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="address[]" class="form-control" placeholder="Line 1" value="{{config('client.address.0')}}">
+                                        <input type="text" name="address[]" class="form-control" placeholder="Line 2" value="{{config('client.address.1')}}">
+                                        <input type="text" name="address[]" class="form-control" placeholder="Line 3" value="{{config('client.address.2')}}">
+                                        <input type="text" name="address[]" class="form-control" placeholder="Line 3" value="{{config('client.address.3')}}">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row"></div>
                     </div>
                     <div class="boxs-footer">
                         <button type="submit" class="btn btn-raised btn-primary">Save Settings</button>
                     </div>
+
+
                 </form>
             </section>
         </div>
@@ -129,3 +153,23 @@
 
 
 @endsection
+
+@push('style')
+
+@endpush
+@push('scripts')
+<script src="/assets/js/vendor/summernote/summernote.min.js"></script>
+
+<script>
+    //load wysiwyg editor
+    $('#address').summernote({
+        height: 100,
+        toolbar:{
+            visible: false
+        },
+        disableResize: true,
+        disableResizeEditor: true
+    });
+</script>
+
+@endpush

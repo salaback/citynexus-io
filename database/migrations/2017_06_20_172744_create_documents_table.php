@@ -24,6 +24,7 @@ class CreateDocumentsTable extends Migration
             $table->integer('sender_id')->nullable();
             $table->softDeletes();
             $table->string('status')->nullable();
+            $table->json('related')->nullable();
             $table->timestamps();
         });
     }

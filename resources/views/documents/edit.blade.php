@@ -15,8 +15,10 @@
                 </div>
             </div>
             <div class="boxs-footer">
-                <form class="form">
+                <form class="form" method="post" action="{{route('documents.update', [$document->id])}}">
                     {{csrf_field()}}
+                    {{method_field('patch')}}
+                    <input type="hidden" name="body" id="document_body" value="{!! $document->body !!}">
                     <button class="btn btn-primary btn-raised">Queue Letter for Printing</button>
                 </form>
             </div>
@@ -43,13 +45,8 @@
     });
 
     quill.on('text-change', function () {
-        $('#body').val(quill.root.innerHTML);
+        $('#document_body').val(quill.root.innerHTML);
     });
-
-    function queueLetter()
-    {
-        $
-    }
 
 </script>
 

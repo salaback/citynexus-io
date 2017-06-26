@@ -98,6 +98,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('documents/templates/get-form/{id?}', 'Frontend\DocumentTemplateController@getForm')->name('templates.getForm');
     Route::resource('documents/templates', 'Frontend\DocumentTemplateController');
+
+    Route::post('documents/queue/print-queue/{id?}', 'Frontend\PrintQueueController@printQueue')->name('queue.print');
+    Route::post('documents/queue/clear-from-queue', 'Frontend\PrintQueueController@clearFromQueue')->name('queue.clear');
+
     Route::resource('documents/queue', 'Frontend\PrintQueueController');
     Route::resource('documents', 'Frontend\DocumentController');
 
