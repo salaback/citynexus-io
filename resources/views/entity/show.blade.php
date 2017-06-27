@@ -134,6 +134,29 @@
                         <label for="last_name">Last Name</label>
                         <input type="text" class="form-control" name="last_name" id="last_name" value="{{$entity->last_name}}">
                     </div>
+                    <div class="form-group">
+                        <label for="company_name">Company Name</label>
+                        <input type="text" class="form-control" name="last_name" id="company_name" value="{{$entity->company_name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Company Suffix</label>
+                        <select  class="form-control" name="last_name" id="company_structure">
+                            <option value="">Select One</option>
+                            <option value="CO.">Co.</option>
+                            <option value="COMPANY">Company</option>
+                            <option value="CORP.">Corp.</option>
+                            <option value="CORPORATION">Corporation</option>
+                            <option value="INC.">INC.</option>
+                            <option value="INCORPORATED">Incorporated</option>
+                            <option value="LIMITED">Limited</option>
+                            <option value="LIMITED COMPANY">Limited Company</option>
+                            <option value="LLC">LLC</option>
+                            <option value="LLP">LLP</option>
+                            <option value="LTD">LTD</option>
+                            <option value="PARTNERS">Partners</option>
+                            <option value="TRUST">Trust</option>
+                        </select>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
