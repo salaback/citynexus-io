@@ -123,6 +123,10 @@
                     {{method_field('patch')}}
 
                     <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" name="title" id="title" value="{{$entity->title}}">
+                    </div>
+                    <div class="form-group">
                         <label for="first_name">First Name</label>
                         <input type="text" class="form-control" name="first_name" id="first_name" value="{{$entity->first_name}}">
                     </div>
@@ -135,26 +139,31 @@
                         <input type="text" class="form-control" name="last_name" id="last_name" value="{{$entity->last_name}}">
                     </div>
                     <div class="form-group">
+                        <label for="suffix">Suffix </label>
+                        <input type="text" class="form-control" name="suffix" id="suffix" value="{{$entity->suffix}}">
+                    </div>
+                    <hr>
+                    <div class="form-group">
                         <label for="company_name">Company Name</label>
-                        <input type="text" class="form-control" name="last_name" id="company_name" value="{{$entity->company_name}}">
+                        <input type="text" class="form-control" name="company_name" id="company_name" value="{{$entity->company_name}}">
                     </div>
                     <div class="form-group">
-                        <label for="last_name">Company Suffix</label>
-                        <select  class="form-control" name="last_name" id="company_structure">
+                        <label for="company_structure">Company Suffix</label>
+                        <select  class="form-control" name="company_structure" id="company_structure">
                             <option value="">Select One</option>
-                            <option value="CO.">Co.</option>
-                            <option value="COMPANY">Company</option>
-                            <option value="CORP.">Corp.</option>
-                            <option value="CORPORATION">Corporation</option>
-                            <option value="INC.">INC.</option>
-                            <option value="INCORPORATED">Incorporated</option>
-                            <option value="LIMITED">Limited</option>
-                            <option value="LIMITED COMPANY">Limited Company</option>
-                            <option value="LLC">LLC</option>
-                            <option value="LLP">LLP</option>
-                            <option value="LTD">LTD</option>
-                            <option value="PARTNERS">Partners</option>
-                            <option value="TRUST">Trust</option>
+                            <option value="CO." @if($entity->company_structure == 'CO.') selected @endif>Co.</option>
+                            <option value="COMPANY" @if($entity->company_structure == 'COMPANY') selected @endif>Company</option>
+                            <option value="CORP." @if($entity->company_structure == 'CORP.') selected @endif>Corp.</option>
+                            <option value="CORPORATION" @if($entity->company_structure == 'CORPORATION') selected @endif>Corporation</option>
+                            <option value="INC." @if($entity->company_structure == 'INC.') selected @endif>INC.</option>
+                            <option value="INCORPORATED" @if($entity->company_structure == 'INCORPORATED') selected @endif>Incorporated</option>
+                            <option value="LIMITED" @if($entity->company_structure == 'LIMITED') selected @endif>Limited</option>
+                            <option value="LIMITED COMPANY" @if($entity->company_structure == 'LIMITED COMPANY') selected @endif>Limited Company</option>
+                            <option value="LLC" @if($entity->company_structure == 'LLC') selected @endif>LLC</option>
+                            <option value="LLP" @if($entity->company_structure == 'LLP') selected @endif>LLP</option>
+                            <option value="LTD" @if($entity->company_structure == 'LTD') selected @endif>LTD</option>
+                            <option value="PARTNERS" @if($entity->company_structure == 'PARTNERS') selected @endif>Partners</option>
+                            <option value="TRUST" @if($entity->company_structure == 'TRUST') selected @endif>Trust</option>
                         </select>
                     </div>
 
