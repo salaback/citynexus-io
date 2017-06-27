@@ -16,7 +16,7 @@ class Entity extends Model
 {
     use SoftDeletes;
     use SaveToUpper;
-    
+
     protected $fillable = [
         'title',
         'first_name',
@@ -66,7 +66,7 @@ class Entity extends Model
 
         foreach(DataSet::all() as $dataset)
         {
-            $query = DB::table($dataset->table_name)->where('property_id', $ids)->get();
+            $query = DB::table($dataset->table_name)->whereIn('property_id', $ids)->get();
 
             if($query->count() != 0)
             {

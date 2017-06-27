@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\PropertyMgr\Model\Entity;
+use App\PropertyMgr\Model\Property;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Facades\Datatables;
 
 class EntityController extends Controller
@@ -99,6 +102,8 @@ class EntityController extends Controller
         Entity::find($id)->update($request->all());
 
         session()->flash('flash_success', 'Entity Updated');
+
+        return redirect()->back();
     }
 
     /**
@@ -110,5 +115,30 @@ class EntityController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addRelationship(Request $request)
+    {
+
+        if($request->exists('property_id'))
+        {
+            DB::table('cn_entitables')->insert([
+                'entitables_type' => 'App\\PropertyMgr\\Model\\Property',
+                'entitables_id' => $request->get('property_id'),
+                'entity_id' => $request->get('entity_id'),
+                'role'=> $request->get('role'),
+                'created_at' => Carbon::now(),
+            ]);
+
+            session()->flash('flash_success', 'New relationship added.');
+
+            return redirect()->back();
+        }
+
+    }
+
+    public function removeRelationship(Request $request)
+    {
+
     }
 }

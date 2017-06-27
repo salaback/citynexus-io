@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/assets/css/citynexus.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs=" crossorigin="anonymous" />
 
     @stack('style')
 

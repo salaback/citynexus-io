@@ -100,7 +100,7 @@ class TaskListController extends Controller
     public function destroy($id)
     {
         $list = TaskList::find($id);
-        foreach($list->task as $i) {
+        foreach($list->tasks as $i) {
             $i->deleted_by = Auth::id();
             $i->deleted_at = Carbon::now();
             $i->save();

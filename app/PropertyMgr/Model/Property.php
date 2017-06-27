@@ -6,6 +6,7 @@ use App\DataStore\Model\DataSet;
 use App\DocumentMgr\Model\DocumentTemplate;
 use App\TaskMgr\Model\Task;
 use App\TaskMgr\Model\TaskList;
+use App\Traits\SaveToUpper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Phaza\LaravelPostgis\Eloquent\PostgisTrait;
@@ -14,6 +15,8 @@ class Property extends Model
 {
     use SoftDeletes;
     use PostgisTrait;
+    use SaveToUpper;
+
 
     protected $fillable = [
         'building_id',

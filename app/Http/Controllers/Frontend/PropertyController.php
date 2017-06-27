@@ -25,6 +25,20 @@ class PropertyController extends Controller
 
         if($request->ajax())
         {
+            if(isset($_GET['type']))
+            {
+                switch ($_GET['type'])
+                {
+                    case 'select':
+                        $return = [];
+                        $properties = Property::all();
+                        foreach($properties as $i)
+                        {
+                            $return[] = ['id' => $i->id, 'text' => $i->oneLineAddress];
+                        }
+                        return $return;
+                }
+            }
             return Property::all();
         }
         else

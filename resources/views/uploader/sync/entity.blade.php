@@ -43,7 +43,15 @@
                                     <div class="form-group">
                                         <label for="full_address" class="col-sm-3 control-label">Entity Role</label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="sync[role]" class="form-control col-sm-9">
+                                            <select type="text" name="sync[role]" id='role' class="form-control">
+                                                <option value="">Select One</option>
+                                                <option value="owner">Owner</option>
+                                                <option value="tenant">Tenant</option>
+                                                <option value="manger">Property Manager</option>
+                                                <option value="Receiver">Receiver</option>
+                                                <option value="common">Common Name</option>
+                                                <option value="other">Other</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -114,6 +122,21 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="full_address" class="col-sm-3 control-label">Entity Role</label>
+                                            <div class="col-sm-4">
+                                                <select type="text" name="sync[role]" id='role' class="form-control">
+                                                    <option value="">Select One</option>
+                                                    <option value="owner">Owner</option>
+                                                    <option value="tenant">Tenant</option>
+                                                    <option value="manger">Property Manager</option>
+                                                    <option value="Receiver">Receiver</option>
+                                                    <option value="common">Common Name</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                 </div>
                                 <button class="btn btn-primary btn-raised">Save Parsed Entity Sync</button>
                             </form>
