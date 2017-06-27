@@ -14,6 +14,12 @@
                 @else
                     {{title_case($property->OneLineAddress)}}
                 @endif
+
+                @can('citynexus', ['properties', 'edit'])
+                        <small>
+                            <i role="button" class="fa fa-pencil" data-toggle="modal" data-target="#editProperty"></i>
+                        </small>
+                @endcan
             </h1>
             @include('snipits._tags', ['tags' => $property->tags, 'trashedTags' => $property->trashedTags])
         </div>
@@ -125,10 +131,115 @@
 
 @endpush
 
+@push('modal')
+
+<div class="modal fade" id="editProperty">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Edit Property</h4>
+			</div>
+			<div class="modal-body">
+                {{var_dump($property->address)}}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="address" class="col-sm-3 control-label">Address</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="address" id="address" class="form-control" value="{{$property->address}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city" class="col-sm-3 control-label">City</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="city" id="city" class="form-control" value="{{$property->city}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="state" class="col-sm-3 control-label">State</label>
+                            <div class="col-sm-9">
+                                <select name="state" id="state" class="form-control">
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District Of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA" selected>Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city" class="col-sm-3 control-label">Postal Code</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="city" id="city" class="form-control" value="{{$property->postcode}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-raised" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-raised">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@endpush
+
 @push('scripts')
 
 <script src="/assets/js/vendor/chosen/chosen.jquery.min.js"></script>
 <script src="/assets/js/vendor/filestyle/bootstrap-filestyle.min.js"></script>
+<script>
+    $('#state').val({{$property->state}});
+</script>
 @if($property->location != null)
     <script>
 

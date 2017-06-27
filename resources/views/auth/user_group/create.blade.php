@@ -7,9 +7,10 @@
 
 @extends('master.main')
 
-@include('auth.user_group._permissions')
 
 @section('main')
+
+    @php($permission_sets = config('auth.permissions'))
 
     <div class="row">
         <div class="col-sm-12">
@@ -111,7 +112,7 @@
 
     function clearChecks( type  )
     {
-        event.preventDefault()
+        event.preventDefault();
         $('.' + type).prop("checked", false);
         $('#' + type + 'SelectAll').removeClass('hidden');
         $('#' + type + 'UnselectAll').addClass('hidden');
