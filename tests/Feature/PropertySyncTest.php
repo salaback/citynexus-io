@@ -1,5 +1,11 @@
 <?php
 
+namespace Tests\Feature;
+
+use App\PropertyMgr\Model\Address;
+use App\PropertyMgr\Model\Property;
+use App\PropertyMgr\PropertySync;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -8,51 +14,50 @@ class PropertySyncTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function __construct()
+    protected  $connectionsToTransact = [
+        'public',
+        'tenant'
+    ];
+
+    protected $propSync;
+
+    public function setUp()
     {
+        parent::setUp();
+        $this->client->logInAsClient();
         $this->address_array = [
-              "building" => null,
-              "house_num" => "23",
-              "predir" => null,
-              "qual" => null,
-              "pretype" => null,
-              "name" => "MONMOUTH",
-              "suftype" => "ST",
-              "sufdir" => null,
-              "ruralroute" => null,
-              "extra" => null,
-              "city" => "SOMERVILLE",
-              "state" => "MA",
-              "country" => "USA",
-              "postcode" => "02143",
-              "box" => null,
-              "unit" => "APARTMENT 1R",
-            ];
+            "building" => null,
+            "house_num" => "23",
+            "predir" => null,
+            "qual" => null,
+            "pretype" => null,
+            "name" => "MONMOUTH",
+            "suftype" => "ST",
+            "sufdir" => null,
+            "ruralroute" => null,
+            "extra" => null,
+            "city" => "SOMERVILLE",
+            "state" => "MA",
+            "country" => "USA",
+            "postcode" => "02143",
+            "box" => null,
+            "unit" => "1R",
+        ];
 
+        $this->propSync = new PropertySync();
         $this->address = '23 Monmouth Street, Apt. 1R, Somerville, MA 02143';
-
-    }
-
-    public function invokeMethod($methodName, array $parameters = array())
-    {
-        $object = new App\PropertyMgr\PropertySync();
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
     }
 
     public function testParseFullAddress()
     {
-        $result = $this->invokeMethod('parseFullAddress', [$this->address]);
+        $result = $this->invokeMethod($this->propSync, 'parseFullAddress', [$this->address]);
 
         $this->assertEquals($this->address_array, $result);
     }
 
     public function testMakeAddress()
     {
-        $results = $this->invokeMethod('makeAddress', [$this->address_array]);
+        $results = $this->invokeMethod($this->propSync, 'makeAddress', [$this->address_array]);
         $expected = '23 MONMOUTH ST';
 
         $this->assertSame($expected, $results);
@@ -63,17 +68,17 @@ class PropertySyncTest extends TestCase
         $row = [
             'full_address'  => '23 Monmouth Street, Apt 1R'
         ];
-        $sync = (object) [
+        $sync = [
             'full_address'          => 'full_address',
             'city'                  => 'city',
             'default_city'          => 'SOMERVILLE',
             'state'                 => 'state',
             'default_state'         => 'MA',
-            'postal_code'           => 'postal_code',
+            'postcode'              => 'postcode',
             'default_postal_code'   => '02143'
         ];
 
-        $results = $this->invokeMethod('rawUnparsedAddress', [$row, $sync]);
+        $results = $this->invokeMethod($this->propSync, 'rawUnparsedAddress', [$row, $sync]);
 
         $this->assertSame($this->address_array, $results);
     }
@@ -81,13 +86,13 @@ class PropertySyncTest extends TestCase
     public function testParsedAddress()
     {
         $row = [
-            'street_number'         => '23',
+            'house_number'         => '23',
             'street_name'           => 'Monmouth',
             'street_type'           => 'street',
             'unit'                  => 'apt. 1R'
         ];
-        $sync = (object) [
-            'street_number'         => 'street_number',
+        $sync = [
+            'house_number'         => 'house_number',
             'street_name'           => 'street_name',
             'street_type'           => 'street_type',
             'unit'                  => 'unit',
@@ -95,14 +100,14 @@ class PropertySyncTest extends TestCase
             'default_city'          => 'SOMERVILLE',
             'state'                 => 'state',
             'default_state'         => 'MA',
-            'postal_code'           => 'postal_code',
+            'postcode'           => 'postcode',
             'default_postal_code'   => '02143'
         ];
 
-        $results = $this->invokeMethod('parsedAddress', [$row, $sync]);
+        $results = $this->invokeMethod($this->propSync, 'parsedAddress', [$row, $sync]);
 
-        $expected = App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
-            ->where('unit', 'APARTMENT 1R')
+        $expected = \App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
+            ->where('unit', '1 R')
             ->first();
 
         $this->assertSame($expected->id, $results);
@@ -110,7 +115,7 @@ class PropertySyncTest extends TestCase
 
     public function testGetPropertyId()
     {
-        $building = App\PropertyMgr\Model\Property::create([
+        $building = \App\PropertyMgr\Model\Property::firstOrCreate([
             'address'       => '23 MONMOUTH ST',
             'city'          => 'SOMERVILLE',
             'state'         => 'MA',
@@ -119,18 +124,17 @@ class PropertySyncTest extends TestCase
             'is_building'   => true
         ]);
 
-        $unit = App\PropertyMgr\Model\Property::create([
-            'unit'          => 'APARTMENT 1R',
+        $unit = \App\PropertyMgr\Model\Property::firstOrCreate([
+            'unit'          => '1R',
             'building_id'   => $building->id,
-            'address'       => '23 MONMOUTH ST',
-            'city'          => 'SOMERVILLE',
-            'state'         => 'MA',
-            'postcode'      => '02143',
-            'country'        => 'USA',
             'is_unit'       => true
         ]);
 
-        $result = $this->invokeMethod('getPropertyId', [$this->address_array]);
+        $address = Address::firstOrCreate($this->address_array);
+        $address->property_id = $unit->id;
+        $address->save();
+
+        $result = $this->invokeMethod($this->propSync, 'getPropertyId', [$this->address_array]);
 
         $this->assertSame($unit->id, $result);
     }
@@ -138,27 +142,23 @@ class PropertySyncTest extends TestCase
     public function testUnparsedAddress()
     {
         $row = [
-            'full_address'  => '23 Monmouth Street, Apt 1R'
+            'full_address'  => strtoupper('23 Monmouth Street, Apt 1R')
         ];
-        $sync = (object) [
+        $sync = [
             'full_address'         => 'full_address',
             'city'                  => 'city',
             'default_city'          => 'SOMERVILLE',
             'state'                 => 'state',
             'default_state'         => 'MA',
-            'postal_code'           => 'postal_code',
+            'postcode'           => 'postcode',
             'default_postal_code'   => '02143'
         ];
 
-        $results = $this->invokeMethod('unparsedAddress', [$row, $sync]);
+        $result = $this->invokeMethod($this->propSync, 'unparsedAddress', [$row, $sync]);
 
-        $expected = App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
-            ->where('unit', 'APARTMENT 1R')
-            ->first();
-
-        $this->assertSame($expected->id, $results);
+        $this->assertDatabaseHas('cn_properties', [
+            'unit' => '1R',
+            'id' => $result
+        ]);
     }
-
-
 }
-

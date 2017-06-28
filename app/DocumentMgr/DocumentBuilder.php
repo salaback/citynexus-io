@@ -13,12 +13,14 @@ class DocumentBuilder
     {
         $template = DocumentTemplate::find($id);
         $data = $this->createDataArray($template->body);
-        $document = Document::create([
+        $document = [
             'cn_document_template_id' => $template->id,
             'body' => 'temp',
             'history' => [Carbon::now()->toDateTimeString() => ['action' => 'created']],
             'created_by' => Auth::id()
-        ]);
+        ];
+
+        $document = Document::create($document);
 
         $models['document'] = $document;
         $data = $this->loadDataArray($data, $models);

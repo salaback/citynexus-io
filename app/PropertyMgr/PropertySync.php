@@ -18,6 +18,11 @@ use Illuminate\Support\Facades\DB;
 
 class PropertySync
 {
+    /*
+     *
+     * Needs testing
+     *
+     */
     public function addPropertyID($data, $sync)
     {
         // find raw address element and send to address sync
@@ -48,6 +53,12 @@ class PropertySync
         return $return;
     }
 
+
+    /*
+     *
+     * Needs testing
+     *
+     */
     public function addCreatedAt($data, $sync)
     {
         foreach($data as $key => $item)
@@ -56,13 +67,30 @@ class PropertySync
         }
     }
 
+    /*
+     *
+     * Passed test 7/27/2017
+     *
+     * Takes is a full address and sends through the tiger address parser
+     * returning address array which can be added to DB
+     *
+     */
     public function parseFullAddress($address)
     {
         $address = $this->addressFilters($address);
 
-        return (array) DB::connection('public')->select("SELECT * FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz', 'tiger.pagc_rules', '" . $address . "')")[0];
+        $return = (array) DB::connection('public')->select("SELECT * FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz', 'tiger.pagc_rules', '" . $address . "')")[0];
+
+        $return['unit'] = $this->cleanUnit($return['unit']);
+
+        return $return;
     }
 
+    /*
+     *
+     * Needs testing
+     *
+     */
     public function addressFilters($address)
     {
         $address = str_replace("'", "", $address);
@@ -75,6 +103,12 @@ class PropertySync
         }
         return $address;
     }
+
+    /*
+     *
+     * Needs testing
+     *
+     */
     public function unparsedAddress($row, $sync)
     {
         $address = $this->rawUnparsedAddress($row, $sync);
@@ -82,6 +116,11 @@ class PropertySync
     }
 
 
+    /*
+     *
+     * Needs testing
+     *
+     */
     public function parsedAddress($row, $sync)
     {
 
@@ -90,6 +129,11 @@ class PropertySync
         return $this->getPropertyId($raw_address);
     }
 
+    /*
+     *
+     * Needs testing
+     *
+     */
     private function rawParsedAddress($row, $sync)
     {
         $full_address = strtoupper(trim($row[$sync['house_number']]));
@@ -103,7 +147,8 @@ class PropertySync
         }
         if(isset($sync['unit']) && isset($row[$sync['unit']]))
         {
-           $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['unit']]));
+
+           $full_address = $full_address . ' ' . $this->cleanUnit(strtoupper(trim($row[$sync['unit']])));
         }
 
         if (isset($sync['city']) && isset($row[$sync['city']]) && $row[$sync['city']] != null)
@@ -125,11 +170,11 @@ class PropertySync
 
             }
 
-            if (!isset($sync['PostalCodeInCity'])) {
-                if (isset($sync['postal_code']) && isset($row[$sync['postal_code']]) && $row[$sync['postal_code']] != null)
-                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['postal_code']]));
-                elseif(isset($sync['default_postal_code']))
-                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_postal_code']));
+            if (!isset($sync['PostcodeInCity'])) {
+                if (isset($sync['postcode']) && isset($row[$sync['postcode']]) && $row[$sync['postcode']] != null)
+                    $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['postcode']]));
+                elseif(isset($sync['default_postcode']))
+                    $full_address = $full_address . ' ' . strtoupper(trim($sync['default_postcode']));
             }
         }
 
@@ -152,42 +197,26 @@ class PropertySync
 
         // first or create  address record
         $addy = array_filter($address);
-        if(!isset($addy['unit']))
-            $addy['unit'] = null;
-        else
-            $addy['unit'] = $this->cleanUnit($addy['unit']);
 
         $addy = Address::firstOrCreate($addy);
 
         // if property id is set, return id
-        if($addy->property_id != null) return $addy->property_id;
+        if($addy->property_id != null) {
+            return $addy->property_id;
+        }
 
         // if address has unit create unit
         if($address['unit'] != null) $property_id = $this->createNewUnit($addy->toArray());
 
         // if not a unit create a building
         else{
-
             $property_id = $this->createNewBuilding($address);
-
         }
 
         $addy->property_id = $property_id;
         $addy->save();
 
-
         return $property_id;
-
-        try
-        {
-
-        }
-
-        catch (\Exception $e)
-        {
-            return false;
-        }
-
     }
 
     /**
@@ -300,6 +329,7 @@ class PropertySync
      */
     private function rawUnparsedAddress($row, $sync)
     {
+
         $return = [];
 
         // make uppercase
@@ -333,11 +363,10 @@ class PropertySync
 
             // if postal code was not in the city
             if (!isset($sync['PostalCodeInCity'])) {
-
                 // and postal code is set use it
                 if (isset($sync['postal_code']) && isset($row[$sync['postal_code']]) && $row[$sync['postal_code']] != null)
                     $full_address = $full_address . ' ' . strtoupper(trim($row[$sync['postal_code']]));
-                elseif(isset($sync->default_postal_code))
+                elseif(isset($sync['default_postal_code']))
                     // else format and use default
                     $full_address = $full_address . ' ' . strtoupper(trim($sync['default_postal_code']));
             }
@@ -375,7 +404,7 @@ class PropertySync
     public function cleanUnit($unit)
     {
         $parts = explode(' ', $unit);
-        $apt_names = ['UNIT' => 'UNIT', '#' => '#', 'UT' => 'UNIT', 'APT' => 'APARTMENT', 'APARTMENT' => 'APARTMENT', 'NO' => 'NUMBER', 'NUMBER' => 'NUMBER', 'LOT' => 'LOT'];
+        $apt_names = ['UNIT' => 'UNIT', '#' => '#', 'UT' => 'UNIT', 'APT' => 'APARTMENT', 'APT.' => 'APARTMENT', 'APARTMENT' => 'APARTMENT', 'NO' => 'NUMBER', 'NO.' => 'NUMBER', 'NUMBER' => 'NUMBER', 'LOT' => 'LOT'];
         $return = '';
         foreach ($parts as $k => $i)
         {

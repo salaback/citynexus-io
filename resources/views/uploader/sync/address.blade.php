@@ -140,7 +140,7 @@
                                     <div class="form-group">
                                         <label for="unit" class="col-sm-3 control-label">Postal Code</label>
                                         <div class="col-sm-4">
-                                            <select name="sync[postal_code]" class="form-control col-sm-9">
+                                            <select name="sync[postcode]" class="form-control col-sm-9">
                                                 <option value="">Select Field</option>
                                                 @foreach($fields as $field)
                                                     <option value="{{$field['key']}}">{{$field['name']}}</option>
@@ -154,7 +154,7 @@
                                     <div class="form-group hidden" id="default-postal-code">
                                         <label for="default-state" class="col-sm-3 control-label">Default Postal Code</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control col-sm-4" name="sync[default_postal_code]">
+                                            <input type="text" class="form-control col-sm-4" name="sync[default_postcode]">
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                                     <div class="form-group">
                                         <label for="unit" class="col-sm-3 control-label">Postal Code</label>
                                         <div class="col-sm-4">
-                                            <select name="sync[postal_code]" class="form-control col-sm-9">
+                                            <select name="sync[postcode]" class="form-control col-sm-9">
                                                 <option value="">Select Field</option>
                                                 @foreach($fields as $field)
                                                     <option value="{{$field['key']}}">{{$field['name']}} </option>
@@ -330,7 +330,7 @@
                                     <div class="form-group hidden" id="default-parsed-postal-code">
                                         <label for="default-postal-code" class="col-sm-3 control-label">Default Postal Code</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control col-sm-4" name="sync[default_postal_code]">
+                                            <input type="text" class="form-control col-sm-4" name="sync[default_postcode]">
                                         </div>
                                     </div>
                                 </div>

@@ -16,8 +16,6 @@ class CreateDocumentsTable extends Migration
         Schema::create('cn_documents', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cn_document_template_id')->unsigned();
-            $table->integer('documented_id')->unsigned();
-            $table->string('documented_type')->unsigned();
             $table->text('body')->nullable();
             $table->json('history')->nullable();
             $table->integer('created_by')->unsigned();
