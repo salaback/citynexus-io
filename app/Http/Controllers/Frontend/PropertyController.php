@@ -81,7 +81,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -135,7 +135,13 @@ class PropertyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('citynexus', ['properties', 'edit']);
+
+        Property::find($id)->update($request->all());
+
+        session()->flash('flash_success', 'Property Updated');
+
+        return redirect()->back();
     }
 
     /**

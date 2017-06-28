@@ -140,16 +140,68 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Edit Property</h4>
 			</div>
-			<div class="modal-body">
-                {{var_dump($property->address)}}
+            <form class="form-horizontal" action="{{route('properties.update', [$property->id])}}" method="post">
+			    {{csrf_field()}}
+                {{method_field("patch")}}
+                <div class="modal-body">
+                    <div class="col-sm-12">
+                        <div class="alert alert-info">
+                            Please be cautious when editing a property address from this view as typos and othere errors
+                            will not be corrected before being saved to the system. This may effect CityNexus's ability
+                            to automatically match with this address in the future.
+                        </div>
+                    </div>
+                <input type="hidden" name="address" id="new_address" value="{{$property->address}}">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="address" class="col-sm-3 control-label">Address</label>
+                            <label for="house_number" class="col-sm-3 control-label">House Number</label>
                             <div class="col-sm-9">
-                                <input type="text" name="address" id="address" class="form-control" value="{{$property->address}}">
+                                <input type="text" id="house_number" class="form-control address-part" value=" ">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="street_name" class="col-sm-3 control-label">Street Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="street_name" class="form-control address-part" value=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="street_name" class="col-sm-3 control-label">Street Type</label>
+                            <div class="col-sm-9">
+                                <select type="text" id="street_type" class="form-control address-part">
+                                    <option value="AV">Avenue</option>
+                                    <option value="BL">Boulevard</option>
+                                    <option value="CR">Circle</option>
+                                    <option value="CT">Court</option>
+                                    <option value="DR">Drive</option>
+                                    <option value="EX">Expressway</option>
+                                    <option value="HWY">Highway</option>
+                                    <option value="LN">Lane</option>
+                                    <option value="PL">Place</option>
+                                    <option value="PZ">Plaza</option>
+                                    <option value="RD">Road</option>
+                                    <option value="ST" selected>Street</option>
+                                    <option value="TR">Terrace</option>
+                                    <option value="WY">Way</option>
+                                    <option value="">[None]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="full_address_preview" class="col-sm-3 control-label">Full Address</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control"  id="full_address_preview" value="{{$property->address}}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit" class="col-sm-3 control-label">Unit</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="unit" class="form-control" value="">
+                                <p class="help-block mb-0">Enter just the unit value. e.g. "4" or "6 Rear" rather than "#4" or "Unit 6 Rear".</p>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="city" class="col-sm-3 control-label">City</label>
                             <div class="col-sm-9">
@@ -226,8 +278,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-raised" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary btn-raised">Save changes</button>
+				<input type="submit" class="btn btn-primary btn-raised" value="Save changes">
 			</div>
+            </form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -255,6 +308,16 @@
                     });
             map.setStreetView(panorama);
         }
+
+        $(".address-part").change(function(){
+            var address = '';
+            address += $('#house_number').val().trim();
+            address = address.trim() + ' ' + $('#street_name').val().trim();
+            address = address.trim() + ' ' + $('#street_type').val();
+
+            $('#full_address_preview').val(address.toUpperCase());
+            $('#new_address').val(address.trim());
+        });
 
     </script>
 @endif
