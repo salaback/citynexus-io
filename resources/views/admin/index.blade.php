@@ -41,6 +41,7 @@
                                             <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
+                                            <li><a href="{{route('admin.client.migrateDb', [$client->id])}}">Migrate from CityNexus 1.0</a></li>
                                             <li><a href="{{route('admin.client.migrateDb', [$client->id])}}">Migrate</a></li>
                                             <li><a href="{{route('admin.client.upgrade', [$client->id])}}">Upgrade</a></li>
                                             <li><a href="{{route('admin.client.config', [$client->id])}}">Edit Config</a></li>
@@ -61,6 +62,38 @@
     </div>
 
 @stop
+
+@push('modal')
+
+<a class="btn btn-primary" data-toggle="modal" href="modal-id">Trigger modal</a>
+<div class="modal fade" id="modal-id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Enter CityNexus 1.0 Credentials</h4>
+			</div>
+			<div class="modal-body">
+				<form action="" method="POST" role="form">
+					<legend>Credentials</legend>
+
+					<div class="form-group">
+						<label for=""></label>
+						<input type="text" class="form-control" name="" id="" placeholder="Input...">
+					</div>
+
+
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @push('scripts')
 

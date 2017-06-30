@@ -23,6 +23,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\DataStore\Typer;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UploaderController extends Controller
@@ -70,6 +71,9 @@ class UploaderController extends Controller
             case 'csv':
                 return $this->storeCsv($request);
                 break;
+
+            case 'sql':
+                return $this->storeSql($request);
         }
     }
 
@@ -83,15 +87,15 @@ class UploaderController extends Controller
     }
 
 
-    public function createMap($upload_id)
+    public function createMap($uploader_id)
     {
         $this->authorize('citynexus', ['datasets', 'create-uploader']);
 
-        $upload = Upload::find($upload_id);
-        $uploader = $upload->uploader;
+        $uploader = Uploader::find($uploader_id);
+
         if($uploader->map == null)
         {
-            $uploader->map = $this->store->analyizeFile($upload->source, $upload->file_type);
+            $uploader->map = $this->store->analyzeFile($uploader->uploads->first()->source, $uploader->uploads->first()->file_type);
             $uploader->save();
         }
         return view('uploader.createSchema', compact('uploader'));
@@ -114,11 +118,14 @@ class UploaderController extends Controller
                 $newfields = [];
                 foreach($request->get('new_fields') as $field)
                 {
-                    if($field != null) $newfields[$field] = $map[$field];
+                    if($field != null && $map[$field]['key'] != null) $newfields[$field] = $map[$field];
                 }
 
-                $tableBuilder = new TableBuilder();
-                $tableBuilder->addToTable($uploader->dataset, $newfields);
+                if(count($newfields) > 0)
+                {
+                    $tableBuilder = new TableBuilder();
+                    $tableBuilder->addToTable($uploader->dataset, $newfields);
+                }
             }
 
             $uploader->map = $map;
@@ -127,7 +134,7 @@ class UploaderController extends Controller
         }
         catch (TableBuilderException $e)
         {
-            session()->flash('warning', $e->getMessage());
+            session()->flash('flash_warning', $e->getMessage());
             return redirect()->back();
         }
 
@@ -194,6 +201,46 @@ class UploaderController extends Controller
         return view('uploader.slides.filters', compact('uploader', 'datafields'));
     }
 
+    public function testSql(Request $request)
+    {
+        $settings = $request->get("settings");
+        config(['database.connections.target' => $settings]);
+
+        if(\Illuminate\Support\Facades\Schema::connection('target')->hasTable($request->get('table')))
+        {
+            return DB::connection('target')
+            ->table('information_schema.columns')
+            ->where('table_schema', $settings['schema'])
+            ->where('table_name', $request->get('table'))
+            ->get();
+        }
+        else
+        {
+            return response(500, 'could not connect');
+        }
+
+    }
+
+    private function storeSql(Request $request)
+    {
+        $uploader = $request->all();
+        $uploader['map'] = $this->store->analyzeSQL($uploader['settings']);
+        $uploader['file_type'] = 'sql';
+        if(isset($uploader['settings']['created_at']))
+        {
+            $uploader['settings']['sync']['created_at'] = $uploader['settings']['created_at'];
+        }
+
+        if(isset($uploader['settings']['primary_id']))
+        {
+            $uploader['settings']['sync']['primary_id'] = $uploader['settings']['primary_id'];
+        }
+
+        $uploader = Uploader::create($uploader);
+
+        return redirect(route('uploader.createMap', [$uploader->id]));
+    }
+
     private function storeCsv(Request $request)
     {
 
@@ -201,8 +248,8 @@ class UploaderController extends Controller
         $upload = $request->get('upload');
         $upload['uploader_id'] = $uploader->id;
         $upload['user_id'] = Auth::Id();
-        $upload = Upload::create($upload);
+        Upload::create($upload);
 
-        return redirect(route('uploader.createMap', [$upload->id]));
+        return redirect(route('uploader.createMap', [$uploader->id]));
     }
 }

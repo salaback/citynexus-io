@@ -56,11 +56,15 @@ class UploadController extends Controller
         $upload = $request->all();
         $upload['user_id'] = Auth::id();
         $upload = Upload::create($upload);
+
+        $this->storeHelper->processUpload($upload);
+
         if($request->ajax())
+        {
             return $upload;
+        }
         else
         {
-            $this->storeHelper->processUpload($upload->id);
             return redirect(route('uploader.show', $upload->uploader->id));
         }
 

@@ -46,7 +46,11 @@
                                 <tr class="">
                                     <td>{{$uploader->name}}</td>
                                     <td>{{ucwords($uploader->type)}}</td>
-                                    <td>{{$uploader->uploads->first()->created_at->diffForHumans()}}</td>
+                                    <td>
+                                        @if($uploader->uploads->count() > 0)
+                                            {{$uploader->uploads->first()->created_at->diffForHumans()}}
+                                        @endif
+                                    </td>
                                     <td><a href="{{route('uploader.show', [$uploader->id])}}" class="btn btn-primary btn-sm btn-raised">Settings</a></td>
                                 </tr>
                             @endforeach

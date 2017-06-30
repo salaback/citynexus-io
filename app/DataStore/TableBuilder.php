@@ -53,7 +53,7 @@ class TableBuilder
             Schema::table($table->table_name, function (Blueprint $blueprint) use ($table) {
                 // Create table's index id file
                 foreach ($table->schema as $key => $field) {
-                    if(!Schema::hasColumn($table->table_name, $key))
+                    if(!Schema::hasColumn($table->table_name, $key) && $key != null)
                     {
                         $type = $field['type'];
                         $blueprint->$type($field['key'])->nullable();

@@ -23,12 +23,13 @@ class DataProcessor
 
         $data = $this->applyFilters($data, $uploader);
 
+
         if($uploader->hasSyncClass('address')){
 
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
-        $data = $sync->addCreatedAt($data, $uploader->getSyncClass('address'));
+        $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));
 
         return $data;
     }

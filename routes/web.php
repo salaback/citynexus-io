@@ -84,9 +84,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/search/', 'Frontend\SearchController@search')->name('search.search');
 
     // Uploaders routes
+    Route::post('uploader/sql-test', 'Frontend\UploaderController@testSql')->name('uploader.sqlTest');
     Route::resource('datasets/upload', 'Frontend\UploadController');
     Route::resource('uploader', 'Frontend\UploaderController');
     Route::get('/uploader/create-schema/{id}', 'Frontend\UploaderController@createMap')->name('uploader.createMap');
+
 
     Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
     Route::post('/uploader/schema', 'Frontend\UploaderController@schema')->name('uploader.schema');

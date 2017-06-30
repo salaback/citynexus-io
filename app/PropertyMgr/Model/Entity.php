@@ -59,10 +59,10 @@ class Entity extends Model
 
     public function getDatasetsAttribute()
     {
-
         $datasets = [];
 
-        $ids = $this->properties()->pluck('id');
+        $ids = $this->properties()->pluck('cn_properties.id');
+
 
         foreach(DataSet::all() as $dataset)
         {

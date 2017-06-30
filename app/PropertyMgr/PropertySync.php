@@ -63,8 +63,15 @@ class PropertySync
     {
         foreach($data as $key => $item)
         {
-            if(!isset($data[$key]['created_at'])) $data[$key]['created_at'] = Carbon::now();
+            if(!isset($data[$key][$sync['created_at']]))
+                $data[$key]['created_at'] = Carbon::now();
+            else
+            {
+                $data[$key]['created_at'] = $data[$key][$sync['created_at']];
+
+            }
         }
+        return $data;
     }
 
     /*
@@ -80,6 +87,8 @@ class PropertySync
         $address = $this->addressFilters($address);
 
         $return = (array) DB::connection('public')->select("SELECT * FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz', 'tiger.pagc_rules', '" . $address . "')")[0];
+
+        $return['house_num'] = explode(' ', $return['house_num'])[0];
 
         $return['unit'] = $this->cleanUnit($return['unit']);
 

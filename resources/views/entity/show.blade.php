@@ -35,7 +35,7 @@
                                 @if($entity->properties->count() > 0)
                                     @include('entity.snipits._properties', ['properties' => $entity->properties->sortBy('address')])
                                 @endif
-                                @can('citynexus', ['entities', 'edit')
+                                @can('citynexus', ['entities', 'edit'])
                                     <div role="button" class="list-group-item" data-toggle="modal" data-target="#addEntityRelationship">
                                         <i class="fa fa-plus"> </i> Link to Related Property
                                     </div>
