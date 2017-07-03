@@ -5,6 +5,7 @@ namespace App\AnalysisMgr;
 
 
 use App\AnalysisMgr\Model\Score;
+use App\AnalysisMgr\Model\ScoreResult;
 use Carbon\Carbon;
 use CityNexus\DataStore\DataSet;
 use Illuminate\Database\Schema\Blueprint;
@@ -49,7 +50,7 @@ class ScoreBuilder
             'created_by' => Auth::Id(),
         ];
 
-        ScoreRe::create($score_results);
+        ScoreResult::create($score_results);
 
         return true;
     }

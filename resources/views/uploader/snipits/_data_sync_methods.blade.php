@@ -28,7 +28,17 @@
                                     <span class="fa fa-building fa-2x inbox-item-img"></span><br>
                                 @elseif($sync['class'] == 'entity')
                                     <span class="fa fa-user fa-2x inbox-item-img"></span><br>
+                                @elseif($sync['class'] == 'tag')
+                                    <span class="fa fa-tag fa-2x inbox-item-img"></span><br>
+                                @elseif($sync['class'] == 'created_at')
+                                    <span class="fa fa-calendar fa-2x inbox-item-img"></span><br>
+                                @elseif($sync['class'] == 'updated_at')
+                                    <span class="fa fa-calendar fa-2x inbox-item-img"></span><br>
+                                @elseif($sync['class'] == 'unique_id')
+                                    <span class="fa fa-key fa-2x inbox-item-img"></span><br>
                                 @endif
+
+
                             </div>
                             <div class="col-xs-10">
                                 @if($sync['class'] == 'address')
@@ -59,16 +69,16 @@
                                     Role: <span class="label label-default">{{$sync['role'] ?: 'NULL'}}</span>
                                 @elseif($sync['class'] == 'tag')
                                     <p class="inbox-item-author">{{ucwords($sync['class'])}}</p>
-                                    @if(isset($sync['full_name']))
-                                        Full Name: <span class="label label-default">{{$sync['full_name']}}</span>
-                                    @else
-                                        Title: <span class="label label-default">{{$sync['title'] ?: 'NULL'}}</span>
-                                        First Name: <span class="label label-default">{{$sync['first_name'] ?: 'NULL'}}</span>
-                                        Middle Name: <span class="label label-default">{{$sync['middle_name'] ?: 'NULL'}}</span>
-                                        Last Name: <span class="label label-default">{{$sync['last_name'] ?: 'NULL'}}</span>
-                                        Suffix: <span class="label label-default">{{$sync['suffix'] ?: 'NULL'}}</span>
-                                    @endif
-                                    Role: <span class="label label-default">{{$sync['role'] ?: 'NULL'}}</span>
+                                    Use values in <span class="label label-default">{{$sync['dataPoint'] ?: 'NULL'}}</span> as property tags.
+                                @elseif($sync['class'] == 'created_at')
+                                    <p class="inbox-item-author">Created Time Stamp</p>
+                                    Using <span class="label label-default">{{$sync['created_at'] ?: 'NULL'}}</span> as a created at timestamp.
+                                @elseif($sync['class'] == 'updated_at')
+                                    <p class="inbox-item-author">Edit Time Stamp</p>
+                                    Using <span class="label label-default">{{$sync['updated_at'] ?: 'NULL'}}</span> as a edited at timestamp
+                                @elseif($sync['class'] == 'unique_id')
+                                    <p class="inbox-item-author">Unique ID</p>
+                                    Using <span class="label label-default">{{$sync['unique_id'] ?: 'NULL'}}</span> as unique ID.
                                 @endif
 
 

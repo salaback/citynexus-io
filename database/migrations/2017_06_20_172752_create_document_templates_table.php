@@ -18,6 +18,7 @@ class CreateDocumentTemplatesTable extends Migration
             $table->string('type');
             $table->string('name');
             $table->text('body');
+            $table->json('visible_on')->nullable();
             $table->json('relations')->nullable();
             $table->softDeletes();
             $table->timestamps();
