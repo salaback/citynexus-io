@@ -79,12 +79,16 @@ class Uploader extends Model
 
     public function getSyncClass($class)
     {
+        $return = [];
         if($this->syncs != null) {
             foreach($this->syncs as $i)  {
-                if(isset($i['class']) && $i['class'] == $class) return $i;
+                if(isset($i['class']) && $i['class'] == $class) $return[] = $i;
             }
         }
-        return false;
+        if(count($return) > 0)
+            return $return;
+        else
+            return false;
     }
 
 

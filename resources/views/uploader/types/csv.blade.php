@@ -95,105 +95,11 @@ function getS3Details($s3Bucket, $region, $acl = 'private') {
         <h4>{{$uploader->dataset->name}} > {{$uploader->name}}</h4>
     </div>
     <div class="col-md-12">
-        <section class="boxs @if($uploader->uploads->count() == 0) hidden @endif" id="upload_history_box">
-            <div class="boxs-header dvd dvd-btm">
-                <h1 class="custom-font"><strong>Upload History</strong></h1>
-            </div>
-            <div class="boxs-body">
-                <table class="table m-b-0">
-                    <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Upload Date</th>
-                        <th>Process Date</th>
-                        <th>Uploaded By</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody id="upload_history">
-                    @php($uploads = $uploader->uploads()->paginate(10))
-                    @foreach($uploads as $upload)
-                        @include('uploader.types._upload')
-                    @endforeach
-                    </tbody>
-                </table>
-                {{ $uploads->links() }}
-            </div>
-        </section>
+        @include('uploader.snipits._uploads')
     </div>
 
     <div class="col-md-6">
-        <section class="boxs">
-            <div class="boxs-header dvd dvd-btm">
-                <h1 class="custom-font"><strong>Data Sync Methods</strong></h1>
-                <ul class="controls">
-                    <li class="dropdown"> <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-plus"></i> Create New Sync<i class="fa fa-angle-down ml-5"></i></a>
-                        <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                            <li><a href="{{route('uploader.addressSync', [$uploader->id])}}"> Create Address Sync</a></li>
-                            <li><a href="{{route('uploader.entitySync', [$uploader->id])}}"> Create Entity Sync</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="boxs-body">
-
-                <div class="inbox-widget nicescroll" style="height: 315px; overflow: hidden; outline: none;" tabindex="5000">
-                    @if($uploader->syncs != null)
-                        @foreach($uploader->syncs as $sync)
-
-                                <div class="inbox-item">
-                                    <form action="{{route('uploader.removeSync', [$uploader->id])}}" method="post">
-                                        {{csrf_field()}}
-                                        <button role="button" href="#" class="pull-right"><span class="fa fa-trash"></span></button>
-                                        <input type="hidden" name="sync" value="{{json_encode($sync)}}">
-                                    </form>
-                                    <div class="col-xs-2">
-                                        @if($sync['class'] == 'address')
-                                            <span class="fa fa-building fa-2x inbox-item-img"></span><br>
-                                        @elseif($sync['class'] == 'entity')
-                                            <span class="fa fa-user fa-2x inbox-item-img"></span><br>
-                                        @endif
-                                    </div>
-                                    <div class="col-xs-10">
-                                        @if($sync['class'] == 'address')
-                                            <p class="inbox-item-author">{{ucwords($sync['class'])}}</p>
-                                            @if(isset($sync['full_address']))
-                                                Full Address: <span class="label label-default">{{$sync['full_address']}}</span>
-                                            @else
-                                                @if(isset($sync['house_number']))Street Number: <span class="label label-default">{{$sync['house_number']}}</span>@endif
-                                                @if(isset($sync['street_name']))Street Name: <span class="label label-default">{{$sync['street_name']}}</span>@endif
-                                                @if(isset($sync['street_type']))Street Type: <span class="label label-default">{{$sync['street_type']}}</span>@endif
-                                                @if(isset($sync['unit']))Unit: <span class="label label-default">{{$sync['unit']}}</span>@endif
-                                            @endif
-                                            @if(isset($sync['city']))City: <span class="label label-default">{{ $sync['city'] }}</span>@endif
-                                            @if(isset($sync['state']))State: <span class="label label-default">{{ $sync['state']}}</span>@endif
-                                            @if(isset($sync['postal_code']))Postal Code: <span class="label label-default">{{$sync['postal_code']}}</span>@endif
-
-                                        @elseif($sync['class'] == 'entity')
-                                            <p class="inbox-item-author">{{ucwords($sync['class'])}}</p>
-                                            @if(isset($sync['full_name']))
-                                                Full Name: <span class="label label-default">{{$sync['full_name']}}</span>
-                                            @else
-                                                Title: <span class="label label-default">{{$sync['title'] ?: 'NULL'}}</span>
-                                                First Name: <span class="label label-default">{{$sync['first_name'] ?: 'NULL'}}</span>
-                                                Middle Name: <span class="label label-default">{{$sync['middle_name'] ?: 'NULL'}}</span>
-                                                Last Name: <span class="label label-default">{{$sync['last_name'] ?: 'NULL'}}</span>
-                                                Suffix: <span class="label label-default">{{$sync['suffix'] ?: 'NULL'}}</span>
-                                            @endif
-                                            Role: <span class="label label-default">{{$sync['role'] ?: 'NULL'}}</span>
-                                        @endif
-
-                                    </div>
-                                </div>
-                        @endforeach
-                    @else
-                        <div class="alert alert-info">
-                            You have no sync settings! Please choose at least one.
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </section>
+        @include('uploader.snipits._data_sync_methods')
     </div>
 
     <div class="col-md-6">

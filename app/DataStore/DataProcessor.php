@@ -29,6 +29,11 @@ class DataProcessor
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
+        if($uploader->hasSyncClass('tag')){
+
+            $data = $sync->addTags($data, $uploader->getSyncClass('tag'));
+        }
+
         $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));
 
         return $data;

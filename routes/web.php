@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/uploader/address-sync/{id}', 'Frontend\UploaderController@addressSync')->name('uploader.addressSync');
     Route::get('/uploader/entity-sync/{id}', 'Frontend\UploaderController@entitySync')->name('uploader.entitySync');
+    Route::get('/uploader/tag-sync/{id}', 'Frontend\UploaderController@tagSync')->name('uploader.tagSync');
     Route::get('/uploader/filters/{id}', 'Frontend\UploaderController@filters')->name('uploader.filters');
 
     Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');

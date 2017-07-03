@@ -40,8 +40,8 @@ class CityNexusUpgrade
         foreach($users as $i)
         {
             $user = User::firstOrNew(['email' => $i->email]);
-            $user->first_name = $i->first_name;
-            $user->last_name = $i->last_name;
+            $user->first_name = trim($i->first_name);
+            $user->last_name = trim($i->last_name);
             $user->password = 'default';
             $membership = [
                 'id' => $i->id,

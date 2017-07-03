@@ -169,6 +169,15 @@ class UploaderController extends Controller
         return view('uploader.sync.entity', compact('uploader', 'fields'));
     }
 
+    public function tagSync($id)
+    {
+        $this->authorize('citynexus', ['datasets', 'create-uploader']);
+
+        $uploader = Uploader::find($id);
+        $fields = $uploader->map;
+        return view('uploader.sync.tag', compact('uploader', 'fields'));
+    }
+
     public function removeSync($id, Request $request)
     {
         $this->authorize('citynexus', ['datasets', 'create-uploader']);

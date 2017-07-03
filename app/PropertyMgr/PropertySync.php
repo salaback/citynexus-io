@@ -13,6 +13,7 @@ use App\Jobs\Geocode;
 use App\DataStore\Model\Upload;
 use App\PropertyMgr\Model\Address;
 use App\PropertyMgr\Model\Property;
+use App\PropertyMgr\Model\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -23,10 +24,12 @@ class PropertySync
      * Needs testing
      *
      */
-    public function addPropertyID($data, $sync)
+    public function addPropertyID($data, $syncs)
     {
         // find raw address element and send to address sync
         $return = [];
+
+        $sync = $syncs[0];
 
         if(isset($sync['full_address'])) {
 
@@ -51,6 +54,65 @@ class PropertySync
             }
         }
         return $return;
+    }
+
+    public function addTags($data, $syncs)
+    {
+        foreach($syncs as $sync)
+        {
+            switch ($sync['method'])
+            {
+                case 'value':
+                    $this->valueTags($data, $sync);
+                    break;
+                case 'comma':
+                    $this->valueTags($data, $sync, true);
+            }
+        }
+
+    }
+
+    private function valueTags($data, $sync, $comma = false)
+    {
+        $tags = [];
+        $insert =[];
+        foreach($data as $row)
+        {
+            if(isset($row['property_id']) && $row[$sync['key']] != null)
+            {
+                if($comma)
+                {
+                    $parts = explode(',', $row[$sync['key']]);
+
+                    foreach($parts as $part)
+                    {
+                        $tags[trim($part)] = $row['property_id'];
+                    }
+                }
+                else
+                {
+                    $tags[$row[$sync['key']]][] = $row['property_id'];
+                }
+            }
+        }
+
+        foreach($tags as $tag => $ids)
+        {
+            $tag = Tag::firstOrCreate(['tag' => $tag]);
+
+            foreach($ids as $id)
+            {
+                $insert[] = [
+                    'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
+                    'tagables_id' => $id,
+                ];
+            }
+
+        }
+
+        DB::table('cn_tagables')->insert($insert);
+
+        return true;
     }
 
 
