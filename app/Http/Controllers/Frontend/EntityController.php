@@ -17,9 +17,31 @@ class EntityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('entity.index');
+        if($request->ajax())
+        {
+            if(isset($_GET['type']))
+            {
+                switch ($_GET['type'])
+                {
+                    case 'select':
+                        $return = [];
+                        $entities = Entity::all();
+                        foreach($entities as $i)
+                        {
+                            $return[] = ['id' => $i->id, 'text' => $i->name];
+                        }
+                        return $return;
+                }
+            }
+            return Entity::all();
+        }
+        else
+        {
+            return view('entity.index');
+        }
+
     }
 
     public function allData()

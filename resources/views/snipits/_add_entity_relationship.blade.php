@@ -9,27 +9,27 @@
     				<h4 class="modal-title">Create Entity Relationship</h4>
     			</div>
     			<div class="modal-body">
+                        <div class="form-group">
+                            <label for="full_address" class="col-sm-4 control-label">Entity Role</label>
+                            <div class="col-sm-8">
+                                <select type="text" name="role" id='role' class="form-control" required>
+                                    <option value="">Select One</option>
+                                    <option value="Owner">Owner</option>
+                                    <option value="Tenant">Tenant</option>
+                                    <option value="Manager">Property Manager</option>
+                                    <option value="Receiver">Receiver</option>
+                                    <option value="Common Name">Common Name</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
                         @if(isset($property))
                             <input type="hidden" name="property_id" value="{{$property->id}}">
                         @else
                             <div class="form-group">
-                                <label for="full_address" class="col-sm-4 control-label">Entity Role</label>
-                                <div class="col-sm-8">
-                                    <select type="text" name="role" id='role' class="form-control" required>
-                                        <option value="">Select One</option>
-                                        <option value="Owner">Owner</option>
-                                        <option value="Tenant">Tenant</option>
-                                        <option value="Manager">Property Manager</option>
-                                        <option value="Receiver">Receiver</option>
-                                        <option value="Common Name">Common Name</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="properties" class="col-sm-4 control-label">Property</label>
                                 <div class="col-sm-8">
-                                    <select type="text" name="property_id" id='properties' class="form-control" style="width: 100%">
+                                    <select type="text" name="property_id" id='properties_list' class="form-control" style="width: 100%">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -44,7 +44,7 @@
                         <div class="form-group">
                             <label for="entities" class="col-sm-4 control-label">Entity</label>
                             <div class="col-sm-8">
-                                <select type="text" name="property_id" id='properties' class="form-control" style="width: 100%">
+                                <select type="text" name="entity_id" id='entities_list' class="form-control" style="width: 100%">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -69,7 +69,7 @@
 <script>
     @unless(isset($properties))
     $.get("{{route('properties.index')}}?type=select", function(data) {
-        $('#properties').select2({
+        $('#properties_list').select2({
             data: data
         });
     });
@@ -77,7 +77,7 @@
 
     @unless(isset($entities))
     $.get("{{route('entity.index')}}?type=select", function(data) {
-        $('#entities').select2({
+        $('#entities_list').select2({
             data: data
         });
     });
