@@ -11,8 +11,9 @@
             -
             <small>{{$property->pivot->role}}</small>
         </a>
-        <a href="{{route('entity.removeRelationship')}}" class="col-xs-2">
+        <a href="{{route('entity.removeRelationship', [$property->pivot->id])}}" class="col-xs-2" title="Unlink Relationship">
             <i class="fa fa-unlink"></i>
         </a>
+        <div class="row"></div>
     </div>
 @endforeach

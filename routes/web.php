@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Entities
     Route::post('entity/add-relationship', 'Frontend\EntityController@addRelationship')->name('entity.addRelationship');
-    Route::post('entity/remove-relationship', 'Frontend\EntityController@addRelationship')->name('entity.removeRelationship');
+    Route::get('entity/remove-relationship/{id}', 'Frontend\EntityController@addRelationship')->name('entity.removeRelationship');
 
     Route::resource('/entity', 'Frontend\EntityController');
     Route::get('entity\all-data', 'Frontend\EntityController@allData')->name('entity.allData');

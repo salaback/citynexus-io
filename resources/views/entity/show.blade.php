@@ -32,15 +32,17 @@
                         </div>
                         <div class="box-body">
                             <div class="list-group">
+
                                 @if($entity->properties->count() > 0)
                                     @include('entity.snipits._properties', ['properties' => $entity->properties->sortBy('address')])
                                 @endif
-                                @can('citynexus', ['entities', 'edit'])
-                                    <div role="button" class="list-group-item" data-toggle="modal" data-target="#addEntityRelationship">
-                                        <i class="fa fa-plus"> </i> Link to Related Property
-                                    </div>
-                                @endcan
+                                    @can('citynexus', ['entities', 'edit'])
+                                        <a role="button" class="list-group-item" data-toggle="modal" data-target="#addEntityRelationship">
+                                            <i class="fa fa-plus"> </i> Link to Related Property
+                                        </a>
+                                    @endcan
                             </div>
+
                         </div>
                     </div>
                     <!-- /boxs -->

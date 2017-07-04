@@ -137,8 +137,11 @@ class EntityController extends Controller
 
     }
 
-    public function removeRelationship(Request $request)
+    public function removeRelationship($id)
     {
+        DB::table('cn_entitables')->where('id', $id)->update(['deleted_at' => Carbon::now()]);
 
+        session()->flash('flash-info', 'Relationship removed.');
+        return redirect()->back();
     }
 }
