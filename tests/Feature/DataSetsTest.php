@@ -6,6 +6,7 @@ use App\Client;
 use App\DataStore\Model\DataSet;
 use App\User;
 use App\UserGroup;
+use Illuminate\Database\Concerns\ManagesTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -14,18 +15,12 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DataSetsTest extends TestCase
 {
-    protected $client;
+    use DatabaseTransactions;
 
     protected  $connectionsToTransact = [
         'public',
         'tenant'
     ];
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
-    }
 
     /**
      * View datasets
@@ -100,12 +95,7 @@ class DataSetsTest extends TestCase
         DB::table('user_user_group')->insert(['user_id' => $user->id, 'user_group_id' => $group->id]);
         $this->be($user);
 
-        $dataset = DataSet::create([
-            'name' => 'Test Data Set',
-            'table_name' => 'test_data_set',
-            'type' => 'updating',
-            'owner_id' => $user->id
-        ]);
+        $dataset = factory(DataSet::class)->create(['name' => 'Test Data Set', 'type' => 'updating']);
 
         $this->get('/dataset/' . $dataset->id)->assertSee('CityNexus | Test Data Set Overview');
     }

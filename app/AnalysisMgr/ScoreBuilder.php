@@ -4,6 +4,8 @@
 namespace App\AnalysisMgr;
 
 
+use App\AnalysisMgr\Model\Score;
+use App\AnalysisMgr\Model\ScoreResult;
 use Carbon\Carbon;
 use CityNexus\DataStore\DataSet;
 use Illuminate\Database\Schema\Blueprint;

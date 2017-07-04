@@ -29,11 +29,11 @@ class ProcessData implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($client_id, $data, $upload_id)
+    public function __construct($data, $upload_id)
     {
         $this->data = $data;
         $this->upload_id = $upload_id;
-        $this->client_id = $client_id;
+        $this->client_id = config('client.id');
     }
 
     /**
@@ -50,20 +50,38 @@ class ProcessData implements ShouldQueue
         $store = new Store();
         $syncHelper = new Sync();
         $tableBuilder = new TableBuilder();
+
         $upload = Upload::find($this->upload_id);
         $uploader = Uploader::find($upload->uploader_id);
+
+
+        if($uploader->type == 'sql')
+        {
+            config(['database.connections.target' => $uploader->settings['db']]);
+            $this->data = DB::connection('target')
+                ->table($uploader->settings['table'])
+                ->whereIn($uploader->settings['unique_id'], $this->data)
+                ->get();
+
+            $this->data = collect($this->data)->map(function($x){ return (array) $x; })->toArray();
+        }
+
         $data = $store->processData($this->data , $uploader);
         $table_name = $tableBuilder->syncTable($uploader->dataset);
         $final_data = [];
 
+        $map = $uploader->map;
         // load data
         foreach($data as $row)
         {
             $new_row['upload_id'] = $upload->id;
             foreach ($row as $key => $item)
             {
-                if(is_string($item)) $new_row[$key] = trim($item);
-                else $new_row[$key] = $item;
+                if($map[$key]['key'] != null)
+                {
+                    if(is_string($item)) $new_row[$key] = trim($item);
+                    else $new_row[$key] = $item;
+                }
             }
             $final_data[] = $new_row;
         }

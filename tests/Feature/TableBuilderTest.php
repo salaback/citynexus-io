@@ -55,10 +55,7 @@ class TableBuilderTest extends TestCase
     public function testAddNewToTable()
     {
         $this->client->logInAsClient();
-        $dataset = DataSet::create([
-            'name' => 'Test Data Set',
-            'type' => 'updating'
-        ]);
+        $dataset = factory(DataSet::class)->create();
 
         $this->tableBuilder->createTable($dataset);
 

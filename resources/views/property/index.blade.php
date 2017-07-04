@@ -49,7 +49,7 @@
             ajax: '{!! route('property.allData') !!}',
             columns: [
                 { data: 'address', name: 'address' },
-                { data: 'units', name: 'units', orderable: false, searchable: false },
+                { data: 'units', name: 'units', searchable: false },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false}
             ]
         });

@@ -67,6 +67,10 @@ class UploadHelper
         // Save data
         DB::table($uploader->dataset->table_name)->insert($data);
 
+
+        $upload = Upload::find($upload_id);
+        $upload->count += count($data);
+        $upload->save();
         return count($data);
     }
 

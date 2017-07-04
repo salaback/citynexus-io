@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -118,7 +119,38 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+
+        $client = Client::find($id);
+        $old_settings = $client->settings;
+
+
+        // upload logo and save path
+        if($request->hasFile('logo'))
+        {
+            $file = Storage::putFile('logo', $request->file('logo'), 'public');
+            $old_settings['agency_logo'] = Storage::url($file);
+        }
+
+        // Update settings array
+        $settings = $request->all();
+        unset($settings['_token']);
+        unset($settings['_method']);
+        unset($settings['logo']);
+
+        foreach($settings as $key => $item)
+        {
+            $old_settings[$key] = $item;
+        }
+
+        $client->settings = $old_settings;
+
+        $client->save();
+
+        session()->flash('flash_success', "Settings Updated");
+
+        return redirect()->back();
     }
 
     /**

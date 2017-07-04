@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    Route::get('/properties/get-units/{id?}', 'Frontend\PropertyController@getUnits')->name('property.getUnits');
     Route::resource('properties', 'Frontend\PropertyController');
     Route::get('properties\all-data', 'Frontend\PropertyController@allData')->name('property.allData');
 
@@ -50,40 +51,67 @@ Route::group(['middleware' => ['auth']], function () {
     // dataset routes
     Route::get('/dataset/any-data', 'Frontend\DatasetController@anyData')->name('dataset.anydata');
     Route::resource('/dataset', 'Frontend\DatasetController');
+    Route::get('/dataset/datapoint-info/{id?}/{key?}', 'Frontend\DatasetController@datapointInfo')->name('dataset.datapointInfo');
 
 
     // Comments
     Route::resource('/comments', 'Frontend\CommentController');
 
     // Files
-    Route::resource('/files', 'FileController');
+    Route::get('/files/download/{id?}', 'Backend\FileController@download')->name('files.download');
+    Route::resource('/files', 'Backend\FileController');
 
     // Entities
-    Route::resource('/entities', 'EntityController');
+    Route::post('entity/add-relationship', 'Frontend\EntityController@addRelationship')->name('entity.addRelationship');
+    Route::get('entity/remove-relationship/{id}', 'Frontend\EntityController@addRelationship')->name('entity.removeRelationship');
+
+    Route::resource('/entity', 'Frontend\EntityController');
+    Route::get('entity\all-data', 'Frontend\EntityController@allData')->name('entity.allData');
+
+    // Meetings
+    Route::resource('/meetings/agenda', 'Frontend\AgendaController');
+
+    // Analytics
+    Route::resource('/analytics/score', 'Frontend\ScoreController');
+    Route::post('/analytics/score/create-element', 'Frontend\ScoreController@createElement')->name('analytics.score.create.element');
 
     // Tags
-    Route::resource('/tag', 'TagController');
-
+    Route::resource('backend/tag', 'Backend\TagController');
+    Route::post('backend/tag/attach', 'Backend\TagController@attach')->name('backend.tag.attach');
+    Route::post('backend/tag/detach', 'Backend\TagController@detach')->name('backend.tag.detach');
     // Search
     Route::get('/search/suggestions/{query?}', 'Frontend\SearchController@suggestions')->name('search.suggestions');
     Route::get('/search/', 'Frontend\SearchController@search')->name('search.search');
 
     // Uploaders routes
+    Route::post('uploader/sql-test', 'Frontend\UploaderController@testSql')->name('uploader.sqlTest');
     Route::resource('datasets/upload', 'Frontend\UploadController');
     Route::resource('uploader', 'Frontend\UploaderController');
     Route::get('/uploader/create-schema/{id}', 'Frontend\UploaderController@createMap')->name('uploader.createMap');
+
 
     Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
     Route::post('/uploader/schema', 'Frontend\UploaderController@schema')->name('uploader.schema');
 
     Route::get('/uploader/address-sync/{id}', 'Frontend\UploaderController@addressSync')->name('uploader.addressSync');
     Route::get('/uploader/entity-sync/{id}', 'Frontend\UploaderController@entitySync')->name('uploader.entitySync');
+    Route::get('/uploader/tag-sync/{id}', 'Frontend\UploaderController@tagSync')->name('uploader.tagSync');
     Route::get('/uploader/filters/{id}', 'Frontend\UploaderController@filters')->name('uploader.filters');
 
     Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');
     Route::post('/uploader/remove-sync/{id}', 'Frontend\UploaderController@removeSync')->name('uploader.removeSync');
-
     Route::post('/uploader/post', 'Frontend\UploaderController@post')->name('uploader.post');
+
+    Route::post('documents/templates/get-form/{id?}', 'Frontend\DocumentTemplateController@getForm')->name('templates.getForm');
+    Route::resource('documents/templates', 'Frontend\DocumentTemplateController');
+
+    Route::post('documents/queue/print-queue/{id?}', 'Frontend\PrintQueueController@printQueue')->name('queue.print');
+    Route::post('documents/queue/clear-from-queue', 'Frontend\PrintQueueController@clearFromQueue')->name('queue.clear');
+
+    Route::resource('documents/queue', 'Frontend\PrintQueueController');
+    Route::resource('documents', 'Frontend\DocumentController');
+
+    Route::resource('form', 'Frontend\FormController');
 
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 

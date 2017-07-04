@@ -6,7 +6,7 @@
                 @php($schema = $table->schema)
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="{{$key}}_tab">
-                        <h4 class="panel-title"> <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{$key}}_body" aria-expanded="false" aria-controls="collapseTwo">{{$table->name}}</a> </h4>
+                        <h4 class="panel-title"> <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{$key}}_body" aria-expanded="false" aria-controls="collapseTwo">{{$table->name}} ({{count($dataset)}})</a> </h4>
                     </div>
                     <div id="{{$key}}_body" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body dataset-body">

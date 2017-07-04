@@ -187,6 +187,7 @@ return [
         Geocoder\Laravel\Providers\GeocoderService::class,
         Phaza\LaravelPostgis\DatabaseServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -238,7 +239,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Geocoder' => \Geocoder\Laravel\Facades\Geocoder::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

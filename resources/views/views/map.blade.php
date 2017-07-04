@@ -44,7 +44,7 @@
 
             <!-- Search -->
             <div class="search" id="main-search">
-                <input type="text" class="form-control underline-input" placeholder="Seach by property...">
+                <input type="text" class="form-control underline-input" placeholder="Search everything...">
             </div>
             <!-- Search end -->
 
@@ -287,7 +287,7 @@
 
     var mymap = L.map('mapid', {
         fullscreenControl: true,
-    }).setView([{{config('client.map_lat')}}, {{config('client.map_lng')}}], {{config('client.map_zoom')}});
+    }).setView([{{config('client.lat')}}, {{config('client.lng')}}], {{config('client.map_zoom')}});
 
     L.tileLayer('https://api.mapbox.com/styles/v1/seanalaback/ciwtk4ush002o2qrxo43r8o13/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',

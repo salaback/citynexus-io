@@ -52,6 +52,8 @@ class ProcessUpload implements ShouldQueue
             ->where('upload_id', $this->upload->id)
             ->delete();
 
+        session(['upload_id' => $this->upload->id]);
+
         switch ($this->upload->uploader->type)
         {
             case 'sql':

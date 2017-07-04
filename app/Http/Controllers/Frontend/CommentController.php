@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\ReplyToComment;
 use App\PropertyMgr\Model\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -46,14 +47,15 @@ class CommentController extends Controller
 
         if($comment->reply_to != null)
         {
-            $property_id = $comment->cn_commentable_id;
+            $type = $comment->cn_commentable_type;
+            $commentable_id = $comment->cn_commentable_id;
             $comment->cn_commentable_id = $comment->reply_to;
             $comment->cn_commentable_type = 'App\PropertyMgr\Model\Comment';
-            $comment->replyTo->poster->notify(new ReplyToComment($comment, 'property', $property_id));
+            $comment->replyTo->poster->notify(new ReplyToComment($comment, $type, $commentable_id));
             $comment->save();
         }
 
-        return view('property.snipits._comment', compact('comment'));
+        return view('snipits._comment', compact('comment'));
     }
 
     /**
@@ -115,6 +117,28 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+
+        if(Auth::id() == $comment->posted_by || Auth::user()->can('citynexus', ['admin', 'delete-comments']))
+        {
+            if(Comment::find($id)->delete()) return 'deleted';
+        }
+        else
+            return response(403, 'Not Authorized');
+
+    }
+
+    public function search(Request $request)
+    {
+
+        $query = "%" . $request->get('query') . "%";
+        $comments = Comment::where('comment', 'LIKE', $query)->get();
+
+        if($request->exists('range'))
+        {
+            $ids = $comments->get('id')->toArray();
+        }
+
+        return $comments;
     }
 }

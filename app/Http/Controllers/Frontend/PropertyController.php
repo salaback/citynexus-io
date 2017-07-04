@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\DocumentMgr\Model\DocumentTemplate;
 use App\Http\Controllers\Controller;
 use App\Jobs\Geocode;
 use App\UserGroup;
@@ -18,12 +19,32 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $this->authorize('citynexus', ['properties', 'view']);
 
-        return view('property.index');
+        if($request->ajax())
+        {
+            if(isset($_GET['type']))
+            {
+                switch ($_GET['type'])
+                {
+                    case 'select':
+                        $return = [];
+                        $properties = Property::all();
+                        foreach($properties as $i)
+                        {
+                            $return[] = ['id' => $i->id, 'text' => $i->oneLineAddress];
+                        }
+                        return $return;
+                }
+            }
+            return Property::all();
+        }
+        else
+        {
+            return view('property.index');
+        }
     }
 
     public function allData()
@@ -60,7 +81,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -71,10 +92,27 @@ class PropertyController extends Controller
      */
     public function show($id, DataAccess $dataAccess)
     {
-        $property = Property::find($id);
+        $property = Property::where('id', $id)->with('taskLists', 'units', 'comments')->first();
+
+        $show_templates = [];
+        $templates = DocumentTemplate::all();
+        foreach($templates as $template)
+        {
+            if($property->is_building && isset($template->visible_on['buildings']))
+            {
+                $show_templates[] = $template;
+            }
+            if($property->is_unit && isset($template->visible_on['units']))
+            {
+                $show_templates[] = $template;
+            }
+        }
+
+        $templates = $show_templates;
+
         $datasets = $dataAccess->getDataByPropertyID($id);
 
-        return view('property.show', compact('property', 'datasets'));
+        return view('property.show', compact('property', 'datasets', 'templates'));
     }
 
     /**
@@ -97,7 +135,13 @@ class PropertyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('citynexus', ['properties', 'edit']);
+
+        Property::find($id)->update($request->all());
+
+        session()->flash('flash_success', 'Property Updated');
+
+        return redirect()->back();
     }
 
     /**
@@ -118,5 +162,16 @@ class PropertyController extends Controller
     {
         $this->dispatch(new Geocode($id));
         return redirect()->back();
+    }
+
+    public function getUnits($id)
+    {
+        $return =[];
+
+        $units = Property::find($id)->units;
+
+        foreach($units as $i) $return[] = ['id' => $i->id, 'text' => $i->unit];
+
+        return $return;
     }
 }

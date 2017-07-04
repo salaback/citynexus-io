@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\BuildSearchIndex;
 use App\Console\Commands\ClientInfoUpdate;
 use App\Console\Commands\Upgrade;
+use App\Console\Commands\UpgradeCitynexus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Upgrade::class,
+        UpgradeCitynexus::class,
         ClientInfoUpdate::class,
         BuildSearchIndex::class,
     ];

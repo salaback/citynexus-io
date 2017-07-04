@@ -16,9 +16,9 @@ class CreateUploadsTable extends Migration
             $table->increments('id');
             $table->integer('uploader_id')->unsigned();
             $table->foreign('uploader_id')->references('id')->on('cn_uploaders')->onDelete('cascade');
-            $table->string('source');
-            $table->string('size');
-            $table->string('file_type');
+            $table->string('source')->nullable();
+            $table->string('size')->nullable();
+            $table->string('file_type')->nullable();
             $table->string('note')->nullable();
             $table->dateTime('processed_at')->nullable();
             $table->integer('user_id')->unsigned();

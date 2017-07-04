@@ -15,7 +15,7 @@ class OrganizationSettingsController extends Controller
     {
         $this->authorize('citynexus', ['org-admin', 'view']);
 
-        $users = User::fromClient();
+        $users = User::fromClient()->sortBy('last_name');
 
         $groups = UserGroup::all();
 

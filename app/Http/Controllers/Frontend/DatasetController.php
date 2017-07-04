@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\DataStore\DataInformation;
 use App\DataStore\Model\DataSet;
 use App\DataStore\TableBuilder;
 use App\Http\Controllers\Controller;
@@ -100,11 +101,18 @@ class DatasetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $dataset = DataSet::find($id);
 
-        return view('dataset.show.' . $dataset->type, compact('dataset'));
+        if($request->ajax())
+        {
+            return $dataset;
+        }
+        else
+        {
+            return view('dataset.show.' . $dataset->type, compact('dataset'));
+        }
     }
 
     /**
@@ -139,5 +147,15 @@ class DatasetController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function datapointInfo($id, $key)
+    {
+        $dataset = DataSet::find($id);
+
+        $dataInfo = new DataInformation();
+
+        return $dataInfo->datapointInfo($dataset, $key);
     }
 }

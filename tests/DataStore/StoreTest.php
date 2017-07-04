@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ScoreTest extends TestCase
+class ScoreTest extends \PHPUnit\Framework\TestCase
 {
 
     public function __construct()

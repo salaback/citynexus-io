@@ -48,18 +48,17 @@
                     <h4> What Type of Data Set?</h4>
                     {{-- Start Primary Record Tile --}}
                     <div class="row datatypes">
-                        {{--<div class="option-tile col-sm-6 data_type @if(old('type') == 'profile') selected @endif" onclick="setType('profile')" id="profile">--}}
-                            {{--<div class="option-wrapper">--}}
-                                {{--<div class="option-header">--}}
-                                    {{--Profile Record--}}
-                                {{--</div>--}}
-                                {{--<div class="option-icon">--}}
-                                    {{--<i class="fa fa-file-text-o fa-3x"></i><br>--}}
-                                    {{--Records like department record where there is only one record per property, but the time--}}
-                                    {{--series information may be important.--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
+                        <div class="option-tile col-sm-6 data_type @if(old('type') == 'profile') selected @endif" onclick="setType('profile')" id="profile">
+                            <div class="option-wrapper">
+                                <div class="option-header">
+                                    Profile Record
+                                </div>
+                                <div class="option-icon">
+                                    <i class="fa fa-file-text-o fa-3x"></i><br>
+                                    Records like a tax record where a property will only have one record, but may have infrequent updates.
+                                </div>
+                            </div>
+                        </div>
 
                         {{-- Start Updating Record --}}
                         <div class="option-tile col-sm-6 data_type @if(old('type') == 'updating') selected @endif" onclick="setType('updating')" id="updating">

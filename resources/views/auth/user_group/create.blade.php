@@ -7,117 +7,10 @@
 
 @extends('master.main')
 
-@php
-$permission_sets = [
-         [
-                'title' => 'Data Visualization',
-                'key' => 'dataviz',
-                'permissions' => [
-                        [
-                                'permission' => "View Module",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Map Builder",
-                                'key' => 'maps'
-                        ]
-                ]
-         ],
-         [
-                'title' => 'Properties',
-                'key' => 'properties',
-                'permissions' => [
-                        [
-                                'permission' => "View Properties",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Create Properties",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Edit & Merge Properties",
-                                'key' => 'edit'
-                        ],
-                        [
-                                'permission' => "Comment on Properties",
-                                'key' => 'comment'
-                        ],
-                        [
-                                'permission' => "Tag Properties",
-                                'key' => 'tag'
-                        ]
-                ]
-        ],
-        [
-                'title' => 'Data Sets',
-                'key' => 'datasets',
-                'permissions' => [
-                        [
-                                'permission' => "View Data Set List",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Create Data Set",
-                                'key' => 'create'
-                        ],
-                        [
-                                'permission' => "Edit Data Sets",
-                                'key' => 'edit'
-                        ],
-                        [
-                                'permission' => "Upload Data",
-                                'key' => 'upload'
-                        ],
-                        [
-                                'permission' => "Rollback Uploads",
-                                'key' => 'rollback'
-                        ],
-                        [
-                                'permission' => 'Create Uploader',
-                                'key' => 'create-uploader'
-                        ],
-                        [
-                                'permission' => "Delete Data Set",
-                                'key' => 'delete'
-                        ],
-                ]
-        ],
-        [
-                'title' => 'Organization Admin',
-                'key' => 'org-admin',
-                'permissions' => [
-                        [
-                                'permission' => "View Admin Panel",
-                                'key' => 'view'
-                        ],
-                        [
-                                'permission' => "Create and Edit Groups",
-                                'key' => 'groups'
-                        ],
-                        [
-                                'permission' => "Create Users",
-                                'key' => 'create-users'
-                        ],
-                        [
-                                'permission' => "Edit Users",
-                                'key' => 'edit-users'
-                        ],
-                        [
-                                'permission' => "Remove Users",
-                                'key' => 'remove-users'
-                        ],
-                        [
-                                'permission' => "Assign Users to Groups",
-                                'key' => 'assign-groups'
-                        ],
-                ]
-        ],
-
-]
-@endphp
 
 @section('main')
+
+    @php($permission_sets = config('auth.permissions'))
 
     <div class="row">
         <div class="col-sm-12">
@@ -219,7 +112,7 @@ $permission_sets = [
 
     function clearChecks( type  )
     {
-        event.preventDefault()
+        event.preventDefault();
         $('.' + type).prop("checked", false);
         $('#' + type + 'SelectAll').removeClass('hidden');
         $('#' + type + 'UnselectAll').addClass('hidden');

@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Client;
 use App\PropertyMgr\GeocodeHelper;
+use App\PropertyMgr\Model\GeoCodingError;
+use Geocoder\Exception\ChainNoResult;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Queue\SerializesModels;
@@ -41,7 +43,19 @@ class Geocode implements ShouldQueue
         if(session('client.id') != $this->client_id)  Client::find($this->client_id)->logInAsClient();
 
         $geocode = new GeocodeHelper();
-        $geocode->property($this->property_id);
+
+        try{
+            $geocode->property($this->property_id);
+        }
+        catch (ChainNoResult $e)
+        {
+            GeoCodingError::create([
+                'model_id'      => $this->property_id,
+                'model_type'    => '\\App\\PropertyMgr\\Model\\Property',
+                'error'         => $e->getMessage(),
+                'address'       => '$property->fullAddress'
+            ]);
+        }
 
     }
 }

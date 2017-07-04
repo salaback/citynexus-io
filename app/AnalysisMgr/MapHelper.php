@@ -10,6 +10,7 @@ namespace App\AnalysisMgr;
 
 
 use App\DataStore\Model\DataSet;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Support\Facades\DB;
 
 class MapHelper
@@ -78,6 +79,25 @@ class MapHelper
                 $return[$point['lat'] . '-' . $point['lng']]['lng'] = $point['lng'];
                 $return[$point['lat'] . '-' . $point['lng']]['message'] = '(' . $point['value'] . ')' . ' - <a href="' . $point['url'] . '" target="_blank">' . $point['name'] . '</a></br>';
             }
+        }
+
+        return $return;
+    }
+
+    public function getFromRange($ids = array(), $range)
+    {
+        $properties = Property::findMany($ids);
+        $return = [];
+        DB::statement('SET search_path TO ' . config('schema') . ',public');
+
+        foreach($properties as $property)
+        {
+            $results = DB::table('cn_properties')
+                ->where(DB::raw('ST_Distance(cn_properties.location, ST_makepoint(' . $property->location->getLng() . ', ' . $property->location->getLat() . '))'), '<=', $range)
+                ->get()
+                ->toArray();
+
+            $return = array_merge($return, $results);
         }
 
         return $return;

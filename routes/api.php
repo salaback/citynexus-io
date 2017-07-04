@@ -17,8 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1', 'as' => 'api.'], function()
-{
-    Route::resource('properties', 'API\PropertyController');
-
-});
+Route::resources([
+    'tasks/task' => 'Backend\TaskController',
+    'tasks/list'=> 'Backend\TaskListController'
+]);

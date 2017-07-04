@@ -101,7 +101,7 @@ class Store extends DataProcessor
      * @return mixed
      */
 
-    public function analyizeFile ($source, $type, $isLocal = false)
+    public function analyzeFile ($source, $type, $isLocal = false)
     {
 
         // open file
@@ -137,11 +137,11 @@ class Store extends DataProcessor
             throw new \Error('File type not accepted');
         }
 
-        return $this->analyizeData($data);
+        return $this->analyzeData($data);
 
     }
 
-    public function analyizeData($data)
+    public function analyzeData($data)
     {
 
         $results = [];
@@ -165,19 +165,58 @@ class Store extends DataProcessor
         return $results;
     }
 
+    public function analyzeSQL($settings)
+    {
+        config(['database.connections.target' => array_filter($settings['db'])]);
+
+        $fields = DB::connection('target')
+            ->table('information_schema.columns')
+            ->where('table_schema', $settings['db']['schema'])
+            ->where('table_name', $settings['table'])
+            ->get();
+
+        $values = (array) DB::connection('target')
+            ->table($settings['table'])
+            ->first();
+
+        $results = [];
+
+        foreach($fields as $i)
+        {
+            $results[$i->column_name] = [
+                'key' => $i->column_name,
+                'name' => $this->namer($i->column_name),
+                'type' => $i->data_type,
+                'value' => $values[$i->column_name]
+            ];
+        }
+
+        return $results;
+    }
+
+
     public function processUpload(Upload $upload)
     {
         $this->clearUpload($upload);
 
-        if($upload->file_type == 'text/csv') $this->processCSV($upload);
-
+        switch ($upload->file_type)
+        {
+            case 'text/csv':
+                $this->processCsv($upload);
+                break;
+            case 'sql':
+                $this->processSQL($upload);
+        }
     }
 
 
     public function clearUpload(Upload $upload)
     {
-        if($upload->uploader->dataset->table_name != null) DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->delete();
-        DB::table('cn_entitables')->where('upload_id', $upload->id)->delete();
+        if($upload->uploader->dataset->table_name != null)
+        {
+            DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->delete();
+            DB::table('cn_entitables')->where('upload_id', $upload->id)->delete();
+        }
     }
 
     public function processCSV($upload)
@@ -189,11 +228,12 @@ class Store extends DataProcessor
 
             foreach($data as $i)
             {
-                dispatch(new Jobs\ProcessData(config('client.id'), $i, $upload->id));
+                dispatch(new Jobs\ProcessData($i, $upload->id));
             }
         });
 
     }
+
 
     public function openFile ($path, $isLocal = false)
     {
@@ -378,22 +418,22 @@ class Store extends DataProcessor
         return $dataset->table_name;
     }
 
-    public function processSQL(Uploader $uploader)
+    public function processSQL(Upload $upload)
     {
         // load source db
-        $sourceDb = [
-            'driver'   => $uploader->settings['driver'],
-            'host'     => $uploader->settings['host'],
-            'database' => $uploader->settings['database'],
-            'username' => $uploader->settings['username'],
-            'password' => $uploader->settings['password'],
-            'charset'  => $uploader->settings['charset'],
-            'prefix'   => $uploader->settings['prefix'],
-            'schema'   => $uploader->settings['schema'],
-        ];
-        config(['database.connections.source' => $sourceDb]);
+        config(['database.connections.target' => $upload->uploader->settings['db']]);
 
-        $data = DB::connection('source')->table($uploader->settings['table_name'])->get();
+        switch ($upload->settings['scope'])
+        {
+            case 'all':
+                $data = DB::connection('target')->table($upload->uploader->settings['table'])->pluck($upload->uploader->settings['unique_id']);
+
+                foreach($data->chunk(200) as $i)
+                {
+                    dispatch(new Jobs\ProcessData($i, $upload->id));
+                }
+        }
+
 
     }
 }

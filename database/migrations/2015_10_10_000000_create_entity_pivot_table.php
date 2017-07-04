@@ -17,7 +17,7 @@ class CreateEntityPivotTable extends Migration {
         {
             $table->string('entitables_type');
             $table->integer('entitables_id')->unsigned();
-            $table->integer('upload_id')->unsigned();
+            $table->integer('upload_id')->unsigned()->nullable();
             $table->integer('entity_id')->unsigned();
             $table->string('role')->nullable();
 

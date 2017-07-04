@@ -1,0 +1,3 @@
+<li class="list-group-item"> <a role="button" tabindex="0" class="media" href="{{route('getNotification', [$notification->id])}}"> <span class="pull-left media-object media-icon"> <i class="fa fa-check"></i> </span>
+        <div class="media-body"> <span class="block">You've been assigned a new task: {{$notification->data['task']}}</span> <small class="text-muted">{{$notification->created_at->diffForHumans()}}</small> </div>
+    </a> </li>

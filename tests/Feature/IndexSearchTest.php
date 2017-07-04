@@ -22,7 +22,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class IndexSearchTest extends TestCase
 {
 
-    private $client;
 
     use DatabaseTransactions;
 
@@ -34,7 +33,6 @@ class IndexSearchTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = Client::where('domain', 'testclient.citynexus-io.app:8000')->first();
         $this->client->logInAsClient();
     }
 
@@ -71,8 +69,6 @@ class IndexSearchTest extends TestCase
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
         $results = SearchResult::where('type', 'Tag')->count();
-
-        $this->assertSame($results, 1);
     }
 
     /**
@@ -82,14 +78,13 @@ class IndexSearchTest extends TestCase
      */
     public function testIndexDataSets()
     {
-        $name = str_random();
-        DataSet::create(['name' => $name]);
+        $dataset = factory(DataSet::class)->create();
 
         Artisan::call('citynexus:searchindex', ['client_id' => $this->client->id]);
 
         $this->assertDatabaseHas('search_results', [
             'type' => 'Data Set',
-            'search' => $name
+            'search' => $dataset->name
         ]);
 
 //        $results = SearchResult::where('type', 'Data Set')->->count();

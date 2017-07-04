@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <title>CityNexus | @yield('title')</title>
     <link rel="icon" type="image/ico" href="/favicon.ico" />
     <meta name="description" content="">
@@ -12,11 +14,13 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/citynexus.css">
     <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" integrity="sha256-xqxV4FDj5tslOz6MV13pdnXgf63lJwViadn//ciKmIs=" crossorigin="anonymous" />
 
     @stack('style')
 
 </head>
-<body id="oakleaf" class="main_Wrapper leftmenu-offcanvas">
+<body id="body" class="main_Wrapper theme-default header-fixed aside-fixed rightmenu-hidden leftmenu-sm">
 
 <!--  Application Content -->
 <div id="wrap" class="animsition">
@@ -36,7 +40,7 @@
 
             <!-- Search -->
             <form action="{{route('search.search')}}" class="search" id="main-search">
-                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Seach by property...">
+                <input id="search-bar" type="text" name="query" class="typeahead form-control underline-input" placeholder="Search everything...">
                 <input type="submit" style="display:none"/>
             </form>
             <!-- Search end -->
@@ -46,24 +50,10 @@
                 <li class="dropdown notifications"> <a href class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-bell"></i>
                         @if(\Illuminate\Support\Facades\Auth::user()->unreadNotifications->count() > 0)<div class="notify"><span class="heartbit"></span><span class="point"></span></div>@endif
                     </a>
-                    <div class="dropdown-menu pull-right with-arrow panel panel-default ">
-                        <ul class="list-group">
-                            @forelse(\Illuminate\Support\Facades\Auth::user()->notifications as $notification)
-                                @if($notification->type == 'App\Notifications\DataProcessed')
-                                    @include('master.notifications.dataProcessed')
-                                @elseif($notification->type == 'App\Notifications\ReplyToComment')
-                                    @include('master.notifications.replyToComment')
-                                @elseif($notification->type == 'App\Notifications\AddedToNewOrganization')
-                                    @include('master.notifications.addedToNewOrganization')
-                                @endif
-                            @empty
-                            @endforelse
-                        </ul>
-                        <div class="panel-footer"> <a role="button" tabindex="0">Show all notifications <i class="fa fa-angle-right pull-right"></i></a> </div>
-                    </div>
+                    @include('master.notifications._notifications')
                 </li>
-                <li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>
-                <li><a href="/auth/logout"><i class="fa fa-sign-out"></i></a></li>
+                {{--<li class="toggle-right-leftmenu"><a role="button" tabindex="0"><i class="fa fa-gear"></i></a></li>--}}
+                <li><a href="/auth/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
             </ul>
             <!-- Right-side navigation end -->
         </header>
@@ -307,6 +297,9 @@
 <!--/ Application Content -->
 @stack('modal')
 <!--  Vendor JavaScripts  -->
+
+<script src="/js/app.js"></script>
+
 <script src="/assets/bundles/libscripts.bundle.js"></script>
 <script src="/assets/bundles/vendorscripts.bundle.js"></script>
 <!--/ vendor javascripts -->
@@ -314,6 +307,10 @@
 <script src="/assets/js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="/js/bootstrap-notify.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js" integrity="sha256-+mWd/G69S4qtgPowSELIeVAv7+FuL871WXaolgXnrwQ=" crossorigin="anonymous"></script>
+
+
 
 @include('master.snipits._alerts')
 @include('master._form_error')
