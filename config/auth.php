@@ -139,6 +139,24 @@ return [
                     ]
              ],
              [
+                    'title' => "Documents",
+                    'key'   => 'documents',
+                     'permissions' => [
+                         [
+                             'permission' => "Create Document Template",
+                             'key' => 'create-template'
+                         ],
+                         [
+                             'permission' => "Edit Document Template",
+                             'key' => 'edit-template'
+                         ],
+                         [
+                             'permission' => "Issue Document",
+                             'key' => 'issue'
+                         ]
+                 ]
+             ],
+             [
                     'title' => 'Entities',
                     'key' => 'entities',
                     'permissions' => [
