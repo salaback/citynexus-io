@@ -143,6 +143,10 @@ return [
                     'key'   => 'documents',
                      'permissions' => [
                          [
+                             'permission' => "View Templates",
+                             'key' => 'view'
+                         ],
+                         [
                              'permission' => "Create Document Template",
                              'key' => 'create-template'
                          ],
