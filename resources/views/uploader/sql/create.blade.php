@@ -73,26 +73,26 @@
                                 <div class="form-group">
                                     <label for="host" class="control-label col-sm-4">Database Host</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[db][host]" id="db_host" placeholder="192.0.2.1" required value="fitchburg-ma-cn.ck0vyspcejra.us-west-2.rds.amazonaws.com">
+                                        <input type="text" class="form-control" name="settings[db][host]" id="db_host" placeholder="192.0.2.1" required >
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="database" class="control-label col-sm-4">Database Name</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[db][database]" id="db_name" placeholder="dn_name_1234" required value="fitchburg_ma_citynexus">
+                                        <input type="text" class="form-control" name="settings[db][database]" id="db_name" placeholder="dn_name_1234" required >
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="username" class="control-label col-sm-4">Database User Name</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[db][username]" id="db_user" placeholder="user" value="fitchburg_ma_cn">
+                                        <input type="text" class="form-control" name="settings[db][username]" id="db_user" placeholder="user" >
                                         <span class="help-block mb-0">If this is a public database the user name is optional.</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="username" class="control-label col-sm-4">Database Password</label>
                                     <div class="col-sm-8">
-                                        <input type="password" class="form-control" name="settings[db][password]" id="db_password" value="\rqX4FXB2S]6eVK#`x8W+;Zf">
+                                        <input type="password" class="form-control" name="settings[db][password]" id="db_password" >
                                         <span class="help-block mb-0">If this is a public database the password is optional.</span>
                                     </div>
                                 </div>
