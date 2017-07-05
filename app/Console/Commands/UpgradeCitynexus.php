@@ -43,18 +43,19 @@ class UpgradeCitynexus extends Command
      */
     public function handle()
     {
+
         $clientId = $this->ask('What is the client ID?');
         $host = $this->ask('Host?');
         $database = $this->ask('Database Name?');
         $user = $this->ask('User Name?');
         $password = $this->ask('Password?');
 
-        Client::find($clientId)->logInAsClient;
+        Client::find($clientId)->logInAsClient();
 
         $credentials = [
             'driver'   => 'pgsql',
-            'host'     => $host,
-            'database' => $database,
+            'host'     =>  $host,
+            'database' =>  $database,
             'username' => $user,
             'password' => $password,
             'charset'  => 'utf8',
@@ -64,8 +65,7 @@ class UpgradeCitynexus extends Command
 
         config(['database.connections.target' => $credentials]);
 
-
-        $this->upgrade->run();
+        $this->upgrade->run($clientId);
 
     }
 }
