@@ -44,7 +44,7 @@
             </ul>
         </li>
     @endcan
-    @can('citynexus', ['client-admin', 'view'])<li><a href="/organization"><i class="fa fa-group"></i> <span>Organization Settings</span></a></li>@endcan
+    @can('citynexus', ['org-admin', 'view'])<li><a href="/organization"><i class="fa fa-group"></i> <span>Organization Settings</span></a></li>@endcan
     @can('super-admin') <li><a href="/admin"><i class="fa fa-group"></i> <span>Client Admin</span></a></li> @endcan
 
 </ul>
