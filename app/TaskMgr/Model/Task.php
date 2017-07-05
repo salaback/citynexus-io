@@ -33,9 +33,19 @@ class Task extends Model
         return $this->belongsTo(TaskList::class);
     }
 
+    public function assigner()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function assignee()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public function completee()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 
 }

@@ -24,10 +24,29 @@ class CityNexusUpgrade
         $this->client = Client::find($id);
         $this->client->logInAsClient();
 
-        if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
-        if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
-        $this->migrateComments();
-        $this->migrateTags();
+//        if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
+//        if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
+//        $this->migrateComments();
+//        $this->migrateTags();
+
+        $this->resetIds();
+    }
+
+    private function resetIds()
+    {
+        $tables = DB::table('information_schema.tables')->where('table_schema', $this->client->schema)->get(['table_schema', 'table_name']);
+
+        foreach($tables as $table)
+        {
+            try{
+                DB::statement("SELECT setval(pg_get_serial_sequence('" . $this->client->schema . "." . $table->table_name . "', 'id'), coalesce(max(id),0) + 1, false) FROM " . $this->client->schema . "." . $table->table_name);
+            }
+            catch (\Exception $e)
+            {
+                null;
+            }
+        }
+
     }
 
     public function migrateUsers()
