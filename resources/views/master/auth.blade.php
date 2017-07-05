@@ -52,5 +52,6 @@
 <!--/ custom javascripts -->
 
 @stack('scripts')
+@include('snipits._google')
 
 </html>

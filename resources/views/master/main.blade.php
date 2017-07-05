@@ -337,7 +337,7 @@
 </script>
 
 @stack('scripts')
-
+@include('snipits._google')
 <!--/ custom javascripts -->
 </body>
 </html>

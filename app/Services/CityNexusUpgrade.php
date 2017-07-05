@@ -26,9 +26,7 @@ class CityNexusUpgrade
 
         if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
         if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
-
-//        $this->migrateComments();
-
+        $this->migrateComments();
         $this->migrateTags();
     }
 
@@ -179,5 +177,4 @@ class CityNexusUpgrade
 
         DB::connection('tenant')->table('cn_tagables')->insert($insert);
     }
-
 }
