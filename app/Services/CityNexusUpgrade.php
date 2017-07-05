@@ -27,8 +27,7 @@ class CityNexusUpgrade
         if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
         $this->migrateComments();
         $this->migrateTags();
-
-//        $this->resetIds();
+        $this->resetIds();
     }
 
     private function resetIds()
