@@ -23,13 +23,12 @@ class CityNexusUpgrade
     {
         $this->client = Client::find($id);
         $this->client->logInAsClient();
+        if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
+        if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
+        $this->migrateComments();
+        $this->migrateTags();
 
-//        if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
-//        if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
-//        $this->migrateComments();
-//        $this->migrateTags();
-
-        $this->resetIds();
+//        $this->resetIds();
     }
 
     private function resetIds()
