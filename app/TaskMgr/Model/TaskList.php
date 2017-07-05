@@ -18,13 +18,9 @@ class TaskList extends Model
         return $this->hasMany(Task::class)->orderBy('due_at', 'ASC');
     }
 
-    public function property()
+    public function taskable()
     {
-        return $this->belongsTo(Property::class, 'taskable_id');
+        return $this->morphTo();
     }
 
-    public function entity()
-    {
-        return $this->belongsTo(Entity::class, 'taskable_id');
-    }
 }

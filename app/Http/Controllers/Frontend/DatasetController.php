@@ -8,6 +8,7 @@ use App\DataStore\TableBuilder;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -51,6 +52,22 @@ class DatasetController extends Controller
             })
             ->make(true);
     }
+
+    public function rawData($id)
+    {
+
+        $this->authorize('citynexus', ['datasets', 'view']);
+        $dataset = DataSet::find($id);
+
+        return Datatables::of(DB::table($dataset->table)->query())
+            ->addColumn('property', function($set) {
+                return '<a href="' . route('property.show', [$set->property_id]) . '" class="btn btn-raised btn-primary btn-sm">Settings</a>';
+            })
+            ->rawColumns(['settings'])
+            ->make(true);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

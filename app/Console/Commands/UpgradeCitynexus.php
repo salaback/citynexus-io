@@ -12,7 +12,7 @@ class UpgradeCitynexus extends Command
      *
      * @var string
      */
-    protected $signature = 'citynexus:fromv1 {client_id} {host} {database} {user_name} {password}';
+    protected $signature = 'citynexus:fromv1';
 
     /**
      * The console command description.
@@ -43,14 +43,20 @@ class UpgradeCitynexus extends Command
      */
     public function handle()
     {
-        Client::find($this->argument('client_id'))->logInAsClient;
+        $clientId = $this->ask('What is the client ID?');
+        $host = $this->ask('Host?');
+        $database = $this->ask('Database Name?');
+        $user = $this->ask('User Name?');
+        $password = $this->ask('Password?');
+
+        Client::find($clientId)->logInAsClient;
 
         $credentials = [
             'driver'   => 'pgsql',
-            'host'     => $this->argument('host'),
-            'database' => $this->argument('database'),
-            'username' => $this->argument('user_name'),
-            'password' => $this->argument('password'),
+            'host'     => $host,
+            'database' => $database,
+            'username' => $user,
+            'password' => $password,
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',

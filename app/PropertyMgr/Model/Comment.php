@@ -2,6 +2,7 @@
 
 namespace App\PropertyMgr\Model;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,17 +32,21 @@ class Comment extends Model
 
     public function poster()
     {
-        return $this->belongsTo('\App\User', 'posted_by');
+        return $this->belongsTo(User::class, 'posted_by');
     }
 
     public function comments()
     {
-        return $this->morphMany('App\PropertyMgr\Model\Comment', 'cn_commentable');
+        return $this->morphMany(Comment::class, 'cn_commentable');
     }
 
     public function replyTo()
     {
-        return $this->belongsTo('App\PropertyMgr\Model\Comment', 'reply_to');
+        return $this->belongsTo(Comment::class, 'reply_to');
     }
 
+    public function commentable()
+    {
+        return $this->morphTo('cn_commentable');
+    }
 }
