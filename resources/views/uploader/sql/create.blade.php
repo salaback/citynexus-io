@@ -99,7 +99,7 @@
                                 <div class="form-group">
                                     <label for="table" class="control-label col-sm-4">Database Table Name</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[table]" placeholder="properties_table" id="db_table" required value="tabler_police_calls">
+                                        <input type="text" class="form-control" name="settings[table]" placeholder="properties_table" id="db_table" required>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -95,7 +95,7 @@ class IndexSearch
                 $index[] =[
                     'type' => $building,
                     'search' => ucwords(strtolower($property->oneLineAddress)),
-                    'link' => route('properties.show', [$property->id])
+                    'link' => '/properties/' . [$property->id]
                 ];
             }
 
