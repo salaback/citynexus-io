@@ -1,23 +1,24 @@
 <?php
 
+namespace Tests\Feature;
+
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ScoreTest extends \PHPUnit\Framework\TestCase
+class ProcessUploadTest extends TestCase
 {
 
-    public function __construct()
-    {
-        $this->store = new \App\DataStore\Store();
 
-    }
+
     /**
-     * A basic functional test example.
+     * A basic test example.
      *
      * @return void
      */
-
-
+    public function testExample()
+    {
+        $this->assertTrue(true);
+    }
 }
-

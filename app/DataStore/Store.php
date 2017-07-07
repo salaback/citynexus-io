@@ -103,17 +103,20 @@ class Store extends DataProcessor
      * @return mixed
      */
 
-    public function analyzeFile ($source, $type)
+    public function analyzeFile ($source, $type, $is_local = false)
     {
 
-        $temp = $this->localFile($source);
+        if(!$is_local)
+        {
+            $source = $this->localFile($source);
+        }
 
         set_time_limit(0);
 
         if($type == 'text/csv')
         {
 
-            $data = Excel::load($temp, function($reader){
+            $data = Excel::load($source, function($reader){
                 $reader->takeRows(50);
             })->get();
 
@@ -123,9 +126,9 @@ class Store extends DataProcessor
         elseif(str_contains($type, 'spreadsheetml'))
         {
 
-            config(['excel.import.force_sheets_collection' => true]);
+//            config(['excel.import.force_sheets_collection' => true]);
 
-            $data = Excel::load($temp, function($reader){
+            $data = Excel::load($source, function($reader){
                 $reader->takeRows(50);
             })->get();
 
@@ -137,7 +140,7 @@ class Store extends DataProcessor
             throw new \Error('File type not accepted');
         }
 
-        unlink($temp);
+        unlink($source);
 
         return $this->analyzeData($data);
 
@@ -262,7 +265,6 @@ class Store extends DataProcessor
 
     public function localFile($source)
     {
-
         $extension = explode('.', $source);
         $extension = end($extension);
         $tempname = storage_path() . "/tmpfile_"  . date('hms') . "." . $extension;

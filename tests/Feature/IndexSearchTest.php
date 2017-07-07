@@ -22,7 +22,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class IndexSearchTest extends TestCase
 {
 
-
+    protected $client;
     use DatabaseTransactions;
 
     protected  $connectionsToTransact = [
