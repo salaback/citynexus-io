@@ -95,7 +95,7 @@ class IndexSearch
                 $index[] =[
                     'type' => $building,
                     'search' => ucwords(strtolower($property->oneLineAddress)),
-                    'link' => '/properties/' . [$property->id]
+                    'link' => '/properties/' . $property->id
                 ];
             }
 
@@ -139,7 +139,7 @@ class IndexSearch
                 $index[] =[
                     'type' => 'Data Set',
                     'search' => $dataset->name,
-                    'link' => route('dataset.show', [$dataset->id])
+                    'link' => '/dataset/' . $dataset->id
                 ];
             }
 

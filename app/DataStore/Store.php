@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DataStore\Typer;
 
+
+
 class Store extends DataProcessor
 {
 
@@ -101,20 +103,18 @@ class Store extends DataProcessor
      * @return mixed
      */
 
-    public function analyzeFile ($source, $type, $isLocal = false)
+    public function analyzeFile ($source, $type)
     {
 
-        // open file
-        if(!$isLocal)
-        {
-            $source = $this->localFile($source);
-        }
+        $temp = $this->localFile($source);
+
+        set_time_limit(0);
 
         if($type == 'text/csv')
         {
 
-            $data = Excel::load($source, function($reader){
-                $reader->all();
+            $data = Excel::load($temp, function($reader){
+                $reader->takeRows(50);
             })->get();
 
             $data = $data->toArray();
@@ -125,8 +125,8 @@ class Store extends DataProcessor
 
             config(['excel.import.force_sheets_collection' => true]);
 
-            $data = Excel::load($source, function($reader){
-                $reader->all();
+            $data = Excel::load($temp, function($reader){
+                $reader->takeRows(50);
             })->get();
 
             $data = $data->first()->toArray();
@@ -136,6 +136,8 @@ class Store extends DataProcessor
         {
             throw new \Error('File type not accepted');
         }
+
+        unlink($temp);
 
         return $this->analyzeData($data);
 
@@ -197,6 +199,7 @@ class Store extends DataProcessor
 
     public function processUpload(Upload $upload)
     {
+
         $this->clearUpload($upload);
 
         switch ($upload->file_type)
@@ -262,7 +265,7 @@ class Store extends DataProcessor
 
         $extension = explode('.', $source);
         $extension = end($extension);
-        $tempname = storage_path() . "/temp_file/tmpfile_"  . date('hms') . "." . $extension;
+        $tempname = storage_path() . "/tmpfile_"  . date('hms') . "." . $extension;
         file_put_contents($tempname, Storage::disk('s3')->get($source));
 
         return $tempname;
