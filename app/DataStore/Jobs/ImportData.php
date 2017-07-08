@@ -4,26 +4,19 @@ namespace App\DataStore\Jobs;
 
 use App\Client;
 use App\DataStore\Importer;
-use App\DataStore\TableBuilder;
-use App\Organization;
-use Carbon\Carbon;
-use App\DataStore\Model\Uploader;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
-use App\PropertyMgr\Sync;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\DB;
 
-class ProcessData implements ShouldQueue
+class ImportData implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    private $data;
-    private $client_id;
     private $upload_id;
+    private $client_id;
 
     /**
      * Create a new job instance.
@@ -46,11 +39,9 @@ class ProcessData implements ShouldQueue
         // log in client
         Client::find($this->client_id)->logInAsClient();
 
-        $upload = Upload::find($this->upload_id);
+        $importer = new Importer();
 
-        $import = new Importer();
-
-        $import->fromUpload($upload);
+        $importer->fromUpload(Upload::find($this->upload_id));
 
     }
 }

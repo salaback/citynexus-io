@@ -17,31 +17,7 @@ class ScoreTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function testAnalyizeExcelFile()
-    {
-        $result = $this->store->analyizeFile(__DIR__ . '/exceltest.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', true);
 
-        $this->assertSame('integer', $result['id']['type']);
-        $this->assertSame('string', $result['string']['type']);
-        $this->assertSame('boolean', $result['boolean']['type']);
-        $this->assertSame('text', $result['text']['type']);
-        $this->assertSame('float', $result['float']['type']);
-        $this->assertSame('integer', $result['int']['type']);
-        $this->assertSame(count($result), 6);
-
-    }
-
-    public function testCSVFile()
-    {
-        $result = $this->store->analyizeFile(__DIR__ . '/exceltest.csv', 'text/csv', true);
-        $this->assertSame('integer', $result['id']['type']);
-        $this->assertSame('string', $result['string']['type']);
-        $this->assertSame('boolean', $result['boolean']['type']);
-        $this->assertSame('text', $result['text']['type']);
-        $this->assertSame('float', $result['float']['type']);
-        $this->assertSame('integer', $result['int']['type']);
-        $this->assertSame(count($result), 6);
-    }
 
 }
 

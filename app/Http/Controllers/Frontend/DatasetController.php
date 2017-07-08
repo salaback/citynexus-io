@@ -80,6 +80,7 @@ class DatasetController extends Controller
         $this->authorize('citynexus', ['datasets', 'create']);
 
         $users = User::fromClient(config('client'));
+
         return view('dataset.create', compact('users'));
     }
 
@@ -99,13 +100,7 @@ class DatasetController extends Controller
             'owner_id' => 'required'
         ]);
 
-        $dataset = $request->all();
-
-        $dataset = DataSet::create($dataset);
-
-        $tableBuilder = new TableBuilder();
-
-        $tableBuilder->createTable($dataset);
+        $dataset = DataSet::create($request->all());
 
         Session::flash('flash_success', 'Data Set successfully created');
 
@@ -163,7 +158,15 @@ class DatasetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $dataset = DataSet::find($id);
+
+        $name = $dataset->name;
+
+        $dataset->delete();
+
+        session()->flash('flash_info', 'Dataset "' . $name . '" has been deleted.');
+
+        return redirect(route('dataset.index'));
     }
 
 

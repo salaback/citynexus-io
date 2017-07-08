@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\DataStore\Jobs\ProcessUpload;
+use App\DataStore\Importer;
+use App\DataStore\Jobs\ProcessData;
 use App\Http\Controllers\Controller;
-use App\DataStore\Jobs\StartImport;
-use App\DataStore\Model\DataSet;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
 use App\PropertyMgr\Model\Property;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use Yajra\Datatables\Facades\Datatables;
 
 class UploadController extends Controller
 {
@@ -22,26 +20,6 @@ class UploadController extends Controller
     public function __construct()
     {
         $this->storeHelper = new Store();
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
     }
 
     /**
@@ -57,7 +35,7 @@ class UploadController extends Controller
         $upload['user_id'] = Auth::id();
         $upload = Upload::create($upload);
 
-        $this->storeHelper->processUpload($upload);
+        $this->dispatch(new Upload($upload->id));
 
         if($request->ajax())
         {
@@ -84,47 +62,41 @@ class UploadController extends Controller
     }
 
     /**
-     *
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        $importer = new Importer();
+
+        $upload = Upload::find($id);
+
+        $importer->clearUpload($upload);
+
+        $upload->count = 0;
+        $upload->processed_at = null;
+        $upload->deleted_at = Carbon::now();
+        $upload->save();
+
+        if($request->ajax())
+        {
+            return 'deleted';
+        }
+        else
+        {
+            session()->flash('flash_success', 'Upload has been removed.');
+            return redirect(route('uploader.show', $upload->uploader->id));
+        }
     }
 
     public function process($id)
     {
+
         $upload = Upload::find($id);
 
-        set_time_limit(0);
-
-        $this->dispatch(new ProcessUpload(config('client.id'), $upload));
+        $this->dispatch(new ProcessData($upload->id));
 
         return 'queued';
     }
