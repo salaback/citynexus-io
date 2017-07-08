@@ -158,7 +158,15 @@ class DatasetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $dataset = DataSet::find($id);
+
+        $name = $dataset->name;
+
+        $dataset->delete();
+
+        session()->flash('flash_info', 'Dataset "' . $name . '" has been deleted.');
+
+        return redirect(route('dataset.index'));
     }
 
 

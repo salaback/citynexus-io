@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
 use App\PropertyMgr\Model\Property;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -76,6 +77,7 @@ class UploadController extends Controller
 
         $upload->count = 0;
         $upload->processed_at = null;
+        $upload->deleted_at = Carbon::now();
         $upload->save();
 
         if($request->ajax())

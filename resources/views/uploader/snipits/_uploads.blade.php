@@ -22,7 +22,7 @@
                         warning
                     @endif
                         ">
-                    <td>{{str_limit($upload->description, 100, '...')}}</td>
+                    <td>{{str_limit($upload->note, 100, '...')}}</td>
                     <td>{{$upload->created_at->toFormattedDateString()}}</td>
                     <td>
                         @if($upload->processed_at != null)
@@ -44,7 +44,13 @@
 
                                 <li class="divider"></li>
                                 <li><a href="#" onclick="refreshUpload({{$upload->id}})" id="refresh-{{$upload->id}}"><i class="fa fa-refresh"></i> Refresh Upload</a></li>
-                                <li><a href="#"> <i class="fa fa-trash"></i> Remove Upload</a></li>
+                                <li>
+                                    <form action="{{route('upload.destroy', [$upload->id])}}" method="post">
+                                        {{csrf_field()}}
+                                        {{method_field('delete')}}
+                                    <button> <i class="fa fa-trash"></i> Remove Upload</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div></td>
                 </tr>

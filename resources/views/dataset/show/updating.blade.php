@@ -9,6 +9,15 @@
             <div class="col-sm-6 col-xs-12">
                 <h1 class="font-thin h3 m-0"><strong>{{$dataset->name}}</strong> Overview</h1>
             </div>
+            @can('citynexus', ['datasets', 'delete'])
+                <div class="col-sm-6">
+                    <form action="{{route('dataset.destroy', [$dataset->id])}}" method="post">
+                        {{csrf_field()}}
+                        {{method_field('delete')}}
+                    <button class="pull-right btn btn-danger btn-sm btn-raised"> <i class="fa fa-trash"></i> Remove Data Set</button>
+                    </form>
+                </div>
+            @endcan
         </div>
     </div>
 
