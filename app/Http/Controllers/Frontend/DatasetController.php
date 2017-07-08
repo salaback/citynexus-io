@@ -100,7 +100,11 @@ class DatasetController extends Controller
             'owner_id' => 'required'
         ]);
 
-        $dataset = DataSet::create($request->all());
+        $dataset = $request->all();
+
+        $dataset['schema'] = [];
+
+        $dataset = DataSet::create($dataset);
 
         Session::flash('flash_success', 'Data Set successfully created');
 
