@@ -23,6 +23,7 @@ class DataProcessor
 
         $data = $this->applyFilters($data, $uploader);
 
+        $data = $this->castData($data, $uploader->map);
 
         if($uploader->hasSyncClass('address')){
 
@@ -35,6 +36,7 @@ class DataProcessor
         }
 
         $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));
+
 
         return $data;
     }
@@ -76,6 +78,55 @@ class DataProcessor
                 break;
 
             default: return $value;
+        }
+    }
+
+    private function castData($data, $map)
+    {
+
+        $return = [];
+        foreach($data as $key => $row)
+        {
+            $new_row = [];
+
+            foreach($map as $item)
+            {
+
+                if($row[$item['key']] != null)
+                {
+                    $new_row[$item['key']] = $this->cast($row[$item['key']], $item['type']);
+                }
+                else
+                {
+                    $new_row[$item['key']] = null;
+                }
+
+            }
+            $return[] = $new_row;
+        }
+
+        return $return;
+    }
+
+    public function cast($value, $type)
+    {
+        switch ($type)
+        {
+            case 'string':
+                return trim((string) $value);
+                break;
+            case 'integer':
+                return (int) $value;
+                break;
+
+            case 'float':
+                return (float) $value;
+                break;
+            case 'boolean':
+                return (bool) $value;
+                break;
+            default:
+                return $value;
         }
     }
 

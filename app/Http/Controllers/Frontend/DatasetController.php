@@ -80,6 +80,7 @@ class DatasetController extends Controller
         $this->authorize('citynexus', ['datasets', 'create']);
 
         $users = User::fromClient(config('client'));
+
         return view('dataset.create', compact('users'));
     }
 
@@ -99,13 +100,7 @@ class DatasetController extends Controller
             'owner_id' => 'required'
         ]);
 
-        $dataset = $request->all();
-
-        $dataset = DataSet::create($dataset);
-
-        $tableBuilder = new TableBuilder();
-
-        $tableBuilder->createTable($dataset);
+        $dataset = DataSet::create($request->all());
 
         Session::flash('flash_success', 'Data Set successfully created');
 

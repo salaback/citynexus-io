@@ -219,12 +219,7 @@ class UploaderTest extends TestCase
         DB::table('user_user_group')->insert(['user_id' => $user->id, 'user_group_id' => $group->id]);
         $this->be($user);
 
-        $dataset = DataSet::create([
-            'name' => 'Test Data Set',
-            'table_name' => 'test_data_set',
-            'type' => 'updating',
-            'owner_id' => $user->id
-        ]);
+        $dataset = factory(DataSet::class)->create(['owner_id' => $user->id]);
 
         $this->actingAs($user)->get('/uploader/create?dataset_id=' . $dataset->id . '&type=csv')->assertSee('CityNexus | Create CSV/Excel Uploader');
     }

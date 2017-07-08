@@ -126,7 +126,7 @@ class Store extends DataProcessor
         elseif(str_contains($type, 'spreadsheetml'))
         {
 
-//            config(['excel.import.force_sheets_collection' => true]);
+            config(['excel.import.force_sheets_collection' => true]);
 
             $data = Excel::load($source, function($reader){
                 $reader->takeRows(50);
@@ -197,47 +197,6 @@ class Store extends DataProcessor
         }
 
         return $results;
-    }
-
-
-    public function processUpload(Upload $upload)
-    {
-
-        $this->clearUpload($upload);
-
-        switch ($upload->file_type)
-        {
-            case 'text/csv':
-                $this->processCsv($upload);
-                break;
-            case 'sql':
-                $this->processSQL($upload);
-        }
-    }
-
-
-    public function clearUpload(Upload $upload)
-    {
-        if($upload->uploader->dataset->table_name != null)
-        {
-            DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->delete();
-            DB::table('cn_entitables')->where('upload_id', $upload->id)->delete();
-        }
-    }
-
-    public function processCSV($upload)
-    {
-        $file = $this->localFile($upload->source);
-        Excel::load($file, function($reader) use($upload)
-        {
-            $data = array_chunk($reader->toArray(), 250);
-
-            foreach($data as $i)
-            {
-                dispatch(new Jobs\ProcessData($i, $upload->id));
-            }
-        });
-
     }
 
 
@@ -439,6 +398,58 @@ class Store extends DataProcessor
                 }
         }
 
+
+    }
+
+    public function prepareDataProcess($upload)
+    {
+        // load helpers
+        $syncHelper = new Sync();
+        $uploader = Uploader::find($upload->uploader_id);
+
+        if($uploader->type == 'sql')
+        {
+            config(['database.connections.target' => $uploader->settings['db']]);
+            $this->data = DB::connection('target')
+                ->table($uploader->settings['table'])
+                ->whereIn($uploader->settings['unique_id'], $this->data)
+                ->get();
+
+            $this->data = collect($this->data)->map(function($x){ return (array) $x; })->toArray();
+        }
+
+        $data = $this->processData($this->data , $uploader);
+
+        $final_data = [];
+
+        $map = $uploader->map;
+
+        // load data
+        foreach($data as $row)
+        {
+            $new_row['upload_id'] = $upload->id;
+
+            foreach ($row as $key => $item)
+            {
+                if(isset($map[$key]['type']) && $map[$key]['key'] != null)
+                {
+                    $new_row[$key] = $this->cast($item, $map[$key]['type']);
+                }
+            }
+            $final_data[] = $new_row;
+        }
+
+        $max_id = DB::table($uploader->dataset->table_name)->max('id');
+
+        DB::table($uploader->dataset->table_name)->insert($final_data);
+
+        if($max_id != null) $data = DB::table($uploader->dataset->table_name)->where('id', '>', $max_id)->get();
+        else $data = DB::table($uploader->dataset->table_name)->get();
+
+        $syncHelper->postSync($data, (object) $uploader->syncs, $upload->id);
+        $upload->count += $data->count();
+        $upload->processed_at = Carbon::now();
+        $upload->save();
 
     }
 }

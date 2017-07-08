@@ -102,3 +102,19 @@ $factory->define(\App\DocumentMgr\Model\DocumentTemplate::class, function(\Faker
        'body' => '<p>' . $faker->words(10, true) . '</p>',
    ];
 });
+
+$factory->define(\App\DataStore\Model\DataSet::class, function(\Faker\Generator $faker){
+   return [
+       'name' => 'fake ' . $faker->word . ' dataset',
+       'schema' => [
+           "objectid" => [
+               "show" => "on",
+               "name" => "Objectid",
+               "key" => "objectid",
+               "type" => "integer"
+            ],
+        ],
+       'owner_id' => 1,
+       'type' => 'updating'
+       ];
+});

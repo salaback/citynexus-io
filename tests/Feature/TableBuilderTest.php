@@ -6,6 +6,7 @@ use App\Client;
 use App\DataStore\Model\DataSet;
 use App\DataStore\TableBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -37,12 +38,7 @@ class TableBuilderTest extends TestCase
     public function testCreateTable()
     {
         $this->client->logInAsClient();
-        $dataset = DataSet::create([
-            'name' => 'Test Data Set',
-            'type' => 'updating'
-        ]);
-
-        $this->tableBuilder->createTable($dataset);
+        $dataset = factory(DataSet::class)->create();
 
         $this->assertTrue(DB::statement('SELECT * FROM ' . $dataset->table_name));
     }
