@@ -40,4 +40,6 @@ return [
         ],
     ],
     'adapter'  => CurlHttpAdapter::class,
+
+    'gmap_api' => env('GMAP_API')
 ];

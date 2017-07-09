@@ -322,8 +322,8 @@
     </script>
 @endif
 
-@if(env('GMAPI_KEY') != null)
-    <script async defer src="{{'https://maps.googleapis.com/maps/api/js?key=' . env('GMAPI_KEY') . '&signed_in=true&callback=initialize'}}">
+@if(config('geocoder.gmap_api') != null)
+    <script async defer src="{{'https://maps.googleapis.com/maps/api/js?key=' . config('geocoder.gmap_api') . '&signed_in=true&callback=initialize'}}">
     </script>
 @endif
 

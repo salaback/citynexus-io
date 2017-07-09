@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Client;
 use App\PropertyMgr\GeocodeHelper;
 use App\PropertyMgr\Model\GeoCodingError;
+use App\PropertyMgr\Model\Property;
 use Geocoder\Exception\ChainNoResult;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Session\Session;
@@ -53,7 +54,7 @@ class Geocode implements ShouldQueue
                 'model_id'      => $this->property_id,
                 'model_type'    => '\\App\\PropertyMgr\\Model\\Property',
                 'error'         => $e->getMessage(),
-                'address'       => '$property->fullAddress'
+                'address'       => Property::find($this->property_id)->full_address
             ]);
         }
 
