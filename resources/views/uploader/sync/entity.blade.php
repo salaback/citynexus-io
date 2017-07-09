@@ -41,15 +41,28 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
+                                        <label for="full_address" class="col-sm-3 control-label">Typical Name Format</label>
+                                        <div class="col-sm-4">
+                                            <select type="text" name="sync[format]" id='role' class="form-control">
+                                                <option value="">Select One</option>
+                                                <option value="FirstMLast">First M Last</option>
+                                                <option value="LastFirstM">Last First M</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
                                         <label for="full_address" class="col-sm-3 control-label">Entity Role</label>
                                         <div class="col-sm-4">
                                             <select type="text" name="sync[role]" id='role' class="form-control">
                                                 <option value="">Select One</option>
-                                                <option value="owner">Owner</option>
-                                                <option value="tenant">Tenant</option>
+                                                <option value="attorney">Attorney</option>
+                                                <option value="common">Common Name</option>
                                                 <option value="manger">Property Manager</option>
                                                 <option value="Receiver">Receiver</option>
-                                                <option value="common">Common Name</option>
+                                                <option value="tenant">Tenant</option>
+                                                <option value="owner">Owner</option>
                                                 <option value="other">Other</option>
                                             </select>
                                         </div>

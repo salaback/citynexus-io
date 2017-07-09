@@ -48,10 +48,15 @@ class Sync
                 // check for raw entry, if none create one.
                 $raw = RawEntity::firstOrCreate(['full_name' => trim(strtoupper($i->$key))]);
 
-                // if raw address doesn't have an entity ID, parse name.
+                // if raw entity doesn't have an entity ID, parse name.
                 if($raw->entity_id == null && $i->$key != null)
                 {
-                    $parsed = $entitySync->parseName($i->$key);
+                    if(isset($sync['format']))
+                        $format = $sync['format'];
+                    else
+                        $format = null;
+
+                    $parsed = $entitySync->parseName($i->$key, $format);
                     $entity = Entity::firstOrCreate($parsed);
                     $raw->entity_id = $entity->id;
                     $raw->save();
@@ -63,8 +68,6 @@ class Sync
                 else{
                     break;
                 }
-
-                $entity->properties()->attach($i->property_id, ['upload_id' => $upload_id, 'role' => $sync['role']]);
 
             }elseif($sync['type'] == 'parsed')
             {
@@ -92,8 +95,9 @@ class Sync
                     $entity = $raw->entity;
                 }
 
-                $entity->properties()->attach($i->property_id, ['upload_id' => $upload_id, 'role' => $sync['role']]);
             }
+
+            $entity->properties()->attach($i->property_id, ['upload_id' => $upload_id, 'role' => $sync['role']]);
 
         }
     }

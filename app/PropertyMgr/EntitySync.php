@@ -70,7 +70,7 @@ class EntitySync
         ];
     }
 
-    public function parseName($name)
+    public function parseName($name, $format = null)
     {
         // capitalize name
         $name = strtoupper($name);
@@ -89,7 +89,7 @@ class EntitySync
             $return = $this->parseCompany($parts);
 
         // check if the first name listed is followed by a comma
-        } elseif($ln_test[0] == $parts[0]) {
+        } elseif($ln_test[0] == $parts[0] || $format == 'LastFirstM') {
             $return = $this->parseLastNameFirst($parts);
 
         } else {
