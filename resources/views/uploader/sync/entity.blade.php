@@ -493,7 +493,7 @@
                 </div>
             </div>
             <div class="boxs-footer">
-                <button onclick="submitForm()" class="btn btn-primary btn-raised">Save Entity Sync</button>
+                <button onclick="submitForm()" class="btn btn-primary btn-raised" id="submitForm">Save Entity Sync</button>
             </div>
         </section>
     </div>
@@ -510,7 +510,8 @@
 
     function submitForm()
     {
-        if(!$('#hasAddress').attr('checked'))
+        $('#submitForm').html('<i class="fa fa-spin fa-spinner"></i> Saving');
+        if(!document.getElementById('hasAddress').checked)
         {
             addressData = false;
         }
@@ -526,10 +527,10 @@
                 default_postcode: $('#uDefaultPostcode').val(),
             };
 
-            if($('#uWithCityState').attr(checked)) addressData.push('WithCityState', true);
-            if($('#uAddressRanges').attr(checked)) addressData.push('AddressRanges', true);
-            if($('#uStateInCity').attr(checked)) addressData.push('StateinCity', true);
-            if($('#uPostalCodeInCity').attr(checked)) addressData.push('PostalCodeInCity', true);
+            if(document.getElementById('uWithCityState').checked) addressData.push('WithCityState', true);
+            if(document.getElementById('uAddressRanges').checked) addressData.push('AddressRanges', true);
+            if(document.getElementById('uStateInCity').checked) addressData.push('StateinCity', true);
+            if(document.getElementById('uPostalCodeInCity').checked) addressData.push('PostalCodeInCity', true);
 
         }
         else if (address == 'parsed')
@@ -547,11 +548,11 @@
                 default_postcode: $('#pDefaultPostCode').val(),
             };
 
-            if($('#pAddressRanges').attr(checked)) addressData.push('AddressRanges', true);
-            if($('#pTypeInStreetName').attr(checked)) addressData.push('TypeInStreetName', true);
-            if($('#pUnitInStreetName').attr(checked)) addressData.push('UnitInStreetName', true);
-            if($('#pStateinCity').attr(checked)) addressData.push('StateInCity', true);
-            if($('#pPostCodeInCity').attr(checked)) addressData.push('PostCodeInCity', true);
+            if(document.getElementById('pAddressRanges').checked) addressData.push('AddressRanges', true);
+            if(document.getElementById('pTypeInStreetName').checked) addressData.push('TypeInStreetName', true);
+            if(document.getElementById('pUnitInStreetName').checked) addressData.push('UnitInStreetName', true);
+            if(document.getElementById('pStateInCity').checked) addressData.push('StateInCity', true);
+            if(document.getElementById('pPostCodeInCity').checked) addressData.push('PostCodeInCity', true);
         }
 
 
@@ -593,6 +594,8 @@
                 window.location = '{{route('uploader.show', [$uploader->id])}}';
             },
             error: function(){
+                $('#submitForm').html('Save Entity');
+
                 alert('Uh oh! Something didn\'t work right!');
             }
         })

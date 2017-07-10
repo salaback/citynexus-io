@@ -15,13 +15,13 @@
 
             <div class="inbox-widget nicescroll" style="height: 315px; overflow: scroll; outline: none;" tabindex="5000">
                 @if($uploader->syncs != null)
-                    @foreach($uploader->syncs as $sync)
+                    @foreach($uploader->syncs as $key => $sync)
 
                         <div class="inbox-item">
                             <form action="{{route('uploader.removeSync', [$uploader->id])}}" method="post">
                                 {{csrf_field()}}
                                 <button role="button" href="#" class="pull-right"><span class="fa fa-trash"></span></button>
-                                <input type="hidden" name="sync" value="{{json_encode($sync)}}">
+                                <input type="hidden" name="key" value="{{$key}}">
                             </form>
                             <div class="col-xs-2">
                                 @if($sync['class'] == 'address')
