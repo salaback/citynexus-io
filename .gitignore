@@ -3,6 +3,7 @@
 /public/hot
 /storage/*.key
 /storage/temp_file
+/storage
 /vendor
 /.idea
 Homestead.json
