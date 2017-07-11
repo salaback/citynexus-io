@@ -184,19 +184,10 @@ class UploaderController extends Controller
 
         $uploader = Uploader::find($id);
         $syncs = $uploader->syncs;
-        $target = json_decode($request->get('sync'));
-        foreach($syncs as $key => $sync)
-        {
-            if($sync = $target)
-            {
-                unset($syncs[$key]);
-                $uploader->syncs = $syncs;
-                $uploader->save();
-                return redirect()->back();
-            }
-        }
+        unset($syncs[$request->get('key')]);
+        $uploader->syncs = $syncs;
+        $uploader->save();
 
-        session()->flash('flash_warning', 'Uh oh. Something went wrong when trying to delete that sync.');
         return redirect()->back();
 
     }

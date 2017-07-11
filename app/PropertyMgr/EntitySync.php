@@ -4,6 +4,7 @@
 namespace App\PropertyMgr;
 
 use App\Jobs\Geocode;
+use App\PropertyMgr\Model\EntityAddress;
 use App\PropertyMgr\Property;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -68,9 +69,75 @@ class EntitySync
             'CORPORATION' => 'CORPORATION',
             'LLP' => 'LLP'
         ];
+
+        $this->states = array(
+        'AL'=>'ALABAMA',
+        'AK'=>'ALASKA',
+        'AS'=>'AMERICAN SAMOA',
+        'AZ'=>'ARIZONA',
+        'AR'=>'ARKANSAS',
+        'CA'=>'CALIFORNIA',
+        'CO'=>'COLORADO',
+        'CT'=>'CONNECTICUT',
+        'DE'=>'DELAWARE',
+        'DC'=>'DISTRICT OF COLUMBIA',
+        'FM'=>'FEDERATED STATES OF MICRONESIA',
+        'FL'=>'FLORIDA',
+        'GA'=>'GEORGIA',
+        'GU'=>'GUAM GU',
+        'HI'=>'HAWAII',
+        'ID'=>'IDAHO',
+        'IL'=>'ILLINOIS',
+        'IN'=>'INDIANA',
+        'IA'=>'IOWA',
+        'KS'=>'KANSAS',
+        'KY'=>'KENTUCKY',
+        'LA'=>'LOUISIANA',
+        'ME'=>'MAINE',
+        'MH'=>'MARSHALL ISLANDS',
+        'MD'=>'MARYLAND',
+        'MA'=>'MASSACHUSETTS',
+        'MI'=>'MICHIGAN',
+        'MN'=>'MINNESOTA',
+        'MS'=>'MISSISSIPPI',
+        'MO'=>'MISSOURI',
+        'MT'=>'MONTANA',
+        'NE'=>'NEBRASKA',
+        'NV'=>'NEVADA',
+        'NH'=>'NEW HAMPSHIRE',
+        'NJ'=>'NEW JERSEY',
+        'NM'=>'NEW MEXICO',
+        'NY'=>'NEW YORK',
+        'NC'=>'NORTH CAROLINA',
+        'ND'=>'NORTH DAKOTA',
+        'MP'=>'NORTHERN MARIANA ISLANDS',
+        'OH'=>'OHIO',
+        'OK'=>'OKLAHOMA',
+        'OR'=>'OREGON',
+        'PW'=>'PALAU',
+        'PA'=>'PENNSYLVANIA',
+        'PR'=>'PUERTO RICO',
+        'RI'=>'RHODE ISLAND',
+        'SC'=>'SOUTH CAROLINA',
+        'SD'=>'SOUTH DAKOTA',
+        'TN'=>'TENNESSEE',
+        'TX'=>'TEXAS',
+        'UT'=>'UTAH',
+        'VT'=>'VERMONT',
+        'VI'=>'VIRGIN ISLANDS',
+        'VA'=>'VIRGINIA',
+        'WA'=>'WASHINGTON',
+        'WV'=>'WEST VIRGINIA',
+        'WI'=>'WISCONSIN',
+        'WY'=>'WYOMING',
+        'AE'=>'ARMED FORCES AFRICA \ CANADA \ EUROPE \ MIDDLE EAST',
+        'AA'=>'ARMED FORCES AMERICA (EXCEPT CANADA)',
+        'AP'=>'ARMED FORCES PACIFIC'
+    );
+
     }
 
-    public function parseName($name)
+    public function parseName($name, $format = null)
     {
         // capitalize name
         $name = strtoupper($name);
@@ -89,7 +156,7 @@ class EntitySync
             $return = $this->parseCompany($parts);
 
         // check if the first name listed is followed by a comma
-        } elseif($ln_test[0] == $parts[0]) {
+        } elseif($ln_test[0] == $parts[0] || $format == 'LastFirstM') {
             $return = $this->parseLastNameFirst($parts);
 
         } else {
@@ -191,6 +258,123 @@ class EntitySync
 
         // return
         return $return;
+    }
+
+    public function syncAddress($address, $sync)
+    {
+        if($sync['type'] == 'parsed')
+        {
+            $newAddress = $this->syncParsedAddress($address, $sync);
+        }
+
+        elseif ($sync['type'] == 'unparsed')
+        {
+            $newAddress = $this->syncUnparsedAddress($address, $sync);
+        }
+
+        return $newAddress;
+    }
+
+    private function syncParsedAddress($parts, $sync)
+    {
+        $address = $parts[$sync['house_number']];
+        $city = null;
+        $state = null;
+        $postcode = null;
+
+        $address .= ' ' . $parts[$sync['street_name']];
+
+        if(!isset($sync['TypeInStreetName']) && $sync['street_type'] != null)
+            $address .= ' ' . $parts[$sync['street_type']];
+
+        if(!isset($sync['UnitInStreetName']) && $parts[$sync['unit']])
+            $address .= ', Unit ' . $parts[$sync['unit']];
+
+
+        if(isset($parts[$sync['city']]) && $parts[$sync['city']] != null)
+        {
+            $city = $parts[$sync['city']];
+        }
+        if(isset($sync['default_city']))
+        {
+            $city = $sync['default_city'];
+        }
+
+
+        if(isset($sync['StateInCity'])){
+            $temp = $this->removeStateFromCity($city, $sync);
+            $city = $temp['city'];
+            $state = $temp['state'];
+            $postcode = $temp['postcode'];
+        }
+
+
+        if($sync['state'] != null || isset($sync['default_state']))
+        {
+
+            if($sync['state'] != null && isset($parts[$sync['state']]) && $parts[$sync['state']] != null)
+            {
+                $state = $parts[$sync['state']];
+            }elseif (isset($sync['default_state']))
+            {
+                $state = $sync['default_state'];
+            }
+        }
+
+        if($sync['postcode'] != null || $postcode == null)
+        {
+
+            if($sync['postcode'] != null && isset($parts[$sync['postcode']]) && $parts[$sync['postcode']] != null)
+            {
+                $postcode = $parts[$sync['postcode']];
+            }elseif(isset($sync['default_postcode']))
+            {
+                $postcode = $sync['default_postcode'];
+            }
+        }
+
+        return [
+            'address' => $address,
+            'city' => $city,
+            'state' => $state,
+            'postcode' => $postcode
+        ];
+    }
+
+    private function removeStateFromCity($city, $sync)
+    {
+        $parts = explode(' ', $city);
+        $return = [
+            'city' => null,
+            'state' => null,
+            'postcode' => null
+        ];
+
+        foreach($parts as $k => $i)
+        {
+            $abv = strtoupper($i);
+            if(isset($this->states[$abv]))
+            {
+                $return['state'] = $abv;
+                unset($parts[$k]);
+                if(isset($sync['PostcodeInCity']) && preg_match('/(^\d{5}(?:[\s]?[-\s][\s]?\d{4})?$)/', $parts[$k+1]))
+                {
+                    $return['postcode'] = $parts[$k + 1];
+                }
+                break;
+            }
+            else
+            {
+                $return['city'] = $i . ' ';
+            }
+        }
+
+        // remove trailing comma and or spaces
+
+        $return['city'] = preg_replace('/,+$/', '', trim($return['city']));
+
+        return $return;
+
     }
 
 }
