@@ -135,4 +135,33 @@ class EntityTest extends TestCase
 
         $this->assertSame($return, $expected);
     }
+
+    public function testBasicUnparsedAddress()
+    {
+        $sync = [
+            'type' => 'unparsed',
+            'full_address' => 'full_address',
+            'city' =>  'city',
+            'state' => 'state',
+            'postcode' => 'postcode'
+        ];
+
+        $address = [
+            'full_address' => random_int(10, 1000) . ' Test Name Street',
+            'city' => 'Boston',
+            'state' => 'MA',
+            'postcode' => '12345'
+        ];
+
+        $return = $this->entitySync->syncAddress($address, $sync);
+
+        $expected = [
+            'address' => $address['full_address'],
+            'city' => 'Boston',
+            'state' => 'MA',
+            'postcode' => '12345'
+        ];
+
+        $this->assertSame($return, $expected);
+    }
 }

@@ -275,6 +275,17 @@ class EntitySync
         return $newAddress;
     }
 
+    private function syncUnparsedAddress($address, $sync)
+    {
+        return [
+            'address' => $address[$sync['full_address']],
+            'city' => $address[$sync['city']],
+            'state' => $address[$sync['state']],
+            'postcode' => $address[$sync['postcode']]
+        ];
+    }
+
+
     private function syncParsedAddress($parts, $sync)
     {
         $address = $parts[$sync['house_number']];
