@@ -111,4 +111,15 @@ class Entity extends Model
         return TaskList::findMany($lists);
     }
 
+    public function addresses()
+    {
+        return $this->hasMany(EntityAddress::class);
+    }
+
+    public function mailingAddress()
+    {
+        return $this->belongsTo(EntityAddress::class,'mailing_address_id');
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace App\PropertyMgr;
 
 use App\Jobs\Geocode;
 use App\PropertyMgr\Model\Entity;
+use App\PropertyMgr\Model\EntityAddress;
 use App\PropertyMgr\Model\RawEntity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -97,7 +98,20 @@ class Sync
 
             }
 
-            $entity->properties()->attach($i->property_id, ['upload_id' => $upload_id, 'role' => $sync['role']]);
+            if(isset($entity))
+            {
+                $entity->properties()->attach($i->property_id, ['upload_id' => $upload_id, 'role' => $sync['role']]);
+
+                if($sync['address'])
+                {
+                    $address = EntityAddress::firstOrCreate($entitySync->syncAddress($sync['address'], $sync));
+                    $entity->addresses()->attach($address);
+                    if($sync['sync']['setPrimary'])
+                    {
+                        $entity->mailingAddress()->attach($address);
+                    }
+                }
+            }
 
         }
     }

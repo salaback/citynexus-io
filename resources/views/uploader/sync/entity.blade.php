@@ -189,7 +189,7 @@
                                                     </div>
                                                     <div class="col-sm-5">
                                                         <label for="WithCityState"> <input type="checkbox" name="sync[WithCityState]" id="uWithCityState"> Contains City, State Postal Code</label><br>
-                                                        <label for="AddressRanges"> <input type="checkbox" name="sync[AddressRanges]" id="uAddressRanges"> Contains Address Ranges</label>
+
 
                                                     </div>
                                                 </div>
@@ -327,9 +327,6 @@
                                                                 <option value="{{$field['key']}}">{{$field['name']}} </option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                    <div class="col-sm-5">
-                                                        <label for="AddressRanges"> <input type="checkbox" name="sync[AddressRanges]" id="pAddressRanges"> Contains Address Ranges</label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -518,6 +515,7 @@
         else if (address == 'unparsed')
         {
             addressData = {
+                type: 'unparsed',
                 full_address: $('#full_address').val(),
                 city: $('#uCity').val(),
                 default_city: $('#uDefaultCity').val(),
@@ -528,7 +526,6 @@
             };
 
             if(document.getElementById('uWithCityState').checked) addressData.push('WithCityState', true);
-            if(document.getElementById('uAddressRanges').checked) addressData.push('AddressRanges', true);
             if(document.getElementById('uStateInCity').checked) addressData.push('StateinCity', true);
             if(document.getElementById('uPostalCodeInCity').checked) addressData.push('PostalCodeInCity', true);
 
@@ -536,6 +533,7 @@
         else if (address == 'parsed')
         {
             addressData = {
+                type: 'parsed',
                 house_number: $('#houseNumber').val(),
                 street_name: $('#streetName').val(),
                 street_type: $('#streetType').val(),
@@ -548,7 +546,6 @@
                 default_postcode: $('#pDefaultPostCode').val(),
             };
 
-            if(document.getElementById('pAddressRanges').checked) addressData.push('AddressRanges', true);
             if(document.getElementById('pTypeInStreetName').checked) addressData.push('TypeInStreetName', true);
             if(document.getElementById('pUnitInStreetName').checked) addressData.push('UnitInStreetName', true);
             if(document.getElementById('pStateInCity').checked) addressData.push('StateInCity', true);
@@ -571,7 +568,7 @@
         {
             entityData = {
                 class: 'entity',
-                type: 'unparsed',
+                type: 'parsed',
                 address: addressData,
                 title: $('#title').val(),
                 first_name: $('#first_name').val(),
