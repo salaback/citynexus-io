@@ -21,11 +21,12 @@ class PropertySync
 {
     /*
      *
-     * Needs testing
+     * Might be deleteable
      *
      */
     public function addPropertyID($data, $syncs)
     {
+
         // find raw address element and send to address sync
         $return = [];
 
@@ -34,7 +35,6 @@ class PropertySync
         if(isset($sync['full_address'])) {
 
             foreach ($data as $row) {
-
                 if ($result = $this->unparsedAddress($row, $sync)) {
                     $row['property_id'] = $result;
                 } else {
@@ -78,11 +78,11 @@ class PropertySync
         $insert =[];
         foreach($data as $row)
         {
-            if(isset($row['property_id']) && $row[$sync['key']] != null)
+            if($row['property_id'] != null && $row[$sync['dataPoint']] != null)
             {
                 if($comma)
                 {
-                    $parts = explode(',', $row[$sync['key']]);
+                    $parts = explode(',', $row[$sync['dataPoint']]);
 
                     foreach($parts as $part)
                     {
@@ -91,7 +91,7 @@ class PropertySync
                 }
                 else
                 {
-                    $tags[$row[$sync['key']]][] = $row['property_id'];
+                    $tags[$row[$sync['dataPoint']]][] = $row['property_id'];
                 }
             }
         }
@@ -106,6 +106,7 @@ class PropertySync
                     'tag_id' => $tag->id,
                     'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
                     'tagables_id' => $id,
+                    'created_at' => Carbon::now()
                 ];
             }
 
@@ -184,6 +185,7 @@ class PropertySync
     public function unparsedAddress($row, $sync)
     {
         $address = $this->rawUnparsedAddress($row, $sync);
+
         return $this->getPropertyId($address);
     }
 
@@ -262,6 +264,7 @@ class PropertySync
      */
     public function getPropertyId($address)
     {
+
         if(is_string($address))
         {
             $address = $this->parseFullAddress($address);
@@ -269,6 +272,12 @@ class PropertySync
 
         // first or create  address record
         $addy = array_filter($address);
+
+        if(count($addy) == 0)
+        {
+            return false;
+        }
+
 
         $addy = Address::firstOrCreate($addy);
 
