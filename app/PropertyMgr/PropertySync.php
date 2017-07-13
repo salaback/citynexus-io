@@ -78,11 +78,11 @@ class PropertySync
         $insert =[];
         foreach($data as $row)
         {
-            if(isset($row['property_id']) && $row[$sync['key']] != null)
+            if(isset($row['property_id']) && $row[$sync['dataPoint']] != null)
             {
                 if($comma)
                 {
-                    $parts = explode(',', $row[$sync['key']]);
+                    $parts = explode(',', $row[$sync['dataPoint']]);
 
                     foreach($parts as $part)
                     {
@@ -91,7 +91,7 @@ class PropertySync
                 }
                 else
                 {
-                    $tags[$row[$sync['key']]][] = $row['property_id'];
+                    $tags[$row[$sync['dataPoint']]][] = $row['property_id'];
                 }
             }
         }
@@ -106,6 +106,7 @@ class PropertySync
                     'tag_id' => $tag->id,
                     'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
                     'tagables_id' => $id,
+                    'created_at' => Carbon::now()
                 ];
             }
 

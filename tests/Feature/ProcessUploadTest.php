@@ -264,6 +264,11 @@ class ProcessUploadTest extends TestCase
                         'postcode' => 'own_zip',
                         'default_postcode' => null
                     ]
+                ],
+                [
+                    'class' => 'tag',
+                    'dataPoint' => 'zoning',
+                    'method' => 'value'
                 ]
             ]
         ]);
