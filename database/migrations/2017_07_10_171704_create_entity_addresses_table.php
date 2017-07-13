@@ -22,7 +22,7 @@ class CreateEntityAddressesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('entity_entity_addresses', function (Blueprint $table) {
+        Schema::create('entity_entity_address', function (Blueprint $table) {
             $table->integer('entity_id')->unsigned();
             $table->integer('entity_address_id')->unsigned();
         });
@@ -36,6 +36,6 @@ class CreateEntityAddressesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('cn_entity_addresses');
-        Schema::dropIfExists('entity_entity_addresses');
+        Schema::dropIfExists('entity_entity_address');
     }
 }

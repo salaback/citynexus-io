@@ -113,7 +113,7 @@ class Entity extends Model
 
     public function addresses()
     {
-        return $this->hasMany(EntityAddress::class);
+        return $this->belongsToMany(EntityAddress::class, 'entity_entity_address');
     }
 
     public function mailingAddress()

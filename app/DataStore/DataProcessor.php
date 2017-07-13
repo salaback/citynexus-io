@@ -32,7 +32,7 @@ class DataProcessor
 
         if($uploader->hasSyncClass('tag')){
 
-            $data = $sync->addTags($data, $uploader->getSyncClass('tag'));
+            $sync->addTags($data, $uploader->getSyncClass('tag'));
         }
 
         $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));

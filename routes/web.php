@@ -45,7 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/properties/get-units/{id?}', 'Frontend\PropertyController@getUnits')->name('property.getUnits');
     Route::resource('properties', 'Frontend\PropertyController');
     Route::get('properties\all-data', 'Frontend\PropertyController@allData')->name('property.allData');
-
+    Route::get('properties/merge-search/{id}/{string?}', 'Frontend\PropertyController@mergeSearch')->name('properties.mergeSearch');
+    Route::post('properties/merge', 'Frontend\PropertyController@mergeProperties')->name('properties.merge');
     Route::get('properties/geocode/{id}', 'Frontend\PropertyController@geocode')->name('property.geocode');
 
     // dataset routes

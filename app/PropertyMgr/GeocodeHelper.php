@@ -15,26 +15,28 @@ class GeocodeHelper
 
     public function property($id)
     {
-
-        $property = Property::find($id);
-
-        if($property->location == null)
+        if(config('app.env') != 'testing')
         {
+            $property = Property::find($id);
 
-            $results = Geocoder::geocode($property->fullAddress);
-
-            $address = $results->all()[0];
-
-
-            DB::statement("SET search_path TO '" . config('database.connections.tenant.schema') . "','public'");
-            
-            if($address != null)
+            if($property->location == null)
             {
-                $property->location = new Point($address->getLatitude(), $address->getLongitude());
-                $property->cords = ['lat' => $address->getLatitude(), 'lng' => $address->getLongitude()];
-                $property->save();
-            }
 
+                $results = Geocoder::geocode($property->fullAddress);
+
+                $address = $results->all()[0];
+
+
+                DB::statement("SET search_path TO '" . config('database.connections.tenant.schema') . "','public'");
+
+                if($address != null)
+                {
+                    $property->location = new Point($address->getLatitude(), $address->getLongitude());
+                    $property->cords = ['lat' => $address->getLatitude(), 'lng' => $address->getLongitude()];
+                    $property->save();
+                }
+
+            }
         }
     }
 }
