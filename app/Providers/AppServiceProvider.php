@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\DataStore\Model\DataSet;
 use App\DataStore\Observers\DataSetObserver;
+use App\PropertyMgr\Observers\PropertyObserver;
+use App\PropertyMgr\Model\Property;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
 
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         DataSet::observe(DataSetObserver::class);
+        Property::observe(PropertyObserver::class);
     }
 
     /**

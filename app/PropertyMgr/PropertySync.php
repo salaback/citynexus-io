@@ -343,9 +343,41 @@ class PropertySync
         return $this->createProperty($property);
     }
 
-    private function createProperty($property)
+    private function createProperty($parts)
     {
-        $property = Property::firstOrNew($property);
+        if(isset($parts['is_building']) && $parts['is_building'])
+            $property = Property::firstOrNew([
+                'address' => $parts['address'],
+                'is_building' => true
+            ]);
+        elseif(isset($parts['unit']) && $parts['unit'])
+            $property = Property::firstOrNew([
+                'address' => $parts['address'],
+                'unit' => $parts['unit'],
+                'is_unit' => true,
+                'building_id' => $parts['building_id']
+            ]);
+
+
+        if($property->city == null || $property->state == null || $property->postcode == null || $property->county == null)
+        {
+            if(isset($parts['city']))
+            {
+            $property->city = $parts['city'];
+            }
+            if(isset($parts['state']))
+            {
+                $property->state = $parts['state'];
+            }
+            if(isset($parts['postcode']))
+            {
+                $property->postcode = $parts['postcode'];
+            }
+            if(isset($parts['country']))
+            {
+                $property->country = $parts['country'];
+            }
+        }
 
         if(!$property->exists && session('upload_id') != null)
         {
@@ -359,10 +391,6 @@ class PropertySync
 
         $property->save();
 
-        // if ungeocoded, geocode it
-        if($property->location == null) {
-            dispatch(new Geocode($property->id));
-        }
         return $property->id;
     }
 

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class EntityTest extends TestCase
+class EntitySyncTest extends TestCase
 {
 
     protected $entitySync;

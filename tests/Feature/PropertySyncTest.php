@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\Geocode;
 use App\PropertyMgr\Model\Address;
 use App\PropertyMgr\Model\Property;
 use App\PropertyMgr\PropertySync;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -160,5 +162,44 @@ class PropertySyncTest extends TestCase
             'unit' => '1R',
             'id' => $result
         ]);
+    }
+
+    public function testUnparsedAddressWithoutState()
+    {
+
+        DB::table('cn_properties')->truncate();
+        DB::table('cn_addresses')->truncate();
+
+        $row = [
+            'full_address'  => strtoupper('23 Monmouth Street')
+        ];
+
+        $sync = [
+            'full_address'         => 'full_address',
+            'city'                  => 'city',
+            'default_city'          => 'SOMERVILLE',
+            'state'                 => 'state',
+            'default_state'         => 'MA',
+            'postcode'           => 'postcode',
+            'default_postal_code'   => '02143'
+        ];
+
+        $property = Property::firstOrCreate(['address' => '23 MONMOUTH ST', 'is_building' => true]);
+
+
+        $result = $this->invokeMethod($this->propSync, 'unparsedAddress', [$row, $sync]);
+
+        $this->assertSame($result, $property->id);
+    }
+
+    public function testGeocodeDispachedOnPropertyCreateAndUpdate()
+    {
+
+        $this->expectsJobs(Geocode::class);
+        $property = factory(Property::class)->create();
+
+        $this->expectsJobs(Geocode::class);
+        $property->address = '1234 main street';
+        $property->save();
     }
 }
