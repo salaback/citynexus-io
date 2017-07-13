@@ -26,12 +26,10 @@ class DataProcessor
         $data = $this->castData($data, $uploader->map);
 
         if($uploader->hasSyncClass('address')){
-
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
         if($uploader->hasSyncClass('tag')){
-
             $sync->addTags($data, $uploader->getSyncClass('tag'));
         }
 
