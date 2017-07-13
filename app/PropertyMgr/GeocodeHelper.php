@@ -15,7 +15,7 @@ class GeocodeHelper
 
     public function property($id)
     {
-        if(config('app.env') != 'testing')
+        if(config('app.env') != 'testing' && config('app.env') != 'local')
         {
             $property = Property::find($id);
 

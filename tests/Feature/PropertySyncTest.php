@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\Geocode;
 use App\PropertyMgr\Model\Address;
 use App\PropertyMgr\Model\Property;
 use App\PropertyMgr\PropertySync;
@@ -189,5 +190,16 @@ class PropertySyncTest extends TestCase
         $result = $this->invokeMethod($this->propSync, 'unparsedAddress', [$row, $sync]);
 
         $this->assertSame($result, $property->id);
+    }
+
+    public function testGeocodeDispachedOnPropertyCreateAndUpdate()
+    {
+
+        $this->expectsJobs(Geocode::class);
+        $property = factory(Property::class)->create();
+
+        $this->expectsJobs(Geocode::class);
+        $property->address = '1234 main street';
+        $property->save();
     }
 }
