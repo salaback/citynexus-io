@@ -39,7 +39,7 @@
                                                 <label for="full_address" class="col-sm-4 control-label" id="format">Typical Name
                                                     Format</label>
                                                 <div class="col-sm-7">
-                                                    <select type="text" name="sync[format]" id='role' class="form-control">
+                                                    <select type="text" name="sync[format]" id='format' class="form-control">
                                                         <option value="">Select One</option>
                                                         <option value="FirstMLast">First M Last</option>
                                                         <option value="LastFirstM">Last First M</option>
