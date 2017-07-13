@@ -22,12 +22,12 @@ class PropertyObserver
 
     public function created(Property $property)
     {
-        dispatch(new Geocode($property->id));
+//        dispatch(new Geocode($property->id));
     }
 
     public function updated(Property $property)
     {
-        dispatch(new Geocode($property->id));
+//        dispatch(new Geocode($property->id));
     }
 
 }
