@@ -162,7 +162,6 @@ class EntitySync
         } else {
             $return = $this->parsePerson($parts);
         }
-
         return $return;
     }
 
@@ -171,15 +170,15 @@ class EntitySync
         // set last name
         $return['last_name'] = $parts[0];
 
+        if(isset($this->titles[$parts[1]]))
+        {
+            $return['title'] = $this->titles[$parts[1]];
+            $return['first_name'] = $parts[2];
+        }
+        $return['first_name'] = $parts[1];
+
         if(count($parts) == 3)
         {
-            if(isset($this->titles[$parts[1]]))
-            {
-                $return['title'] = $this->titles[$parts[1]];
-                $return['first_name'] = $parts[2];
-            }
-            $return['first_name'] = $parts[1];
-
             $return['middle_name'] = $parts[2];
         }
 
@@ -260,28 +259,30 @@ class EntitySync
         return $return;
     }
 
-    public function syncAddress($address, $sync)
+    public function syncAddress($data, $sync)
     {
+        $newAddress = false;
+
         if($sync['type'] == 'parsed')
         {
-            $newAddress = $this->syncParsedAddress($address, $sync);
+            $newAddress = $this->syncParsedAddress($data, $sync);
         }
 
         elseif ($sync['type'] == 'unparsed')
         {
-            $newAddress = $this->syncUnparsedAddress($address, $sync);
+            $newAddress = $this->syncUnparsedAddress($data, $sync);
         }
 
         return $newAddress;
     }
 
-    private function syncUnparsedAddress($address, $sync)
+    private function syncUnparsedAddress($data, $sync)
     {
         return [
-            'address' => $address[$sync['full_address']],
-            'city' => $address[$sync['city']],
-            'state' => $address[$sync['state']],
-            'postcode' => $address[$sync['postcode']]
+            'address' => $data[$sync['full_address']],
+            'city' => $data[$sync['city']],
+            'state' => $data[$sync['state']],
+            'postcode' => $data[$sync['postcode']]
         ];
     }
 

@@ -103,6 +103,7 @@ class PropertySync
             foreach($ids as $id)
             {
                 $insert[] = [
+                    'tag_id' => $tag->id,
                     'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
                     'tagables_id' => $id,
                 ];
@@ -332,12 +333,11 @@ class PropertySync
      */
     public function createNewBuilding($address)
     {
-
         $property['address']   = $this->makeAddress($address);
-        if(isset($property['city'])) $property['city'] = $address['city']; else $property['city'] = null;
-        if(isset($property['state']))$property['state']     = $address['state']; else $property['state'] = null;
-        if(isset($property['postcode']))$property['postcode']  = $address['postcode']; else $property['postcode'] = null;
-        if(isset($property['country']))$property['country']  = $address['country']; else $property['country'] = null;
+        if(isset($address['city'])) $property['city'] = $address['city']; else $property['city'] = null;
+        if(isset($address['state']))$property['state']     = $address['state']; else $property['state'] = null;
+        if(isset($address['postcode']))$property['postcode']  = $address['postcode']; else $property['postcode'] = null;
+        if(isset($address['country']))$property['country']  = $address['country']; else $property['country'] = null;
         $property['is_building'] = true;
 
         return $this->createProperty($property);

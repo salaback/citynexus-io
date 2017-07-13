@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\DocumentMgr\Model\DocumentTemplate;
 use App\Http\Controllers\Controller;
 use App\Jobs\Geocode;
+use App\PropertyMgr\Merge;
 use App\UserGroup;
 use App\DataStore\DataAccess;
 use App\PropertyMgr\Model\Property;
@@ -174,4 +175,25 @@ class PropertyController extends Controller
 
         return $return;
     }
+
+    public function mergeSearch($id, $string)
+    {
+        $string = '%' . strtoupper($string) . '%';
+        $properties = Property::where('address', 'LIKE', $string)->where('id', '!=', $id)->get();
+        return view('property.snipits._mergeResults', compact('properties'));
+    }
+
+    public function mergeProperties(Request $request)
+    {
+        $primary = $request->get('primary');
+        $secondary = $request->get('secondary');
+        $merge = new Merge();
+
+        $merge->properties($primary, $secondary);
+
+        session()->flash('flash_success', str_plural('Property', count($secondary)) . ' successfully merged');
+
+        return redirect(route('properties.show', [$primary]));
+    }
+
 }
