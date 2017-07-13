@@ -286,11 +286,13 @@ class ProcessUploadTest extends TestCase
         DB::table("cn_entitables")->truncate();
 
         $property = Property::create(['address' => '52 FARNHAM ST', 'city' => 'LAWRENCE', 'state' => 'MA', 'country' => 'USA', 'is_building' => true]);
-        $entity = Entity::create(['first_name' => 'ASHLEY', 'last_name' => 'GUTIERREZ']);
+        $entity1 = Entity::create(['first_name' => 'ASHLEY', 'last_name' => 'GUTIERREZ']);
+        Entity::create(['first_name' => 'GERALD', 'last_name' => 'WHITE', 'middle_name' => 'F']);
 
         $this->importer->fromUpload($upload);
 
-        $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity->id, 'entitables_id' => $property->id]);
+        $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity1->id, 'entitables_id' => $property->id]);
+        $this->assertSame(DB::table('cn_entities')->where('first_name', 'GERALD')->where('last_name', 'WHITE')->count(), 1);
 
     }
 
