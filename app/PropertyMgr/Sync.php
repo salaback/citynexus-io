@@ -125,6 +125,7 @@ class Sync
             if(isset($entity) && $entity != null)
             {
 
+                if(isset($i['property_id']) && $i['property_id'] != null)
                 $entity->properties()->syncWithoutDetaching([$i['property_id'] => ['upload_id' => $upload_id, 'role' => $sync['role']]]);
 
                 if(isset($sync['address']))

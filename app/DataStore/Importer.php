@@ -38,12 +38,15 @@ class Importer
     public function processCSV($upload, $path = null)
     {
         if($path != null) $file = $this->localFile($path);
+
+
         else $file = $this->localFile($upload->source);
         try
         {
             Excel::load($file, function($reader) use($upload)
             {
                 $data = $reader->toArray();
+
                 if(count($data) > 200 )
                 {
                     $this->stageData($data, $upload->id);
@@ -64,6 +67,16 @@ class Importer
             }
         }
 
+    }
+
+    public function openCSV($file)
+    {
+        $csvFile = file('../somefile.csv');
+        $data = [];
+        foreach ($csvFile as $line) {
+            $data[] = str_getcsv($line);
+        }
+        return $data;
     }
 
     public function processSQL(Upload $upload)
@@ -191,10 +204,11 @@ class Importer
 
     }
 
-    private function localFile($source)
+    public function localFile($source)
     {
         $extension = explode('.', $source);
         $extension = end($extension);
+        if($extension == 'txt') $extension = 'csv';
         $tempname = storage_path() . "/tmpfile_"  . date('hms') . "." . $extension;
         file_put_contents($tempname, Storage::disk('s3')->get($source));
 

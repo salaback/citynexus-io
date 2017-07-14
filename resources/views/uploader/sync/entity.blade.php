@@ -196,7 +196,7 @@
                                                 <div class="form-group">
                                                     <label for="unit" class="col-sm-3 control-label">City</label>
                                                     <div class="col-sm-4">
-                                                        <select name="sync[city]" class="form-control col-sm-9">
+                                                        <select name="sync[city]" class="form-control col-sm-9" id="uCity">
                                                             <option value="">Select Field</option>
                                                             @foreach($fields as $field)
                                                                 <option value="{{$field['key']}}">{{$field['name']}}</option>
