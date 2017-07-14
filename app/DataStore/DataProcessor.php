@@ -21,7 +21,7 @@ class DataProcessor
 
         $sync = new PropertySync();
 
-        $data = $this->applyFilters($data, $uploader);
+//        $data = $this->applyFilters($data, $uploader);
 
         $data = $this->castData($data, $uploader->map);
 
@@ -90,7 +90,7 @@ class DataProcessor
             foreach($map as $item)
             {
 
-                if($row[$item['key']] != null)
+                if(isset($row[$item['key']]) && $row[$item['key']] != null)
                 {
                     $new_row[$item['key']] = $this->cast($row[$item['key']], $item['type']);
                 }
@@ -98,7 +98,6 @@ class DataProcessor
                 {
                     $new_row[$item['key']] = null;
                 }
-
             }
             $return[] = $new_row;
         }

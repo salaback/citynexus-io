@@ -170,13 +170,14 @@ class EntitySync
         // set last name
         $return['last_name'] = $parts[0];
 
-        if(isset($this->titles[$parts[1]]))
+        if(isset($parts[1]) && isset($this->titles[$parts[1]]))
         {
             $return['title'] = $this->titles[$parts[1]];
             $return['first_name'] = $parts[2];
+        }elseif(isset($parts[1]))
+        {
+            $return['first_name'] = $parts[1];
         }
-        $return['first_name'] = $parts[1];
-
         if(count($parts) == 3)
         {
             $return['middle_name'] = $parts[2];
