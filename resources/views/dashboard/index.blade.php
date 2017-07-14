@@ -140,8 +140,8 @@
                                         <div class="label label-default">{{\App\PropertyMgr\Model\Tag::find($tag->tag_id)->tag}}</div>
                                     </div>
                                 </a>
-                            @elseif($tag->tagable_type == "App\PropertyMgr\Model\Entity")
-                                <a class="list-group-item" href="{{route('entity.show.show', [$comment->cn_commentable_id])}}">
+                            @elseif($tag->tagables_type == "App\PropertyMgr\Model\Entity")
+                                <a class="list-group-item" href="{{route('entity.show', [$comment->cn_commentable_id])}}">
                                          <span class="widget-date" title="{{$comment->created_at}}">
                                         {{--Tagged: {{\Carbon\Carbon::create($tag->created_at)->diffForHumans()}}--}}
                                         </span>
