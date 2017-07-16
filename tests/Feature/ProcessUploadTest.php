@@ -39,6 +39,16 @@ class ProcessUploadTest extends TestCase
         $this->importer = new Importer();
     }
 
+    public function tearDown(){
+        parent::tearDown();
+        \Mockery::close();
+
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
+
+    }
+
     /**
      * A basic test example.
      *
@@ -424,7 +434,7 @@ class ProcessUploadTest extends TestCase
      */
     public function testStoreLargeCSV()
     {
-        DB::reconnect();
+        DB::disconnect();
 
         DB::table("cn_entities")->truncate();
         DB::table("cn_raw_entities")->truncate();

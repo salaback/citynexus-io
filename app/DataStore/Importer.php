@@ -189,7 +189,6 @@ class Importer
         {
             $data[$key]['upload_id'] = $upload->id;
         }
-
         DB::table($uploader->dataset->table_name)->insert($data);
 
         $max_id = DB::table($uploader->dataset->table_name)->max('id');

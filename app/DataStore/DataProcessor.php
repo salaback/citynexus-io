@@ -81,7 +81,6 @@ class DataProcessor
 
     private function castData($data, $map)
     {
-
         $return = [];
         foreach($data as $key => $row)
         {
