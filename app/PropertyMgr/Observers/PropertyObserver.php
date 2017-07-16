@@ -18,6 +18,7 @@ class PropertyObserver
 
     public function __construct()
     {
+
     }
 
     public function created(Property $property)

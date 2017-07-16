@@ -16,9 +16,10 @@ class Upload extends Model
         'new_property_ids',
         'user_id',
         'settings',
+        'parts'
     ];
 
-    protected $casts = ['new_property_ids' => 'array', 'settings' => 'array'];
+    protected $casts = ['new_property_ids' => 'array', 'settings' => 'array', 'parts' => 'array'];
 
     protected $dates = ['processed_at', 'deleted_at', 'created_at', 'updated_at'];
 

@@ -71,7 +71,7 @@ class Importer
 
     public function openCSV($file)
     {
-        $csvFile = file('../somefile.csv');
+        $csvFile = file($file);
         $data = [];
         foreach ($csvFile as $line) {
             $data[] = str_getcsv($line);
@@ -90,8 +90,6 @@ class Importer
                 $data = DB::connection('target')->table($upload->uploader->settings['table'])->pluck($upload->uploader->settings['unique_id']);
                 $this->stageData($data, $upload->id);
         }
-
-
     }
 
     public function processExcel(Upload $upload)
@@ -156,11 +154,11 @@ class Importer
             unlink($file_path);
         }
 
-        // dispatch a processing job for each of the chunks
-        foreach($files as $chunkPath)
-        {
-            dispatch(new ImportChunk($upload_id, $chunkPath));
-        }
+        $upload = Upload::find($upload_id);
+        $upload->parts = $files;
+        $upload->save();
+
+        dispatch(new ImportChunk($upload_id));
 
     }
 
@@ -189,7 +187,6 @@ class Importer
         {
             $data[$key]['upload_id'] = $upload->id;
         }
-
         DB::table($uploader->dataset->table_name)->insert($data);
 
         $max_id = DB::table($uploader->dataset->table_name)->max('id');

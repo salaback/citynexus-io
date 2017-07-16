@@ -7,6 +7,7 @@ use App\DataStore\Importer;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
 use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,21 +16,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportChunk implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels, DispatchesJobs;
 
     private $upload_id;
     private $client_id;
-    private $path;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($upload_id, $path)
+    public function __construct($upload_id)
     {
         $this->upload_id = $upload_id;
-        $this->path = $path;
         $this->client_id = config('client.id');
     }
 
@@ -45,14 +44,28 @@ class ImportChunk implements ShouldQueue
 
         $importer = new Importer();
 
-        $file = $importer->localFile($this->path);
         $upload = Upload::find($this->upload_id);
+        $parts = $upload->parts;
 
-        Excel::load($file, function($reader) use($upload, $importer) {
-            $data = $reader->toArray()[0];
-            $importer->storeData($data, $upload);
-            Storage::disk('s3')->delete($this->path);
-        });
+        if(!isset($parts[0]))
+        {
 
+        }
+        else
+        {
+            $file = $importer->localFile($parts[0]);
+
+            Excel::load($file, function($reader) use($upload, $importer, $parts) {
+                $data = $reader->toArray()[0];
+                $importer->storeData($data, $upload);
+                Storage::disk('s3')->delete($parts[0]);
+            });
+
+            unset($parts[0]);
+            $upload->parts = $parts;
+            $upload->save();
+
+            $this->dispatch(new ImportChunk($upload->id));
+        }
     }
 }
