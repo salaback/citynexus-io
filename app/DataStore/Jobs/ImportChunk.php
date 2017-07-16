@@ -47,21 +47,21 @@ class ImportChunk implements ShouldQueue
         $upload = Upload::find($this->upload_id);
         $parts = $upload->parts;
 
-        if(!isset($parts[0]))
+        if(count($parts) == 0)
         {
 
         }
         else
         {
-            $file = $importer->localFile($parts[0]);
+            $path = array_shift($parts);
+            $file = $importer->localFile($path);
 
-            Excel::load($file, function($reader) use($upload, $importer, $parts) {
+            Excel::load($file, function($reader) use($upload, $importer, $path) {
                 $data = $reader->toArray()[0];
                 $importer->storeData($data, $upload);
-                Storage::disk('s3')->delete($parts[0]);
+                Storage::disk('s3')->delete($path);
             });
 
-            unset($parts[0]);
             $upload->parts = $parts;
             $upload->save();
 
