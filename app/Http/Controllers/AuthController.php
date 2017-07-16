@@ -40,10 +40,15 @@ class AuthController extends Controller
 
             $client = Client::where('domain', $_SERVER['HTTP_HOST'])->first();
 
-            if(isset($user->memberships[$client->domain]))
+            if(isset($user->memberships[$client->domain] ))
             {
                 $app_key = config('app.key');
-                config(['app.key' => $client->settings['app_key']]);
+
+                if(isset($client->settings['app_key']))
+                {
+                    config(['app.key' => $client->settings['app_key']]);
+                }
+
                 if (isset($user->memberships[$client->domain]['password']) && Hash::check($request->get('password'), $user->memberships[$client->domain]['password'])) {
                     // Reapply key
                     config(['app.key' => $app_key]);
