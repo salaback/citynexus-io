@@ -118,8 +118,8 @@ class Importer
     {
         set_time_limit(180);
 
-        // chunk the array to groups of 500
-        $chunks = array_chunk($data, 500);
+        // chunk the array to groups of 100
+        $chunks = array_chunk($data, 100);
         $files = [];
         $keys = [];
 
