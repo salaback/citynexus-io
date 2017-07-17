@@ -157,9 +157,8 @@ class Importer
 
         $upload = Upload::find($upload_id);
         $upload->parts = $files;
+        $upload->note = "done";
         $upload->save();
-
-        dd('hello');
 
         dispatch(new ImportChunk($upload_id));
 
