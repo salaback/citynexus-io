@@ -116,7 +116,8 @@ class Importer
 
     private function stageData($data, $upload_id)
     {
-        ini_set('max_execution_time', 180);
+        set_time_limit(180);
+
         // chunk the array to groups of 100
         $chunks = array_chunk($data, 100);
         $files = [];
