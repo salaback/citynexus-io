@@ -157,7 +157,6 @@ class Importer
 
         $upload = Upload::find($upload_id);
         $upload->parts = $files;
-        $upload->note = "done";
         $upload->save();
 
         dispatch(new ImportChunk($upload_id));
@@ -178,7 +177,6 @@ class Importer
 
     public function storeData($data, $upload)
     {
-
         $syncHelper = new Sync();
         $dataProcessor = new DataProcessor();
         $uploader = $upload->uploader;
@@ -189,15 +187,15 @@ class Importer
         {
             $data[$key]['upload_id'] = $upload->id;
         }
-        DB::table($uploader->dataset->table_name)->insert($data);
-
         $max_id = DB::table($uploader->dataset->table_name)->max('id');
 
+        DB::table($uploader->dataset->table_name)->insert($data);
         $syncHelper->postSync($data, (object) $uploader->syncs, $upload->id);
 
         if($max_id != null) $data = DB::table($uploader->dataset->table_name)->where('id', '>', $max_id)->get();
         else $data = DB::table($uploader->dataset->table_name)->get();
-        $upload->count += $data->count();
+
+        $upload->count += count($data);
         $upload->processed_at = Carbon::now();
         $upload->save();
 
