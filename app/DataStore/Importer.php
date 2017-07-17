@@ -158,6 +158,8 @@ class Importer
         $upload->parts = $files;
         $upload->save();
 
+        dd('hello');
+
         dispatch(new ImportChunk($upload_id));
 
     }
