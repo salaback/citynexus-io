@@ -7,6 +7,8 @@ use App\Jobs\Geocode;
 use App\PropertyMgr\Model\Entity;
 use App\PropertyMgr\Model\EntityAddress;
 use App\PropertyMgr\Model\RawEntity;
+use App\PropertyMgr\Model\Tag;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +27,10 @@ class Sync
 //        return $prop->address($data, $syncs);
 //    }
 
+//
+//        if($uploader->hasSyncClass('tag')){
+//        }
+
     public function postSync($data, $syncs, $upload_id)
     {
         foreach($syncs as $sync)
@@ -34,6 +40,10 @@ class Sync
                 case 'entity':
                     $this->entitySync($data, $sync, $upload_id);
                     break;
+
+                case 'tag':
+                     $this->addTags($data, $sync);
+
             }
         }
 
@@ -139,6 +149,63 @@ class Sync
                 }
             }
         }
+    }
+
+    public function addTags($data, $sync)
+    {
+        switch ($sync['method'])
+        {
+            case 'value':
+                $this->valueTags($data, $sync);
+                break;
+            case 'comma':
+                $this->valueTags($data, $sync, true);
+        }
+    }
+
+    private function valueTags($data, $sync, $comma = false)
+    {
+        $tags = [];
+        $insert =[];
+        foreach($data as $row)
+        {
+            if($row['property_id'] != null && $row[$sync['dataPoint']] != null)
+            {
+                if($comma)
+                {
+                    $parts = explode(',', $row[$sync['dataPoint']]);
+
+                    foreach($parts as $part)
+                    {
+                        $tags[trim($part)] = $row['property_id'];
+                    }
+                }
+                else
+                {
+                    $tags[$row[$sync['dataPoint']]][] = $row['property_id'];
+                }
+            }
+        }
+
+        foreach($tags as $tag => $ids)
+        {
+            $tag = Tag::firstOrCreate(['tag' => $tag]);
+
+            foreach($ids as $id)
+            {
+                $insert[] = [
+                    'tag_id' => $tag->id,
+                    'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
+                    'tagables_id' => $id,
+                    'created_at' => Carbon::now()
+                ];
+            }
+
+        }
+
+        DB::table('cn_tagables')->insert($insert);
+
+        return true;
     }
 
 }

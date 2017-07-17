@@ -56,66 +56,7 @@ class PropertySync
         return $return;
     }
 
-    public function addTags($data, $syncs)
-    {
-        foreach($syncs as $sync)
-        {
-            switch ($sync['method'])
-            {
-                case 'value':
-                    $this->valueTags($data, $sync);
-                    break;
-                case 'comma':
-                    $this->valueTags($data, $sync, true);
-            }
-        }
 
-    }
-
-    private function valueTags($data, $sync, $comma = false)
-    {
-        $tags = [];
-        $insert =[];
-        foreach($data as $row)
-        {
-            if($row['property_id'] != null && $row[$sync['dataPoint']] != null)
-            {
-                if($comma)
-                {
-                    $parts = explode(',', $row[$sync['dataPoint']]);
-
-                    foreach($parts as $part)
-                    {
-                        $tags[trim($part)] = $row['property_id'];
-                    }
-                }
-                else
-                {
-                    $tags[$row[$sync['dataPoint']]][] = $row['property_id'];
-                }
-            }
-        }
-
-        foreach($tags as $tag => $ids)
-        {
-            $tag = Tag::firstOrCreate(['tag' => $tag]);
-
-            foreach($ids as $id)
-            {
-                $insert[] = [
-                    'tag_id' => $tag->id,
-                    'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
-                    'tagables_id' => $id,
-                    'created_at' => Carbon::now()
-                ];
-            }
-
-        }
-
-        DB::table('cn_tagables')->insert($insert);
-
-        return true;
-    }
 
 
     /*
