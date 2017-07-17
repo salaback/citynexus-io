@@ -6,11 +6,13 @@ use App\Client;
 use App\DataStore\Importer;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
+use App\Mail\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -54,17 +56,24 @@ class ImportChunk implements ShouldQueue
         else
         {
             $path = array_shift($parts);
-            $file = $importer->localFile($path);
 
-            Excel::load($file, function($reader) use($upload, $importer, $path) {
-                $data = $reader->toArray()[0];
-                $importer->storeData($data, $upload);
-                Storage::disk('s3')->delete($path);
-            });
+            // get the json file
+            $data = Storage::disk('s3')->get($path);
 
+            // decode to an array
+            $data = json_decode($data, true);
+
+            // store the data
+            $importer->storeData($data, $upload);
+
+            // delete the temp file from s3
+            Storage::disk('s3')->delete($path);
+
+            // update the parts list
             $upload->parts = $parts;
             $upload->save();
 
+            // dispatch the next chunk
             $this->dispatch(new ImportChunk($upload->id));
         }
     }

@@ -13,6 +13,8 @@ use App\PropertyMgr\Model\Property;
 use App\User;
 use App\UserGroup;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -23,8 +25,9 @@ class ProcessUploadTest extends TestCase
     protected $store;
     protected $importer;
     protected $client;
+    public $data;
 
-    use DatabaseTransactions;
+    use DatabaseTransactions, WithoutMiddleware;
 
     protected  $connectionsToTransact = [
         'public',
@@ -470,5 +473,29 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
+        DB::table($dataset->table_name)->truncate();
+
+
     }
+
+    public function testStoreChunk()
+    {
+        $chunk = [
+            ['one' => 1, 'two' => 22, 'three' => 333, 'four' => 4444, 'five' => 55555],
+            ['one' => 1, 'two' => 22, 'three' => 333, 'four' => 4444, 'five' => 55555],
+            ['one' => 1, 'two' => 22, 'three' => 333, 'four' => 4444, 'five' => 55555],
+        ];
+
+
+        $path = $this->importer->storeChunk($chunk);
+
+        $data = Storage::disk('s3')->get($path);
+
+        $data = \GuzzleHttp\json_decode($data, true);
+
+        $this->assertSame($data, $chunk);
+
+        Storage::disk('s3')->delete($path);
+    }
+
 }

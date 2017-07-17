@@ -29,43 +29,40 @@ class Importer
         $this->clearUpload($upload);
 
         // Use correct import method for type
-        if($upload->file_type == 'text/csv') $this->processCsv($upload);
-        elseif($upload->file_type == 'sql') $this->processSQL($upload);
+        if($upload->file_type == 'text/csv') $this->processCSV($upload);
+//        elseif($upload->file_type == 'sql') $this->processSQL($upload);
         elseif(str_contains($upload->file_type, 'spreadsheetml')) $this->processExcel($upload);
 
     }
 
-    public function processCSV($upload, $path = null)
+    public function processCSV(Upload $upload, $path = null)
     {
         if($path != null) $file = $this->localFile($path);
 
+        else $file = $this->localFile($upload->source);
+
+        Excel::load($file, function($reader) use($upload)
+        {
+            $data = $reader->toArray();
+            $this->stageData($data, $upload->id);
+        });
+
+    }
+
+    public function processExcel(Upload $upload, $path = null)
+    {
+        config(['excel.import.force_sheets_collection' => true]);
+
+        if($path != null) $file = $this->localFile($path);
 
         else $file = $this->localFile($upload->source);
-        try
-        {
-            Excel::load($file, function($reader) use($upload)
-            {
-                $data = $reader->toArray();
 
-                if(count($data) > 200 )
-                {
-                    $this->stageData($data, $upload->id);
-                }
-                else
-                {
-                    $this->storeData($data, $upload);
-                }
-            });
-        }
-        catch (\Exception $e)
+        Excel::load($file, function($reader) use($upload)
         {
-            if(config('app.env') == 'testing')
-                App::abort(500, $e);
-            else
-            {
-                return false;
-            }
-        }
+            $data = $reader->toArray()[0];
+            $this->stageData($data, $upload->id);
+
+        })->get();
 
     }
 
@@ -92,34 +89,13 @@ class Importer
         }
     }
 
-    public function processExcel(Upload $upload)
-    {
-        config(['excel.import.force_sheets_collection' => true]);
-        $file = $this->localFile($upload->source);
-
-        Excel::load($file, function($reader) use($upload)
-        {
-            $data = $reader->toArray()[0];
-
-            if(count($data) > 200 )
-            {
-                $this->stageData($data, $upload->id);
-            }
-            else
-            {
-                $this->storeData($data, $upload);
-            }
-
-        })->get();
-
-    }
 
     private function stageData($data, $upload_id)
     {
-        set_time_limit(180);
 
         // chunk the array to groups of 100
         $chunks = array_chunk($data, 100);
+
         $files = [];
         $keys = [];
 
@@ -132,27 +108,7 @@ class Importer
         // create a csv for each of the chunks and save to AWS
         foreach ($chunks as $chunk)
         {
-            // create file name
-            $file_name = random_int(100,99999999) . '_temp.csv';
-            $file_path = storage_path() . '/' . $file_name;
-
-            // open csv file
-            $csv = fopen($file_path, 'w');
-
-            // add the keys as first row
-            fputcsv($csv, $keys);
-
-            // add each row of data to file
-            foreach($chunk as $line) fputcsv($csv, $line);
-
-            // close file
-            fclose($csv);
-
-            // send to aws
-            $files[] = Storage::disk('s3')->putFile('temp_storage', new File($file_path), $file_name);
-
-            // delete temp file
-            unlink($file_path);
+            $files[] = $this->storeChunk($chunk);
         }
 
         $upload = Upload::find($upload_id);
@@ -161,6 +117,29 @@ class Importer
 
         dispatch(new ImportChunk($upload_id));
 
+    }
+
+    public function storeChunk($chunk)
+    {
+        // create file name
+        $file_name = Carbon::now()->toDateTimeString(). '_' . random_int(1000, 99999) . '_temp.json';
+        $file_path = storage_path() . '/' . $file_name;
+
+        // open csv file
+        $json = fopen($file_path, 'w');
+
+        fwrite($json, json_encode($chunk));
+
+        // close file
+        fclose($json);
+
+        // send to aws
+        $name = Storage::disk('s3')->putFile('temp_storage', new File($file_path), $file_name);
+
+        // delete temp file
+        unlink($file_path);
+
+        return $name;
     }
 
     public function clearUpload(Upload $upload)
@@ -177,6 +156,7 @@ class Importer
 
     public function storeData($data, $upload)
     {
+
         $syncHelper = new Sync();
         $dataProcessor = new DataProcessor();
         $uploader = $upload->uploader;

@@ -309,7 +309,7 @@ class PropertySync
             ]);
 
 
-        if($property->city == null || $property->state == null || $property->postcode == null || $property->county == null)
+        if(isset($property) && ($property->city == null || $property->state == null || $property->postcode == null || $property->county == null))
         {
             if(isset($parts['city']))
             {
@@ -425,30 +425,6 @@ class PropertySync
         return $this->parseFullAddress($full_address);
     }
 
-    public function mergeProperties($new_id, $old_ids)
-    {
-        // Check if an array of old ids exists, otherwise convert to an array
-        if(!is_array($old_ids))
-        {
-            $old_ids[] = $old_ids;
-        }
-
-
-        foreach($old_ids as $i)
-        {
-            DB::table('citynexus_images')->where('property_id', $i)->update(['property_id' => $id]);
-            DB::table('citynexus_notes')->where('property_id', $i)->update(['property_id' => $id]);
-            DB::table('citynexus_raw_addresses')->where('property_id', $i)->update(['property_id' => $id]);
-            DB::table('citynexus_taskables')->where('citynexus_taskable_id', $i)->where('citynexus_taskable_type', 'CityNexus\CityNexus\Property')->update(['citynexus_taskable_id' => $id]);
-            DB::table('property_tag')->where('property_id', $i)->update(['property_id' => $id]);
-
-            foreach ($datasets as $tn) {
-                if (Schema::hasTable($tn)) {
-                    DB::table($tn)->where('property_id', $i)->update(['property_id' => $id]);
-                }
-            }
-        }
-    }
 
     public function cleanUnit($unit)
     {
