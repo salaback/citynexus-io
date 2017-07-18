@@ -195,7 +195,7 @@ class Sync
             {
                 $insert[] = [
                     'tag_id' => $tag->id,
-                    'tagables_type' => '\\App\\PropertyMgr\\Model\\Property',
+                    'tagables_type' => 'App\\PropertyMgr\\Model\\Property',
                     'tagables_id' => $id,
                     'created_at' => Carbon::now()
                 ];
