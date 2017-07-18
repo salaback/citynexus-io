@@ -72,7 +72,7 @@
                 <h1 class="custom-font"><strong>Recent</strong> comments</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($comments = \App\PropertyMgr\Model\Comment::where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->with('commentable')->get())
+                @php($comments = \App\PropertyMgr\Model\Comment::with('commentable')->latest()->limit(20)->get())
                 @if($comments->count() > 0)
                     <div class="list-group">
                         @foreach($comments as $comment)
@@ -120,7 +120,7 @@
                 <h1 class="custom-font"><strong>Recent</strong> Tags</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tags = \Illuminate\Support\Facades\DB::table('cn_tagables')->where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->get())
+                @php($tags = \Illuminate\Support\Facades\DB::table('cn_tagables')->where('created_at', '>', \Carbon\Carbon::now()->subDays(14))->latest()->limit(20)->get())
                 @if($tags->count() > 0)
                     <div class="list-group">
                         @foreach($tags as $tag)
@@ -173,7 +173,7 @@
                 <h1 class="custom-font"><strong>Recently created</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::where('created_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->latest()->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)
@@ -225,7 +225,7 @@
                 <h1 class="custom-font"><strong>Upcoming</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::whereNotNull('due_at')->where('due_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::whereNotNull('due_at')->where('due_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->latest()->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)
@@ -277,7 +277,7 @@
                 <h1 class="custom-font"><strong>Recently completed</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::onlyTrashed()->where('deleted_at', '>', \Carbon\Carbon::now()->subDays(7))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::onlyTrashed()->where('deleted_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)
