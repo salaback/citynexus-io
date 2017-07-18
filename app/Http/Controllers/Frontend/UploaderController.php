@@ -128,6 +128,12 @@ class UploaderController extends Controller
                 }
             }
 
+            foreach($map as $key => $value)
+            {
+                if(!isset($value['show']))
+                    unset($map[$key]);
+            }
+
             $uploader->map = $map;
             $uploader->save();
 

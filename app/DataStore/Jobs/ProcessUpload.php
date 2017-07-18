@@ -30,9 +30,9 @@ class ProcessUpload implements ShouldQueue
      * @param Uploader $uploader
      * @param array $settings
      */
-    public function __construct($client_id, Upload $upload, $settings = [])
+    public function __construct(Upload $upload, $settings = [])
     {
-        $this->client_id = $client_id;
+        $this->client_id = config('client.id');
         $this->upload = $upload;
         $this->settings = $settings;
     }
