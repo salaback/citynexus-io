@@ -16,8 +16,7 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Related Buildings</th>
-                            <th>Related Units</th>
+                            <th>Related Properties</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -50,8 +49,7 @@
             ajax: '{!! route('entity.allData') !!}',
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'buildings', name: 'buildings', searchable: false },
-                { data: 'units', name: 'units', searchable: false },
+                { data: 'properties', name: 'properties', searchable: false },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false}
             ]
         });

@@ -46,7 +46,7 @@ class EntityController extends Controller
 
     public function allData()
     {
-        $entities = Entity::all();
+        $entities = Entity::with('properties')->select('cn_entities.*');
 
         return Datatables::of($entities)
             ->addColumn('name', function($entity) {
@@ -54,11 +54,8 @@ class EntityController extends Controller
             })
 
             ->rawColumns(['actions'])
-            ->addColumn('buildings', function ($entity) {
-                return $entity->buildings->count();
-            })
-            ->addColumn('units', function ($entity) {
-                return $entity->units->count();
+            ->addColumn('properties', function ($entity) {
+                return $entity->properties->count();
             })
             ->editColumn('name', '{{title_case($name)}}')
             ->addColumn('actions', function($entity) {
