@@ -133,9 +133,11 @@
                                     <div class="widget-address">
                                         <i class="fa fa-home"></i> {{\App\PropertyMgr\Model\Property::find($tag->tagables_id)->oneLineAddress}}
                                     </div>
-                                    <div class="widget-user">
-                                        Tagged by: {{\App\User::find($tag->created_by)->fullname}}
-                                    </div>
+                                    @if(isset($tag->created_by))
+                                        <div class="widget-user">
+                                            Tagged by: {{\App\User::find($tag->created_by)->fullname}}
+                                        </div>
+                                    @endif
                                     <div class="widget-body">
                                         <div class="label label-default">{{\App\PropertyMgr\Model\Tag::find($tag->tag_id)->tag}}</div>
                                     </div>
@@ -148,9 +150,11 @@
                                     <div class="widget-address">
                                         <i class="fa fa-user"></i> {{\App\PropertyMgr\Model\Entity::find($tag->tagables_id)->name}}
                                     </div>
-                                    <div class="widget-user">
-                                        Tagged by: {{\App\User::find($tag->created_by)->fullname}}
-                                    </div>
+                                    @if(isset($tag->created_by))
+                                        <div class="widget-user">
+                                            Tagged by: {{\App\User::find($tag->created_by)->fullname}}
+                                        </div>
+                                    @endif
                                     <div class="widget-body">
                                         <div class="label label-default">{{\App\PropertyMgr\Model\Tag::find($tag->tag_id)->tag}}</div>
                                     </div>
