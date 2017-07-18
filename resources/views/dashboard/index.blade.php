@@ -126,7 +126,7 @@
                         @foreach($tags as $tag)
                             @if($tag->tagables_type == "App\PropertyMgr\Model\Property")
                                 <a class="list-group-item" href="{{route('properties.show', [$tag->tagables_id])}}">
-                                       <span class="widget-date" title="{{$comment->created_at}}">
+                                       <span class="widget-date" title="{{$tag->created_at}}">
                                            @php($created_at = new \Carbon\Carbon($tag->created_at))
                                             Tagged: {{$created_at->diffForHumans()}}
                                         </span>
@@ -141,8 +141,8 @@
                                     </div>
                                 </a>
                             @elseif($tag->tagables_type == "App\PropertyMgr\Model\Entity")
-                                <a class="list-group-item" href="{{route('entity.show', [$comment->cn_commentable_id])}}">
-                                         <span class="widget-date" title="{{$comment->created_at}}">
+                                <a class="list-group-item" href="{{route('entity.show', [$tag->cn_tagables_id])}}">
+                                         <span class="widget-date" title="{{$tag->created_at}}">
                                         {{--Tagged: {{\Carbon\Carbon::create($tag->created_at)->diffForHumans()}}--}}
                                         </span>
                                     <div class="widget-address">
