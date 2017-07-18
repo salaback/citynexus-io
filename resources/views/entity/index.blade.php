@@ -49,7 +49,7 @@
             ajax: '{!! route('entity.allData') !!}',
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'properties', name: 'properties', searchable: false },
+                { data: 'properties', name: 'properties', orderable: true },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false}
             ]
         });

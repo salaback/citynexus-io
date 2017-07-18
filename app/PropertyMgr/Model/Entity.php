@@ -32,7 +32,7 @@ class Entity extends Model
 
     public function properties()
     {
-        return $this->morphedByMany('App\PropertyMgr\Model\Property', 'entitables', 'cn_entitables')->withPivot('role', 'upload_id');
+        return $this->morphedByMany('App\PropertyMgr\Model\Property', 'entitables', 'cn_entitables')->withPivot('role', 'upload_id', 'id')->whereNull('cn_entitables.deleted_at');
     }
 
     public function getBuildingsAttribute()

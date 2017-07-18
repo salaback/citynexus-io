@@ -138,7 +138,6 @@ class EntityController extends Controller
 
     public function addRelationship(Request $request)
     {
-
         if($request->exists('property_id'))
         {
             DB::table('cn_entitables')->insert([
@@ -159,8 +158,8 @@ class EntityController extends Controller
     public function removeRelationship($id)
     {
         DB::table('cn_entitables')->where('id', $id)->update(['deleted_at' => Carbon::now()]);
-
         session()->flash('flash-info', 'Relationship removed.');
+
         return redirect()->back();
     }
 }
