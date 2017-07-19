@@ -60,6 +60,7 @@
                                     <li role="presentation" @if(!isset($_GET['tab'])) class="active" @endif><a href="#datasets" aria-controls="datasets" role="tab" data-toggle="tab">Data Sets</a></li>
                                     <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'comments') class="active" @endif><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments</a></li>
                                     <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') class="active" @endif><a href="#tasks" aria-controls="comments" role="tab" data-toggle="tab">Tasks</a></li>
+                                    @if($entity->addresses->count() > 0) <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'addresses') class="active" @endif><a href="#addresses" aria-controls="comments" role="tab" data-toggle="tab">Addresses</a></li> @endif
                                     @can('citynexus', ['files', 'view']) <li role="presentation" @if(isset($_GET['tab']) && $_GET['tab'] == 'files') class="active" @endif><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li> @endcan
                                     <li role="presentation"><a href="#actions" aria-controls="actions" role="tab" data-toggle="tab">Actions</a></li>
                                 </ul>
@@ -81,9 +82,14 @@
                                             @include('snipits._files', ['files' => $entity->files, 'model_id' => $entity->id, 'model_type' => 'App\\PropertyMgr\\Model\\Entity'])
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') active @endif" id="tasks">
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') @endif" id="tasks">
                                         <div class="wrap-reset">
                                             @include('snipits._tasks', ['lists' => $entity->tasks, 'model_type' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'addresses') @endif" id="addresses">
+                                        <div class="wrap-reset">
+                                            @include('entity.snipits._addresses')
                                         </div>
                                     </div>
                                     <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'actions') active @endif" id="actions">
