@@ -33,7 +33,7 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="frequency">Uploader Frequency</label>
-                                        <select type="text" class="form-control" id="frequency" id="name">
+                                        <select type="text" class="form-control" id="frequency" name="frequency">
                                             <option value="intermittent">Intermittent</option>
                                             <option value="hourly">Hourly</option>
                                             <option value="daily">Daily</option>
