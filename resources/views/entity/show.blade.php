@@ -77,17 +77,17 @@
                                             @include('snipits._comments', ['comments' => $entity->comments, 'model' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') @endif" id="files">
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'files') active @endif" id="files">
                                         <div class="wrap-reset">
                                             @include('snipits._files', ['files' => $entity->files, 'model_id' => $entity->id, 'model_type' => 'App\\PropertyMgr\\Model\\Entity'])
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') @endif" id="tasks">
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') active @endif" id="tasks">
                                         <div class="wrap-reset">
                                             @include('snipits._tasks', ['lists' => $entity->tasks, 'model_type' => 'App\\\PropertyMgr\\\Model\\\Entity', 'model_id' => $entity->id])
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'addresses') @endif" id="addresses">
+                                    <div role="tabpanel" class="tab-pane @if(isset($_GET['tab']) && $_GET['tab'] == 'addresses') active @endif" id="addresses">
                                         <div class="wrap-reset">
                                             @include('entity.snipits._addresses')
                                         </div>
