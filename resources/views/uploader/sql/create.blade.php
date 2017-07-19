@@ -234,7 +234,7 @@
 
             },
             error: function(data) {
-                alert('warning', JSON.stringify(data));
+                alert('warning', 'That didn\'t seem to work. Please recheck your credentials.');
             }
         })
     }
