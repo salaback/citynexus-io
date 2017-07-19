@@ -157,7 +157,7 @@ class EntityController extends Controller
 
     public function setPrimaryAddress($id, $address)
     {
-        DB::table('cn_entities')->update(['mailing_address_id' => $address])->where('id', $id);
+        DB::table('cn_entities')->update(['mailing_address_id' => $address])->where('id', '=', $id);
 
         session()->flash('success', "Primary Address Set");
 
