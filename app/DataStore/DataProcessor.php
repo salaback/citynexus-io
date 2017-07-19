@@ -25,13 +25,15 @@ class DataProcessor
 
         $data = $this->castData($data, $uploader->map);
 
+
         if($uploader->hasSyncClass('address')){
             $data = $sync->addPropertyID($data, $uploader->getSyncClass('address'));
         }
 
+
+
         $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));
-
-
+        
         return $data;
     }
 
@@ -77,6 +79,7 @@ class DataProcessor
 
     private function castData($data, $map)
     {
+
         $return = [];
         foreach($data as $key => $row)
         {

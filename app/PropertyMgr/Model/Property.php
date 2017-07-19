@@ -81,7 +81,7 @@ class Property extends Model
 
     public function entities()
     {
-        return $this->morphToMany('App\PropertyMgr\Model\Entity', 'entitables', 'cn_entitables')->withPivot('role');
+        return $this->morphToMany('App\PropertyMgr\Model\Entity', 'entitables', 'cn_entitables')->withPivot('role')->whereNull('cn_entitables.deleted_at');
     }
 
     public function tags()

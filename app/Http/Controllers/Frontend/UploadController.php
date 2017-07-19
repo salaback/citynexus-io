@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\DataStore\Importer;
+use App\DataStore\Jobs\ImportData;
 use App\DataStore\Jobs\ProcessData;
+use App\DataStore\Jobs\ProcessUpload;
 use App\Http\Controllers\Controller;
 use App\DataStore\Store;
 use App\DataStore\Model\Upload;
@@ -35,7 +37,7 @@ class UploadController extends Controller
         $upload['user_id'] = Auth::id();
         $upload = Upload::create($upload);
 
-        $this->dispatch(new Upload($upload->id));
+        $this->dispatch(new ImportData($upload->id));
 
         if($request->ajax())
         {

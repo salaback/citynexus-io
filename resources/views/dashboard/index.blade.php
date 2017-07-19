@@ -72,7 +72,7 @@
                 <h1 class="custom-font"><strong>Recent</strong> comments</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($comments = \App\PropertyMgr\Model\Comment::where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->with('commentable')->get())
+                @php($comments = \App\PropertyMgr\Model\Comment::with('commentable')->latest()->limit(20)->get())
                 @if($comments->count() > 0)
                     <div class="list-group">
                         @foreach($comments as $comment)
@@ -120,37 +120,41 @@
                 <h1 class="custom-font"><strong>Recent</strong> Tags</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tags = \Illuminate\Support\Facades\DB::table('cn_tagables')->where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->get())
+                @php($tags = \Illuminate\Support\Facades\DB::table('cn_tagables')->where('created_at', '>', \Carbon\Carbon::now()->subDays(14))->latest()->limit(20)->get())
                 @if($tags->count() > 0)
                     <div class="list-group">
                         @foreach($tags as $tag)
                             @if($tag->tagables_type == "App\PropertyMgr\Model\Property")
                                 <a class="list-group-item" href="{{route('properties.show', [$tag->tagables_id])}}">
-                                       <span class="widget-date" title="{{$comment->created_at}}">
+                                       <span class="widget-date" title="{{$tag->created_at}}">
                                            @php($created_at = new \Carbon\Carbon($tag->created_at))
                                             Tagged: {{$created_at->diffForHumans()}}
                                         </span>
                                     <div class="widget-address">
                                         <i class="fa fa-home"></i> {{\App\PropertyMgr\Model\Property::find($tag->tagables_id)->oneLineAddress}}
                                     </div>
-                                    <div class="widget-user">
-                                        Tagged by: {{\App\User::find($tag->created_by)->fullname}}
-                                    </div>
+                                    @if(isset($tag->created_by))
+                                        <div class="widget-user">
+                                            Tagged by: {{\App\User::find($tag->created_by)->fullname}}
+                                        </div>
+                                    @endif
                                     <div class="widget-body">
                                         <div class="label label-default">{{\App\PropertyMgr\Model\Tag::find($tag->tag_id)->tag}}</div>
                                     </div>
                                 </a>
                             @elseif($tag->tagables_type == "App\PropertyMgr\Model\Entity")
-                                <a class="list-group-item" href="{{route('entity.show', [$comment->cn_commentable_id])}}">
-                                         <span class="widget-date" title="{{$comment->created_at}}">
+                                <a class="list-group-item" href="{{route('entity.show', [$tag->cn_tagables_id])}}">
+                                         <span class="widget-date" title="{{$tag->created_at}}">
                                         {{--Tagged: {{\Carbon\Carbon::create($tag->created_at)->diffForHumans()}}--}}
                                         </span>
                                     <div class="widget-address">
                                         <i class="fa fa-user"></i> {{\App\PropertyMgr\Model\Entity::find($tag->tagables_id)->name}}
                                     </div>
-                                    <div class="widget-user">
-                                        Tagged by: {{\App\User::find($tag->created_by)->fullname}}
-                                    </div>
+                                    @if(isset($tag->created_by))
+                                        <div class="widget-user">
+                                            Tagged by: {{\App\User::find($tag->created_by)->fullname}}
+                                        </div>
+                                    @endif
                                     <div class="widget-body">
                                         <div class="label label-default">{{\App\PropertyMgr\Model\Tag::find($tag->tag_id)->tag}}</div>
                                     </div>
@@ -169,7 +173,7 @@
                 <h1 class="custom-font"><strong>Recently created</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::where('created_at', '>', \Carbon\Carbon::now()->subDays(7))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::where('created_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->latest()->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)
@@ -221,7 +225,7 @@
                 <h1 class="custom-font"><strong>Upcoming</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::whereNotNull('due_at')->where('due_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::whereNotNull('due_at')->where('due_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->latest()->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)
@@ -273,7 +277,7 @@
                 <h1 class="custom-font"><strong>Recently completed</strong> tasks</h1>
             </div>
             <div class="boxs-body" style="height: 350px; overflow: scroll;">
-                @php($tasks = \App\TaskMgr\Model\Task::onlyTrashed()->where('deleted_at', '>', \Carbon\Carbon::now()->subDays(7))->with('taskList', 'taskList.taskable')->get())
+                @php($tasks = \App\TaskMgr\Model\Task::onlyTrashed()->where('deleted_at', '>', \Carbon\Carbon::now()->subDays(14))->with('taskList', 'taskList.taskable')->limit(20)->get())
                 @if($tasks->count() > 0)
                     <div class="list-group">
                         @foreach($tasks as $task)

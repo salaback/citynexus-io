@@ -33,8 +33,7 @@
                                         </div>
                                     <div class="form-group">
                                         <label for="frequency">Uploader Frequency</label>
-                                        <select type="text" class="form-control" id="frequency">
-
+                                        <select type="text" class="form-control" id="frequency" name="frequency">
                                             <option value="intermittent">Intermittent</option>
                                             <option value="hourly">Hourly</option>
                                             <option value="daily">Daily</option>
@@ -235,7 +234,7 @@
 
             },
             error: function(data) {
-                alert('warning', JSON.stringify(data));
+                alert('warning', 'That didn\'t seem to work. Please recheck your credentials.');
             }
         })
     }

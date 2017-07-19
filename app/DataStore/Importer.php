@@ -30,7 +30,7 @@ class Importer
 
         // Use correct import method for type
         if($upload->file_type == 'text/csv') $this->processCSV($upload);
-//        elseif($upload->file_type == 'sql') $this->processSQL($upload);
+        elseif($upload->file_type == 'sql') $this->processSQL($upload);
         elseif(str_contains($upload->file_type, 'spreadsheetml')) $this->processExcel($upload);
 
     }
@@ -84,9 +84,16 @@ class Importer
         switch ($upload->settings['scope'])
         {
             case 'all':
-                $data = DB::connection('target')->table($upload->uploader->settings['table'])->pluck($upload->uploader->settings['unique_id']);
-                $this->stageData($data, $upload->id);
+                $data = DB::connection('target')->table($upload->uploader->settings['table'])->get()->toArray();
+                break;
+
+            default:
+                $data = [];
+
         }
+
+        $data = json_decode(json_encode($data), true);
+        $this->stageData($data, $upload->id);
     }
 
 
@@ -97,13 +104,6 @@ class Importer
         $chunks = array_chunk($data, 100);
 
         $files = [];
-        $keys = [];
-
-        // generate an array of keys
-        foreach($data[0] as $k => $i)
-        {
-            $keys[] = $k;
-        }
 
         // create a csv for each of the chunks and save to AWS
         foreach ($chunks as $chunk)
@@ -162,6 +162,7 @@ class Importer
         $uploader = $upload->uploader;
 
         $data = $dataProcessor->processData($data , $uploader);
+
 
         foreach($data as $key => $value)
         {

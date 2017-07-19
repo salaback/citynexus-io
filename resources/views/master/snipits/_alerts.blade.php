@@ -19,6 +19,8 @@
         },{
             // settings
             type: level,
+            clickToHide: true,
+            showDuration: 1000,
             animate: {
                 enter: 'animated fadeInDown',
                 exit: 'animated fadeOutUp'
