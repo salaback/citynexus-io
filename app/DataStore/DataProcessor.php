@@ -33,7 +33,7 @@ class DataProcessor
 
 
         $data = $sync->addCreatedAt($data, $uploader->getSyncClass('created_at'));
-        
+
         return $data;
     }
 
