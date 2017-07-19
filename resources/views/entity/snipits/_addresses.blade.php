@@ -16,7 +16,7 @@
                     @foreach($entity->addresses as $address)
                         @if($address->id != $entity->mailing)
                             <div class="list-group-item">
-                                <a href="">Make Address Primary</a> <br>
+                                <a href="{{route('entity.setPrimaryAddress', [$entity->id, $address->id])}}">Make Address Primary</a> <br>
 
                                 {{$address->address}}<br>
                                 {{$address->city}}, {{$address->state}} {{$address->postcode}}

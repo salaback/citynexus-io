@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/files', 'Backend\FileController');
 
     // Entities
+    Route::get('entity/set-primary-address/{id}/{address}', 'Frontend\EntityController@setPrimaryAddress')->name('entity.setPrimaryAddress');
     Route::get('entity/remove-relationship/{id}', 'Frontend\EntityController@removeRelationship')->name('entity.removeRelationship');
     Route::post('entity/add-relationship', 'Frontend\EntityController@addRelationship')->name('entity.addRelationship');
 
@@ -94,6 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
     Route::post('/uploader/schema', 'Frontend\UploaderController@schema')->name('uploader.schema');
+
 
     Route::get('/uploader/address-sync/{id}', 'Frontend\UploaderController@addressSync')->name('uploader.addressSync');
     Route::get('/uploader/entity-sync/{id}', 'Frontend\UploaderController@entitySync')->name('uploader.entitySync');
