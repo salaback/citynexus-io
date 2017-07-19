@@ -92,6 +92,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('uploader', 'Frontend\UploaderController');
     Route::get('/uploader/create-schema/{id}', 'Frontend\UploaderController@createMap')->name('uploader.createMap');
 
+    // Tasks
+    Route::resources([
+        'tasks/task' => 'Backend\TaskController',
+        'tasks/list'=> 'Backend\TaskListController'
+    ]);
+
 
     Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
     Route::post('/uploader/schema', 'Frontend\UploaderController@schema')->name('uploader.schema');

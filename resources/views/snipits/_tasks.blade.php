@@ -199,6 +199,7 @@
             url: "{{route('task.store')}}",
             method: 'Post',
             data: {
+                _token: "{{csrf_token()}}",
                 task_list_id: $('#new_task_list_id').val(),
                 name: $('#task_name').val(),
                 body: $('#task_description').val(),
@@ -224,6 +225,7 @@
                 url: "{{route('task.index')}}/" + id,
                 type: 'POST',
                 data: {
+                    _token: "{{csrf_token()}}",
                     _method: "DELETE"
                 },
                 success: function() {
