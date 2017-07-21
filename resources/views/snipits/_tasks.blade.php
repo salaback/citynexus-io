@@ -161,6 +161,7 @@
             url: "{{route('list.store')}}",
             method: "post",
             data: {
+                _token: "{{csrf_token()}}", 
                 name: $('#list_name').val(),
                 taskable_type: "{{$model_type}}",
                 taskable_id: {{$model_id}}
