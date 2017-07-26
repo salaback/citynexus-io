@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\AnalysisMgr\Model\Score;
+use App\AnalysisMgr\Observers\ScoreObserver;
 use App\DataStore\Model\DataSet;
 use App\DataStore\Observers\DataSetObserver;
 use App\PropertyMgr\Observers\PropertyObserver;
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         DataSet::observe(DataSetObserver::class);
         Property::observe(PropertyObserver::class);
+        Score::observe(ScoreObserver::class);
     }
 
     /**

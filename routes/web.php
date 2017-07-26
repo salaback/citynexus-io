@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/meetings/agenda', 'Frontend\AgendaController');
 
     // Analytics
+    Route::get('/analytics/score/refresh/{id}', 'Frontend\ScoreController@refresh')->name('score.refresh');
     Route::resource('/analytics/score', 'Frontend\ScoreController');
     Route::post('/analytics/score/create-element', 'Frontend\ScoreController@createElement')->name('analytics.score.create.element');
 

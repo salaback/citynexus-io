@@ -146,7 +146,7 @@ class Importer
     {
         if($upload->uploader->dataset->table_name != null)
         {
-            DB::table($upload->uploader->dataset->table_name)->where('upload_id', $upload->id)->delete();
+            DB::table($upload->uploader->dataset->table_name)->where('__upload_id', $upload->id)->delete();
             DB::table('cn_entitables')->where('upload_id', $upload->id)->delete();
         }
 
@@ -166,14 +166,14 @@ class Importer
 
         foreach($data as $key => $value)
         {
-            $data[$key]['upload_id'] = $upload->id;
+            $data[$key]['__upload_id'] = $upload->id;
         }
-        $max_id = DB::table($uploader->dataset->table_name)->max('id');
+        $max_id = DB::table($uploader->dataset->table_name)->max('__id');
 
         DB::table($uploader->dataset->table_name)->insert($data);
         $syncHelper->postSync($data, (object) $uploader->syncs, $upload->id);
 
-        if($max_id != null) $data = DB::table($uploader->dataset->table_name)->where('id', '>', $max_id)->get();
+        if($max_id != null) $data = DB::table($uploader->dataset->table_name)->where('__id', '>', $max_id)->get();
         else $data = DB::table($uploader->dataset->table_name)->get();
 
         $upload->count += count($data);

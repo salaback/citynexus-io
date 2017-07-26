@@ -16,4 +16,10 @@ class ProcessRouter
         $tagProcessor = new TagProcessor();
         return $tagProcessor->process($scores, $element, $data);
     }
+
+    public function datapoint($scores, $element, $data)
+    {
+        $datpointProcessor = new DatapointProcessor();
+        return $datpointProcessor->process($scores, $element, $data);
+    }
 }

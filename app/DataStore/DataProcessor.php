@@ -105,6 +105,13 @@ class DataProcessor
 
     public function cast($value, $type)
     {
+        if(is_array($value))
+        {
+            if(isset($value['date']))
+                $value = $value['date'];
+            else
+                $value = json_encode($value);
+        }
         switch ($type)
         {
             case 'string':
@@ -113,7 +120,6 @@ class DataProcessor
             case 'integer':
                 return (int) $value;
                 break;
-
             case 'float':
                 return (float) $value;
                 break;

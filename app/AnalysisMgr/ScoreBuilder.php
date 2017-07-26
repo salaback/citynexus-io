@@ -7,7 +7,7 @@ namespace App\AnalysisMgr;
 use App\AnalysisMgr\Model\Score;
 use App\AnalysisMgr\Model\ScoreResult;
 use Carbon\Carbon;
-use CityNexus\DataStore\DataSet;
+use App\DataStore\Model\DataSet;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -108,7 +108,6 @@ class ScoreBuilder
         elseif($element['effect']['type'] == 'range')
         {
 
-            dd($element);
             throw \GuzzleHttp\Promise\exception_for('"Not a supported effect type";');
 
             // TODO: Create range based search

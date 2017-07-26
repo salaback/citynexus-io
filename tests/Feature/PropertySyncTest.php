@@ -106,13 +106,14 @@ class PropertySyncTest extends TestCase
             'default_postal_code'   => '02143'
         ];
 
-        $results = $this->invokeMethod($this->propSync, 'parsedAddress', [$row, $sync]);
+        $result = $this->invokeMethod($this->propSync, 'parsedAddress', [$row, $sync]);
 
         $expected = \App\PropertyMgr\Model\Property::where('address', '23 MONMOUTH ST')
             ->where('unit', '1 R')
             ->first();
 
-        $this->assertSame($expected->id, $results);
+
+        $this->assertSame($expected->id, $result);
     }
 
     public function testGetPropertyId()

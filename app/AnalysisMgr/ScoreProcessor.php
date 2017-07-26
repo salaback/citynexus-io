@@ -37,7 +37,8 @@ class ScoreProcessor
 
     private function updateScoreTable($score, $scores)
     {
-        $ids = array_keys($scores);
+
+        $ids = array_filter(array_keys($scores));
 
         $temp_scores = DB::table('cn_score_' . $score->id)
             ->whereIn('property_id', $ids)
@@ -47,21 +48,25 @@ class ScoreProcessor
 
         foreach($scores as $id => $item)
         {
-            if(isset($current_scores[$id]))
+            if($id != null)
             {
-                $update = $this->updateScore($current_scores[$id], $item);
-                DB::table('cn_score_' . $score->id)->update($update);
-            }
-            else
-            {
-                $insert = [
-                    'property_id' => $id,
-                    'score' => $this->makeScore($score),
-                    'elements' => json_encode($score)
-                ];
-                DB::table('cn_score' . $score->id)->insert($insert);
+                if(isset($current_scores[$id]))
+                {
+                    $update = $this->updateScore($current_scores[$id], $item);
+                    DB::table('cn_score_' . $score->id)->where('property_id', $id)->update($update);
+                }
+                else
+                {
+                    $insert = [
+                        'property_id' => $id,
+                        'score' => $this->makeScore($item),
+                        'elements' => json_encode($item)
+                    ];
+                    $new[] = $insert;
+                }
             }
         }
+        if(isset($insert)) DB::table('cn_score_' . $score->id)->insert($new);
     }
 
     private function updateScore($old, $new)
@@ -82,7 +87,6 @@ class ScoreProcessor
         $return['elements'] = json_encode($new);
 
         return $return;
-
     }
 
     private function makeScore($elements)
@@ -119,36 +123,19 @@ class ScoreProcessor
             {
                 case 'tag':
                     $scores = $router->tags($scores, $element, $data);
+                    break;
+                case 'datapoint':
+                    $scores = $router->datapoint($scores, $element, $data);
+                    break;
             }
         }
 
         return $scores;
     }
 
-    private function createScoreTable(Score $score)
-    {
-        try
-        {
-            Schema::create('cn_score_' . $score->id, function (Blueprint $table) {
-                $table->integer('property_id')->unsigned()->index();
-                $table->integer('score');
-                $table->json('elements');
-                $table->json('history')->nullable();
-            });
-
-        }
-        catch (\Exception $e)
-        {
-            return $e;
-        }
-
-        return true;
-    }
-
     private function loadData(Score $score)
     {
         $loader = new DataLoader();
-        $data = [];
 
         // extract data needed to load actual data in
         // as few queries as possible.
@@ -165,9 +152,11 @@ class ScoreProcessor
                 case 'tags':
                     $data['tags'] = $loader->loadTagData($item);
                     break;
+
+                case 'datasets':
+                    $data['datasets'] = $loader->loadDatasets($item);
             }
         }
-
         return $data;
     }
 
@@ -176,7 +165,8 @@ class ScoreProcessor
         $loader = new DataLoader();
 
         $preload = [
-            'tags' => []
+            'tags' => [],
+            'datasets' => []
         ];
 
         // prepare
@@ -186,8 +176,13 @@ class ScoreProcessor
             {
                 case 'tag':
                     $preload['tags'] = $loader->preLoadTagData($preload['tags'], $element);
+                    break;
+                case 'datapoint':
+                    $preload['datasets'] = $loader->preLoadDatapointData($preload['datasets'], $element);
+                    break;
             }
         }
+
         return $preload;
     }
 

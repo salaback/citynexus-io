@@ -33,26 +33,14 @@ class ScoreProcessorTest extends TestCase
 
     }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testCreateScoreTable()
-    {
-        $this->client->logInAsClient();
-        $score = factory(Score::class)->create();
-        $result = $this->invokeMethod($this->processor, 'createScoreTable', ['score' => $score]);
-
-        $this->assertTrue($result);
-    }
-
     public function testPreLoadDataTags()
     {
         $this->client->logInAsClient();
 
         $tag = factory(Tag::class)->create();
+
         $property = factory(Property::class)->create();
+
         $property->tags()->attach($tag);
 
         $score = factory(Score::class)->create([
@@ -81,7 +69,8 @@ class ScoreProcessorTest extends TestCase
         $actual = $this->invokeMethod($this->processor, 'preLoadData', [$score]);
 
         $expected = [
-            'tags' => [$tag->id]
+            'tags' => [$tag->id],
+            'datasets' => []
         ];
 
         $this->assertSame($expected, $actual);
@@ -213,6 +202,7 @@ class ScoreProcessorTest extends TestCase
         $property = factory(Property::class)->create();
         $property->tags()->attach($tag);
         $property->tags()->attach($tag2);
+
         $score = factory(Score::class)->create([
                 'elements' => [
                     [
@@ -255,47 +245,11 @@ class ScoreProcessorTest extends TestCase
             ]
         );
 
-        $this->invokeMethod($this->processor, 'createScoreTable', ['score' => $score]);
-
-        DB::table('cn_score_' . $score->id)->insert([
-            'property_id' => $property->id,
-            'score' => 1,
-            'elements' => \GuzzleHttp\json_encode([
-                [
-                    'type' => 'tag',
-                    'tag_id' => $tag->id,
-                    'effect' => 2
-                ],
-                [
-                    'type' => 'tag',
-                    'tag_id' => $tag2->id,
-                    'effect' => -1
-                ],
-            ])
-        ]);
-
-
-        $scores = [
-            $property->id =>  [
-                "tags" => [
-                    0 => [
-                        "type" => "tag",
-                        "tag_id" => $tag->id,
-                        "effect" => 2
-                    ],
-                    1 => [
-                        "type" => "tag",
-                        "tag_id" => $tag2->id,
-                        "effect" => -1
-                    ]
-                ]
-            ]
-        ];
-
-        $this->invokeMethod($this->processor, 'processScore', [$score->id]);
 
         $result = DB::table('cn_score_' . $score->id)->where('property_id', $property->id)->first();
-        $this->assertSame($result->score, 1);
+
+        $this->assertEquals($result->score, 1);
+
     }
 
     public function testUpdateScore()

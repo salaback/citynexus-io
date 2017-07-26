@@ -3,6 +3,7 @@
 namespace App\AnalysisMgr\Jobs;
 
 use App\AnalysisMgr\ScoreProcessor;
+use App\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,6 +15,7 @@ class ProcessScore implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $score_id;
+    protected $client_id;
     /**
      * Create a new job instance.
      *
@@ -22,6 +24,7 @@ class ProcessScore implements ShouldQueue
     public function __construct($id)
     {
         $this->score_id = $id;
+        $this->client_id = config('client.id');
     }
 
     /**
@@ -31,6 +34,8 @@ class ProcessScore implements ShouldQueue
      */
     public function handle(ScoreProcessor $processor)
     {
+        Client::find($this->client_id)->logInAsClient();
+
         $processor->processScore($this->score_id);
     }
 }

@@ -32,11 +32,13 @@ class TableBuilder
         if(!$this->tableExists($table_name)) {
             Schema::create($table_name, function (Blueprint $table) {
                 // Create table's index id file
-                $table->increments('id');
-                $table->integer('upload_id');
-                $table->integer('property_id')->unsigned()->nullable();
-                $table->integer('entity_id')->unsigned()->nullable();
-                $table->timestamps();
+                $table->increments('__id');
+                $table->integer('__upload_id')->unsigned();
+                $table->integer('__property_id')->unsigned()->nullable();
+                $table->integer('__building_id')->unsigned()->nullable();
+                $table->integer('__parcel_id')->unsigned()->nullable();
+                $table->dateTime('__created_at')->nullable();
+                $table->datetime('__updated_at')->nullable();
             });
         }
 

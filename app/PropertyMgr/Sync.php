@@ -135,8 +135,8 @@ class Sync
             if(isset($entity) && $entity != null)
             {
 
-                if(isset($i['property_id']) && $i['property_id'] != null)
-                $entity->properties()->syncWithoutDetaching([$i['property_id'] => ['upload_id' => $upload_id, 'role' => $sync['role']]]);
+                if(isset($i['__property_id']) && $i['__property_id'] != null)
+                $entity->properties()->syncWithoutDetaching([$i['__property_id'] => ['upload_id' => $upload_id, 'role' => $sync['role']]]);
 
                 if(isset($sync['address']))
                 {
@@ -169,7 +169,7 @@ class Sync
         $insert =[];
         foreach($data as $row)
         {
-            if($row['property_id'] != null && $row[$sync['dataPoint']] != null)
+            if($row['__property_id'] != null && $row[$sync['dataPoint']] != null)
             {
                 if($comma)
                 {
@@ -177,12 +177,12 @@ class Sync
 
                     foreach($parts as $part)
                     {
-                        $tags[trim($part)] = $row['property_id'];
+                        $tags[trim($part)] = $row['__property_id'];
                     }
                 }
                 else
                 {
-                    $tags[$row[$sync['dataPoint']]][] = $row['property_id'];
+                    $tags[$row[$sync['dataPoint']]][] = $row['__property_id'];
                 }
             }
         }
