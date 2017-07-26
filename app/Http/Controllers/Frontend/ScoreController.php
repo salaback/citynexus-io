@@ -18,7 +18,8 @@ class ScoreController extends Controller
      */
     public function index()
     {
-        //
+        $scores = Score::orderBy('name')->paginate(10);
+        return view('analytics.score.index', compact('scores'));
     }
 
     /**
@@ -142,7 +143,9 @@ class ScoreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Score::find($id)->delete();
+
+        return 'deleted';
     }
 
     public function refresh($id)
