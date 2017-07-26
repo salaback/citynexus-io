@@ -35,28 +35,28 @@ class DataInformationTest extends TestCase
     {
         $data = [
             (object) [
-                'id' => 1,
-                'created_at' => '2016-04-19 18:12:12',
+                '__id' => 1,
+                '__created_at' => '2016-04-19 18:12:12',
                 'data' => 'blarg',
             ],
             (object) [
-                'id' => 1,
-                'created_at' => '2016-02-19 18:12:12',
+                '__id' => 1,
+                '__created_at' => '2016-02-19 18:12:12',
                 'data' => 'blarg',
             ],
             (object) [
-                'id' => 1,
-                'created_at' => '2016-04-20 18:12:12',
+                '__id' => 1,
+                '__created_at' => '2016-04-20 18:12:12',
                 'data' => 'blarg',
             ],
             (object) [
-                'id' => 1,
-                'created_at' => '2016-04-19 19:12:12',
+                '__id' => 1,
+                '__created_at' => '2016-04-19 19:12:12',
                 'data' => 'blarg',
             ],
             (object) [
-                'id' => 1,
-                'created_at' => '2016-04-19 14:12:12',
+                '__id' => 1,
+                '__created_at' => '2016-04-19 14:12:12',
                 'data' => 'blarg',
             ]
         ];

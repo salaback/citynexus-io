@@ -19,11 +19,7 @@ use Illuminate\Support\Facades\DB;
 
 class PropertySync
 {
-    /*
-     *
-     * Might be deleteable
-     *
-     */
+
     public function addPropertyID($data, $syncs)
     {
 
@@ -35,28 +31,36 @@ class PropertySync
         if(isset($sync['full_address'])) {
 
             foreach ($data as $row) {
-                if ($result = $this->unparsedAddress($row, $sync)) {
-                    $row['property_id'] = $result;
+                if ($pid = $this->unparsedAddress($row, $sync)) {
+                    $prop = Property::find($pid);
+                    $result['__property_id'] = $pid;
+                    $result['__building_id'] = $prop->building_id ?: $pid;
+
+                    $row = array_merge($row, $result);
                 } else {
-                    $row['property_id'] = null;
+                    $row['__property_id'] = null;
+                    $row['__building_id'] = null;
                 }
                 $return[] = $row;
             }
         }else {
             foreach ($data as $row) {
-                if($result = $this->parsedAddress($row, $sync))
+                if($pid = $this->parsedAddress($row, $sync))
                 {
-                    $row['property_id'] = $result;
+                    $prop = Property::find($pid);
+                    $result['__property_id'] = $pid;
+                    $result['__building_id'] = $prop->building_id ?: $pid;
+
+                    $row = array_merge($row, $result);
                 } else {
-                    $row['property_id'] = null;
+                    $row['__property_id'] = null;
+                    $row['__building_id'] = null;
                 }
                 $return[] = $row;
             }
         }
         return $return;
     }
-
-
 
 
     /*
@@ -68,12 +72,15 @@ class PropertySync
     {
         foreach($data as $key => $item)
         {
-            if(!isset($data[$key][$sync['created_at']]))
-                $data[$key]['created_at'] = Carbon::now();
+            if(isset($data[$key][$sync['created_at']]))
+                $data[$key]['__created_at'] = $data[$key][$sync['created_at']];
+            elseif(isset($sync['created_at_default']) && $sync['created_at_default'] != null)
+            {
+                $data[$key]['__created_at'] = $sync['created_at_default'];
+            }
             else
             {
-                $data[$key]['created_at'] = $data[$key][$sync['created_at']];
-
+                $data[$key]['__created_at'] = Carbon::now();
             }
         }
         return $data;
@@ -224,7 +231,9 @@ class PropertySync
 
         // if property id is set, return id
         if($addy->property_id != null) {
+
             return $addy->property_id;
+
         }
 
         // if address has unit create unit

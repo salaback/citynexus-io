@@ -2,9 +2,9 @@
     <td><input type="checkbox" name="map[{{$i['key']}}][show]" checked></td>
     <td><input type="text" id="name-{{$i['key']}}" name="map[{{$i['key']}}][name]" value="{{$i['name']}}"></td>
     <td>
-        <select class="mapto" data-key="{{$i['key']}}">
+        <select class="mapto" data-key="{{$i['key']}}" name="map[{{$i['key']}}][key]">
             <option value="create">Create New Field</option>
-            <option value="ignore" class="select-hr">Ignore</option>
+            <option value="__ignore" class="select-hr">Ignore</option>
             <option value="">------</option>
             @if($schema != null)
             @foreach($schema as $field)

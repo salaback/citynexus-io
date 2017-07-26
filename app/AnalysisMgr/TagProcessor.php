@@ -23,6 +23,7 @@ class TagProcessor
         if($element['effect']['type'] == 'add') {
             $point['effect'] = $element['effect']['factor'];
         }
+
         elseif($element['effect']['type'] == 'subtract') {
             $point['effect'] = -$element['effect']['factor'];
         }

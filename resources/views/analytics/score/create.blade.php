@@ -18,27 +18,27 @@
                     <strong>Score</strong> Information
                 </div>
             </div>
+
             <div class="boxs-body">
-                    <div class="form-group col-md-12">
-                        <label for="name">Score Name </label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{old('name')}}"required>
-                    </div>
-                    {{-- Score Type --}}
-                    <input type="hidden" name="type" id="type">
-                    {{-- Start Stap Shot Score --}}
-                    <div class="option-tile col-sm-6 score_type @if(old('type') == 'snapshot') selected @endif" onclick="setType('snapshot')" id="snapshot">
-                        <div class="option-wrapper">
-                            <div class="option-header">
-                                Snap Shot Score
-                            </div>
-                            <div class="option-icon">
-                                <i class="fa fa-camera-retro fa-3x"></i><br>
-                                A snap shot score creates a score for a single range of time.
-                            </div>
+                <div class="form-group col-md-12">
+                    <label for="name">Score Name </label>
+                    <input type="text" name="name" id="name" class="form-control" value="{{old('name')}}" required>
+                </div>
+                {{-- Score Type --}}
+                <input type="hidden" name="type" id="type">
+                {{-- Start Stap Shot Score --}}
+                <div class="option-tile col-sm-6 score_type @if(old('type') == 'building') selected @endif" onclick="setType('building')" id="building">
+                    <div class="option-wrapper">
+                        <div class="option-header">
+                            Building
+                        </div>
+                        <div class="option-icon">
+                            <i class="fa fa-building fa-3x"></i><br>
+                            A score based on entire physical buildings.
                         </div>
                     </div>
-                <div class="row">
                 </div>
+                <div class="row"></div>
             </div>
         </section>
         <section class="boxs">
@@ -48,17 +48,17 @@
             <div class="boxs-body">
 
                 {{-- Start Updating Record --}}
-                <div class="option-tile col-sm-4" data-toggle="modal" data-target="#tagModal" id="tag">
-                    <div class="option-wrapper">
-                        <div class="option-header">
-                            Tag
-                        </div>
-                        <div class="option-icon">
-                            <i class="fa fa-tag fa-2x"></i><br>
-                            Score element based on tag
-                        </div>
-                    </div>
-                </div>
+                {{--<div class="option-tile col-sm-4" data-toggle="modal" data-target="#tagModal" id="tag">--}}
+                    {{--<div class="option-wrapper">--}}
+                        {{--<div class="option-header">--}}
+                            {{--Tag--}}
+                        {{--</div>--}}
+                        {{--<div class="option-icon">--}}
+                            {{--<i class="fa fa-tag fa-2x"></i><br>--}}
+                            {{--Score element based on tag--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="option-tile col-sm-4" data-toggle="modal" data-target="#datapointModal" id="datapoint">
                     <div class="option-wrapper">
                         <div class="option-header">
@@ -70,17 +70,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="option-tile col-sm-4" data-toggle="modal" data-target="#commentModal" id="comment">
-                    <div class="option-wrapper">
-                        <div class="option-header">
-                            Comment
-                        </div>
-                        <div class="option-icon">
-                            <i class="fa fa-comment fa-2x"></i><br>
-                            Score element based comments
-                        </div>
-                    </div>
-                </div>
+                {{--<div class="option-tile col-sm-4" data-toggle="modal" data-target="#commentModal" id="comment">--}}
+                    {{--<div class="option-wrapper">--}}
+                        {{--<div class="option-header">--}}
+                            {{--Comment--}}
+                        {{--</div>--}}
+                        {{--<div class="option-icon">--}}
+                            {{--<i class="fa fa-comment fa-2x"></i><br>--}}
+                            {{--Score element based comments--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="row">
                 </div>
             </div>
@@ -156,7 +156,6 @@
             type: 'GET',
             success: function (response) {
                 $('#counts').removeClass('hidden');
-                console.log(response);
             }
         })
     })
@@ -184,74 +183,6 @@
     {
         console.log(this);
     }
-
-    $( function() {
-        var dateFormat = "mm/dd/yy",
-                from = $( "#from" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                datapointFrom = $( "#datapointFrom" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                datapointTo = $( "#datapointTo" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                commentFrom = $( "#commentFrom" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                commentTo = $( "#commentTo" )
-                        .datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3
-                        })
-                        .on( "change", function() {
-                            to.datepicker( "option", "minDate", getDate( this ) );
-                        }),
-                to = $( "#to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3
-                })
-                        .on( "change", function() {
-                            from.datepicker( "option", "maxDate", getDate( this ) );
-                        });
-
-        function getDate( element ) {
-            var date;
-            try {
-                date = $.datepicker.parseDate( dateFormat, element.value );
-            } catch( error ) {
-                date = null;
-            }
-
-            return date;
-        }
-    } );
 </script>
 
 @endpush

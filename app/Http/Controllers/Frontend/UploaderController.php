@@ -130,7 +130,7 @@ class UploaderController extends Controller
 
             foreach($map as $key => $value)
             {
-                if(!isset($value['show']))
+                if($value['key'] == "__ignore")
                     unset($map[$key]);
             }
 

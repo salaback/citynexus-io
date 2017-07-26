@@ -27,7 +27,7 @@
         <div class="col-sm-4">
             @if($element['effect']['type'] == 'range')
                 If data point is
-                @if($element['effect']['range']['equalTo' != 'false'])
+                @if($element['effect']['range']['equalTo'] != 'false')
                    is equal to {{$element['effect']['range']['equalTo']}}
                 @else
                     @if($element['effect']['range']['greaterThan'] != 'false')
@@ -55,6 +55,10 @@
                     square of data point value
                 @elseif($element['effect']['type'] == 'cube')
                     cube of data point value
+                @elseif($element['effect']['type'] == 'root')
+                    square root of data point value
+                @elseif($element['effect']['type'] == 'cuberoot')
+                    cube root of data point value
                 @endif
             @endif
         </div>

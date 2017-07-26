@@ -51,19 +51,21 @@
                         </div>
 
                         <div class="col-sm-12">
-                            <h4>Search within date range</h4>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>From</label>
-                                    <input type="text" id="commentFrom" name="from" class="form-control datapointDate">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>To</label>
-                                    <input type="text" id="commentTo" name="to" class="form-control datapointDate" >
-                                </div>
-                            </div>
+                            <label>Trailing Period</label>
+                            <select name="dp_trailing" class="form-control" id="comment_trailing">
+                                <option value="">Select One</option>
+                                <option value="1">One day</option>
+                                <option value="7">One week</option>
+                                <option value="14">Two week</option>
+                                <option value="30">30 days</option>
+                                <option value="90">90 days</option>
+                                <option value="180">180 days</option>
+                                <option value="365">One year</option>
+                                <option value="730">Two years</option>
+                                <option value="1095">Three years</option>
+                                <option value="1460">Four years</option>
+                                <option value="1825">Five years</option>
+                            </select>
                         </div>
                         <div class="col-sm-12">
                             <h4 >Score Effect</h4>
@@ -153,10 +155,7 @@
                 propertiesRange: propertyRange
             },
             buildings: $('input[name="commentTreatUnits"]:checked').val(),
-            timeRange: {
-                to: $('#commentTo').val(),
-                from: $('#commentFrom').val()
-            },
+            trailing: $('#comment_trailing').val(),
             effect: {
                 type: $('#commentScoreEffect').val(),
                 factor: $('#commentFactor').val(),

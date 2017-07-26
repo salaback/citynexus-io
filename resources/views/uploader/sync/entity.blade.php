@@ -169,6 +169,10 @@
                         </div>
                         <br>
                         <div id="addressSync" class="hidden">
+                            <label>
+                                <input type="checkbox" id="makePrimary">
+                                Make this the primary mailing address for entity.
+                            </label>
                             <div class="panel-group" id="addresses" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="unparsedAddressHeading">

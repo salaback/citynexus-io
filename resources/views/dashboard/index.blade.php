@@ -282,6 +282,7 @@
                     <div class="list-group">
                         @foreach($tasks as $task)
                             @if($task->taskList->taskable_type == "App\PropertyMgr\Model\Property")
+
                                 <a class="list-group-item" href="{{route('properties.show', [$task->taskList->taskable_id])}}?tasks=true">
                                     <span class="widget-date" title="{{$task->deleted_at}}">
                                         Completed: {{$task->deleted_at->diffForHumans()}}

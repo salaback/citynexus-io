@@ -18,7 +18,7 @@ class DataInformation
 
     public function datapointInfo(DataSet $dataset, $key)
     {
-        $data = DB::table($dataset->table_name)->whereNotNull($key)->get(['id', $key, 'created_at'])->toArray();
+        $data = DB::table($dataset->table_name)->whereNotNull($key)->get(['__id', $key, '__created_at'])->toArray();
 
 
         $return['values'] = $this->getValues($data, $key);
@@ -38,7 +38,7 @@ class DataInformation
 
         foreach($data as $item)
         {
-            $dates[] = $item->created_at;
+            $dates[] = $item->__created_at;
         }
 
         asort($dates);

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AnalysisMgr\Model\Score;
+use App\DataStore\Model\DataSet;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ScoreController extends Controller
 {
@@ -16,7 +18,8 @@ class ScoreController extends Controller
      */
     public function index()
     {
-        //
+        $scores = Score::orderBy('name')->paginate(10);
+        return view('analytics.score.index', compact('scores'));
     }
 
     /**
@@ -73,7 +76,40 @@ class ScoreController extends Controller
 
         $score = Score::find($id);
 
-        return $score;
+        $results = DB::table("cn_score_" . $id)
+            ->join('cn_properties', 'cn_score_' . $id . '.property_id', '=', 'cn_properties.id')
+            ->select('cn_properties.address', 'cn_score_' . $id . '.*')
+            ->orderBy('score', 'DESC')
+            ->paginate(20);
+
+        $datasets = DataSet::all();
+
+        $shades = $this->createShades($score->elements);
+
+        $scores['min'] = DB::table('cn_score_' . $id)->min('score');
+        $scores['max'] = DB::table('cn_score_' . $id)->max('score');
+
+        return view('analytics.score.show', compact('score', 'results', 'datasets', 'scores', 'shades'));
+    }
+
+    private function createShades($elements)
+    {
+        $shades = [];
+        $variation = 1 / count($elements);
+        $current = 1;
+
+        foreach($elements as $item)
+        {
+            switch ($item['type'])
+            {
+                case 'datapoint':
+                    $shades['datapoints'][$item['dataset_id'] . '_' . $item['key']] = $current;
+                    break;
+            }
+
+            $current -= $variation;
+        }
+        return $shades;
     }
 
     /**
@@ -107,7 +143,18 @@ class ScoreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Score::find($id)->delete();
+
+        return 'deleted';
+    }
+
+    public function refresh($id)
+    {
+        $score = Score::find($id);
+
+        $score->touch();
+
+        return redirect(route('score.show', [$id]));
     }
 
     public function createElement(Request $request)

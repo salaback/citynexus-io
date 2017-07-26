@@ -20,18 +20,22 @@
                     </div>
 
                     <div class="col-sm-12 hidden" id="counts">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>From</label>
-                                <input type="text" id="from" name="from" class="form-control tagDate">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>To</label>
-                                <input type="text" id="to" name="to" class="form-control tagDate" >
-                            </div>
+                        <div class="col-md-12">
+                            <label>Trailing Period</label>
+                            <select name="dp_trailing" class="form-control" id="tag_trailing">
+                                <option value="">Select One</option>
+                                <option value="1">One day</option>
+                                <option value="7">One week</option>
+                                <option value="14">Two week</option>
+                                <option value="30">30 days</option>
+                                <option value="90">90 days</option>
+                                <option value="180">180 days</option>
+                                <option value="365">One year</option>
+                                <option value="730">Two years</option>
+                                <option value="1095">Three years</option>
+                                <option value="1460">Four years</option>
+                                <option value="1825">Five years</option>
+                            </select>
                         </div>
                         <div class='togglebutton'>
                             <label>
@@ -176,10 +180,7 @@
         var element = {
             type: 'tag',
             tag_id: $('#tags').val(),
-            timeRange: {
-                to: $('#to').val(),
-                from: $('#from').val()
-              },
+            trailing: $('#tag_trailing').val(),
             effect: {
                 type: $('#scoreEffect').val(),
                 factor: $('#factor').val()

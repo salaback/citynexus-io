@@ -82,7 +82,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
     }
 
@@ -127,7 +127,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
     }
 
@@ -178,7 +178,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
         $this->get(route('upload.process', [$upload->id]))->assertSee('queued');
 
@@ -193,7 +193,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
     }
 
@@ -270,7 +270,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_properties', ['address' => '51 FARNHAM ST']);
         $this->assertDatabaseHas('cn_entities', ['first_name' => 'JOHN', 'last_name' => 'DREW']);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
     }
 
@@ -355,7 +355,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity1->id, 'entitables_id' => $property->id]);
         $this->assertSame(DB::table('cn_entities')->where('first_name', 'GERALD')->where('last_name', 'WHITE')->count(), 1);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
 
     }
 
@@ -414,10 +414,10 @@ class ProcessUploadTest extends TestCase
         $_20130320 = DB::table($dataset->table_name)->where('ls_date', '20130320')->first();
         $_20131011 = DB::table($dataset->table_name)->where('ls_date', '20131011')->first();
 
-        $this->assertTrue($_20130320->property_id == null);
-        $this->assertTrue($_20131011->property_id == null);
+        $this->assertTrue($_20130320->__property_id == null);
+        $this->assertTrue($_20131011->__property_id == null);
 
-        DB::table($dataset->table_name)->truncate();
+        DB::table($dataset->table_name)->delete();
     }
 
 

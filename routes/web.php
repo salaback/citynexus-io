@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/meetings/agenda', 'Frontend\AgendaController');
 
     // Analytics
+    Route::get('/analytics/score/refresh/{id}', 'Frontend\ScoreController@refresh')->name('score.refresh');
     Route::resource('/analytics/score', 'Frontend\ScoreController');
     Route::post('/analytics/score/create-element', 'Frontend\ScoreController@createElement')->name('analytics.score.create.element');
 
@@ -91,6 +92,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('datasets/upload', 'Frontend\UploadController');
     Route::resource('uploader', 'Frontend\UploaderController');
     Route::get('/uploader/create-schema/{id}', 'Frontend\UploaderController@createMap')->name('uploader.createMap');
+
+    // Tasks
+    Route::resources([
+        'tasks/task' => 'Backend\TaskController',
+        'tasks/list'=> 'Backend\TaskListController'
+    ]);
 
 
     Route::post('/uploader/create-schema/', 'Frontend\UploaderController@storeMap')->name('uploader.storeMap');
