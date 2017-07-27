@@ -89,4 +89,70 @@
             </div>
         </section>
     </div>
+    @if(count($dataset->schema) > 0)
+        <div class="col-sm-12">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="boxs ">
+                    <div class="boxs-header dvd dvd-btm">
+                        <h1 class="custom-font"><strong>{{$dataset->name}}</strong> Data</h1>
+                    </div>
+                    <div class="boxs-body">
+                        <table id="datasets" class="table table-custom">
+                            <thead>
+                            <tr>
+                                <th>Time Stamp</th>
+                                @foreach($dataset->schema as $element)
+                                    @if($element['show'] == 'on')
+                                    <th>{{$element['name']}}</th>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    @endif
 @endsection
+
+@push('style')
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+
+@endpush
+
+@push('scripts')
+
+@if(count($dataset->schema) > 0)
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $(function() {
+            $("#datasets").DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{route('dataset.rawData')}}',
+                columns: [
+                    {data: '__profile', name: '__profile'},
+                    {data: '__created_at', name: '__created_at'},
+                    @foreach($dataset->schema as $element)
+                        @if($element['show'] == 'on')
+                            {data: '{{$element['key']}}', name: '{{$element['key']}}'},@endif
+                    @endforeach
+                ],
+                dom: "Bfrtip",
+                buttons: [{extend: "copy", className: "btn-sm"}, {extend: "csv", className: "btn-sm"}, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {extend: "pdf", className: "btn-sm"}, {extend: "print", className: "btn-sm"}],
+
+            });
+        });
+    </script>
+
+@endif
+@endpush

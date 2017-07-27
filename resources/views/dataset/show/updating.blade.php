@@ -111,53 +111,77 @@
         </div>
     </div>
 
-    {{--<div class="row">--}}
-        {{--<div class="col-md-12">--}}
-            {{--<section class="boxs ">--}}
-                {{--<div class="boxs-header dvd dvd-btm">--}}
-                    {{--<h1 class="custom-font"><strong>Raw </strong>data</h1>--}}
-
-                {{--</div>--}}
-                {{--<div class="boxs-body">--}}
-                    {{--<table id="propertiesTable" class="table table-custom">--}}
-                        {{--<thead>--}}
-                        {{--<tr>--}}
-                            {{--@foreach($dataset->schema as $row)--}}
-                            {{--<th>{{$row['name']}}</th>--}}
-                            {{--@endforeach--}}
-                        {{--</tr>--}}
-                        {{--</thead>--}}
-                        {{--<tbody>--}}
-                        {{--</tbody>--}}
-                    {{--</table>--}}
-                {{--</div>--}}
-            {{--</section>--}}
-        {{--</div>--}}
-    {{--</div>--}}
+    @if(count($dataset->schema) > 0)
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="boxs ">
+                        <div class="boxs-header dvd dvd-btm">
+                            <h1 class="custom-font"><strong>{{$dataset->name}}</strong> Data</h1>
+                        </div>
+                        <div class="boxs-body">
+                            <table id="rawdata" class="table table-custom">
+                                <thead>
+                                <tr>
+                                    <th>Profile</th>
+                                    <th>Time Stamp</th>
+                                    @foreach($dataset->schema as $element)
+                                        @if($element['show'] == 'on')
+                                            <th>{{$element['name']}}</th>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
+@push('style')
 
-{{--@push('style')--}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
 
-{{--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">--}}
+@endpush
 
-{{--@endpush--}}
+@push('scripts')
 
-{{--@push('scripts')--}}
+@if(count($dataset->schema) > 0)
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 
-{{--<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>--}}
-{{--<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>--}}
+    @php
 
-{{--<script>--}}
-    {{--$(function() {--}}
-        {{--$('#propertiesTable').DataTable({--}}
-            {{--processing: true,--}}
-            {{--serverSide: true,--}}
-            {{--ajax: '{!! route('dataset.rawData', [$dataset->id]) !!}',--}}
-            {{--columns: [--}}
-                {{--{ data: 'property', name: 'property' }--}}
-            {{--]--}}
-        {{--});--}}
-    {{--});--}}
-{{--</script>--}}
+    @endphp
 
-{{--@endpush--}}
+    <script>
+        $(function() {
+
+
+            $("#rawdata").DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{route('dataset.rawData', [$dataset->id])}}',
+                columns: [
+                        {data: "__profile", name: "__profile"},
+                        {data: "__created_at", name: "__created_at"},
+                    @foreach($dataset->schema as $element)
+                        @if($element['show'] == 'on')
+                        {data: "{{$element['key']}}", name: "{{$element['key']}}"},
+                        @endif
+                    @endforeach
+                ],
+                dom: "Bfrtip",
+                buttons: [{extend: "copy", className: "btn-sm"}, {extend: "csv", className: "btn-sm"}, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {extend: "pdf", className: "btn-sm"}, {extend: "print", className: "btn-sm"}],
+
+            });
+        });
+    </script>
+
+@endif
+@endpush

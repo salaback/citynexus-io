@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('properties/geocode/{id}', 'Frontend\PropertyController@geocode')->name('property.geocode');
 
     // dataset routes
-    Route::get('/dataset/raw-data/{id}', 'Frontend\DatasetController@rawData')->name('dataset.rawData');
+    Route::get('/dataset/raw-data/{id?}', 'Frontend\DatasetController@rawData')->name('dataset.rawData');
     Route::get('/dataset/any-data', 'Frontend\DatasetController@anyData')->name('dataset.anydata');
     Route::resource('/dataset', 'Frontend\DatasetController');
     Route::get('/dataset/datapoint-info/{id?}/{key?}', 'Frontend\DatasetController@datapointInfo')->name('dataset.datapointInfo');
