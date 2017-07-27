@@ -191,21 +191,39 @@ class Sync
         {
             $tag = Tag::firstOrCreate(['tag' => $tag]);
 
+            $tagables = DB::table('cn_tagables')->get();
+
+            $insert = [];
+
             foreach($ids as $id)
             {
-                $insert[] = [
+
+                // build up new tag
+                $newtag = [
                     'tag_id' => $tag->id,
                     'tagables_type' => 'App\\PropertyMgr\\Model\\Property',
                     'tagables_id' => $id,
-                    'created_at' => Carbon::now()
                 ];
+
+                // check for undeleted existing tags
+                $count = $tagables->where('tag_id', $tag->id)
+                    ->where('tagables_type', 'App\\PropertyMgr\\Model\\Property')
+                    ->where('tagables_id', $id)
+                    ->where('deleted_at', null)
+                    ->count();
+
+                // if not currently tagged, add one new tag
+                if($count == 0 && !in_array($newtag, $insert))
+                    $insert[] = $newtag;
+                }
             }
 
-        }
+            foreach ($insert as $key => $item) $insert[$key]['created_at'] = Carbon::now();
 
         DB::table('cn_tagables')->insert($insert);
 
         return true;
     }
+
 
 }
