@@ -14,10 +14,16 @@
                         <li> <a href="#" onclick="hideList({{$list->id}})" role="button"><i class="fa fa-times"></i> Hide List</a></li>
                 </ul>
         </div>
+
         <div class="boxs-body list-body">
             <div class="list-group" class='tasks-well' id="tasks_{{$list->id}}">
                 @foreach($list->tasks as $task)
                     @include('snipits.tasks._task')
+                @endforeach
+            </div>
+            <div class="list-group" class='tasks-well' id="completed_tasks_{{$list->id}}">
+                @foreach($list->completedTasks as $task)
+                    @include('snipits.tasks._completed_task')
                 @endforeach
             </div>
         </div>

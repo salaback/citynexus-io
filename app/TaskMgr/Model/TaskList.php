@@ -18,6 +18,11 @@ class TaskList extends Model
         return $this->hasMany(Task::class)->orderBy('due_at', 'ASC');
     }
 
+    public function completedTasks()
+    {
+        return $this->hasMany(Task::class)->orderBy('deleted_at', 'ASC')->onlyTrashed();
+    }
+
     public function taskable()
     {
         return $this->morphTo();
