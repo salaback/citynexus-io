@@ -1,4 +1,4 @@
- <section class="boxs">
+<section class="boxs">
     <div class="boxs-body">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             @foreach($datasets as $key => $dataset)

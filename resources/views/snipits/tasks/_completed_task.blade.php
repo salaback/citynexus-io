@@ -23,5 +23,4 @@
                 {{str_limit($task->body, 100, '...')}}
             </div>
         @endif
-    </div>
 </div>
