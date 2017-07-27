@@ -5,7 +5,6 @@
             @php($properties = \App\PropertyMgr\Model\Property::all())
 
             @foreach($entity->datasets as $key => $dataset)
-                {{dd('asdfasdf')}}
 
                 @php($table = \App\DataStore\Model\DataSet::find($key))
 
