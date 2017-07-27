@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\BuildSearchIndex;
+use App\Console\Commands\CheckGeocodeErrors;
 use App\Console\Commands\ClientInfoUpdate;
 use App\Console\Commands\Upgrade;
 use App\Console\Commands\UpgradeCitynexus;
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
         UpgradeCitynexus::class,
         ClientInfoUpdate::class,
         BuildSearchIndex::class,
+        CheckGeocodeErrors::class,
     ];
 
     /**
