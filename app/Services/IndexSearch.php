@@ -191,7 +191,7 @@ class IndexSearch
                 $index[] =[
                     'type' => 'Comment',
                     'search' => $comment->title . ' ' . $comment->comment,
-                    'link' => route('comments.show', [$comment->id])
+                    'link' => '/comment/' . $comment->id
                 ];
             }
 
