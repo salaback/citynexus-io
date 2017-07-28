@@ -54,9 +54,7 @@ class CheckGeocodeErrors extends Command
 
                 if($this->argument('properties') == true)
                 {
-                    $property_ids = Property::whereNull('location')->pluck('id');
-
-                    dd($property_ids);
+                    $property_ids = Property::whereNull('location')->whereNull('building_id')->pluck('id');
 
                     foreach($property_ids as $property_id)
                     {
@@ -90,7 +88,7 @@ class CheckGeocodeErrors extends Command
 
             if($this->argument('properties') == true)
             {
-                $property_ids = Property::whereNull('location')->pluck('id');
+                $property_ids = Property::whereNull('location')->whereNull('building_id')->pluck('id');
 
                 foreach($property_ids as $property_id)
                 {

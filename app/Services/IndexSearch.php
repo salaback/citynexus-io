@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Client;
+use App\PropertyMgr\Model\Entity;
 use App\Tag;
 use App\DataStore\Model\DataSet;
 use App\PropertyMgr\Model\Comment;
@@ -78,6 +79,15 @@ class IndexSearch
             {
                 print $e->getMessage();
             }
+
+            try
+            {
+                $this->indexEntities();
+            }
+            catch (\Exception $e)
+            {
+                print $e->getMessage();
+            }
         }
     }
 
@@ -101,6 +111,27 @@ class IndexSearch
 
             DB::table('search_results')->where('type', 'Building')->delete();
             DB::table('search_results')->where('type', 'House')->delete();
+            DB::table('search_results')->insert($index);
+        }
+    }
+
+    private function indexEntities()
+    {
+        $entities = Entity::all();
+
+        if($entities->count() > 0)
+        {
+            $index = array();
+            foreach($entities as $entity)
+            {
+                $index[] =[
+                    'type' => 'Entity',
+                    'search' => ucwords(strtolower($entity->name)),
+                    'link' => '/entity/' . $entity->id
+                ];
+            }
+
+            DB::table('search_results')->where('type', 'Entity')->delete();
             DB::table('search_results')->insert($index);
         }
     }
