@@ -84,7 +84,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -129,7 +129,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -195,7 +195,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -272,7 +272,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_properties', ['address' => '51 FARNHAM ST']);
         $this->assertDatabaseHas('cn_entities', ['first_name' => 'JOHN', 'last_name' => 'DREW']);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -357,7 +357,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity1->id, 'entitables_id' => $property->id]);
         $this->assertSame(DB::table('cn_entities')->where('first_name', 'GERALD')->where('last_name', 'WHITE')->count(), 1);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -510,14 +510,14 @@ class ProcessUploadTest extends TestCase
         $this->assertTrue($_20130320->__property_id == null);
         $this->assertTrue($_20131011->__property_id == null);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
     }
 
 
-    /**
-     * Very large test that takes about 2 minutes to process.
-     * Keep hidden unless it needs changes.
-     */
+//    /**
+//     * Very large test that takes about 2 minutes to process.
+//     * Keep hidden unless it needs changes.
+//     */
 //    public function testStoreLargeCSV()
 //    {
 //        DB::disconnect();
@@ -555,6 +555,9 @@ class ProcessUploadTest extends TestCase
 //
 //        $this->importer->fromUpload($upload);
 //
+//        $tagcount = DB::table("cn_tagables")->get()->count();
+//
+//        $this->assertTrue($tagcount > 900);
 //        $this->assertDatabaseHas($dataset->table_name, ['objectid' => 1]);
 //        $this->assertDatabaseHas($dataset->table_name, ['cama_id' => 4497]);
 //        $this->assertDatabaseHas($dataset->table_name, ['map' => 100]);
@@ -566,7 +569,7 @@ class ProcessUploadTest extends TestCase
 //        $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
 //        $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 //
-//        DB::table($dataset->table_name)->truncate();
+//        Schema::dropIfExists($dataset->table_name);
 //
 //
 //    }

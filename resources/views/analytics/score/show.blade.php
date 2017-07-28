@@ -6,6 +6,7 @@
     <a href="{{route('score.refresh', [$score->id])}}" class="btn btn-primary btn-raised">Refresh Score</a>
     <h1 class="custom-font">Score Results</h1>
         <div class="boxs-body p-0">
+            {{$results->links()}}
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -34,6 +35,7 @@
                 @endforeach
                 </tbody>
             </table>
+            {{$results->links()}}
         </div>
     </div>
 
