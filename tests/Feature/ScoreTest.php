@@ -8,6 +8,8 @@ use App\AnalysisMgr\Model\Score;
 use App\Client;
 use App\DataStore\Model\DataSet;
 use App\DataStore\TableBuilder;
+use App\PropertyMgr\Model\Property;
+use App\PropertyMgr\Model\Tag;
 use App\User;
 use App\UserGroup;
 use Carbon\Carbon;
@@ -537,5 +539,79 @@ class ScoreTest extends TestCase
         Schema::dropIfExists($dataset->table_name);
         Schema::dropIfExists('cn_score_' . $score->id);
 
+    }
+
+    public function testTagCurrentlyTagged()
+    {
+
+        DB::table('cn_tags')->truncate();
+        DB::table('cn_tagables')->truncate();
+        DB::table('cn_properties')->truncate();
+
+
+        $schema = json_decode('{"test_key":{"show":"on","name":"Test Key","key":"test_key","type":"string"}}');
+
+        $this->client->logInAsClient();
+
+        $tag = Tag::firstOrCreate(['tag' => 'New Test Tag']);
+
+        $property = factory(Property::class)->create();
+
+        $property->tags()->attach($tag);
+
+        $elements = json_decode('[{"type":"tag","tag_id":"' . $tag->id . '","trailing":"365","effect":{"type":"add","factor":"5"},"tags":{"tagged":"true","trashed":"false","tagged_range":"false","trashed_range":"false"}}]', true);
+
+        $score = Score::create([
+            'elements' => $elements,
+            'name' => 'Test Score',
+            'type' => 'building',
+            'period' => null,
+            'timeseries' => null,
+            'owned_by' => 1
+        ]);
+
+        $this->assertDatabaseHas('cn_score_' . $score->id, ['property_id' => $property->id, 'score' => 5]);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
+    }
+
+    public function testTagFormerlyTagged()
+    {
+
+        $schema = json_decode('{"test_key":{"show":"on","name":"Test Key","key":"test_key","type":"string"}}');
+
+        $this->client->logInAsClient();
+        DB::table('cn_tags')->truncate();
+        DB::table('cn_tagables')->truncate();
+        DB::table('cn_properties')->truncate();
+
+        $tag = Tag::firstOrCreate(['tag' => 'New Test Tag']);
+
+        $property = factory(Property::class)->create();
+
+        DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property->id, 'tag_id' => $tag->id, 'created_at' => Carbon::now()]);
+
+        DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property->id, 'tag_id' => $tag->id, 'created_at' => Carbon::now()->subDays(500), 'deleted_at' => Carbon::now()]);
+
+        DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property->id, 'tag_id' => $tag->id, 'created_at' => Carbon::now(), 'deleted_at' => Carbon::now()]);
+
+        DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property->id, 'tag_id' => ($tag->id + 1), 'created_at' => Carbon::now(), 'deleted_at' => Carbon::now()]);
+
+        DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property->id, 'tag_id' => ($tag->id + 1), 'created_at' => Carbon::now()]);
+
+        $elements = json_decode('[{"type":"tag","tag_id":"' . $tag->id . '","trailing":"365","effect":{"type":"add","factor":"5"},"tags":{"tagged":"false","trashed":"true","tagged_range":"false","trashed_range":"false"}}, {"type":"tag","tag_id":"' . ($tag->id + 1) . '","trailing":"365","effect":{"type":"add","factor":"2"},"tags":{"tagged":"false","trashed":"true","tagged_range":"false","trashed_range":"false"}}]', true);
+
+        $score = Score::create([
+            'elements' => $elements,
+            'name' => 'Test Score',
+            'type' => 'building',
+            'period' => null,
+            'timeseries' => null,
+            'owned_by' => 1
+        ]);
+
+        $this->assertDatabaseHas('cn_score_' . $score->id, ['property_id' => $property->id, 'score' => 7]);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
     }
 }

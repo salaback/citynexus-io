@@ -110,7 +110,7 @@ class UploaderController extends Controller
 
         $uploader = Uploader::find($request->get('uploader_id'));
         $map = $request->get('map');
-
+        
         try
         {
             if($request->exists('new_fields'))
@@ -118,7 +118,7 @@ class UploaderController extends Controller
                 $newfields = [];
                 foreach($request->get('new_fields') as $field)
                 {
-                    if($field != null && $map[$field]['key'] != null) $newfields[$field] = $map[$field];
+                    if($field != null && $map[$field]['key'] != null && $map[$field]['key'] != '__ignore') $newfields[$field] = $map[$field];
                 }
 
                 if(count($newfields) > 0)

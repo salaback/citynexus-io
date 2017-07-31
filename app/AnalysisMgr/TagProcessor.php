@@ -10,11 +10,15 @@ namespace App\AnalysisMgr;
 
 
 use App\Exceptions\TableBuilder\CreateScoreProcessorException;
+use Carbon\Carbon;
 
 class TagProcessor
 {
     public function process($scores, $element, $data)
     {
+        if($element['trailing'] != 'false')
+            $data = $data['tags']->where('created_at', '>', Carbon::now()->subDays($element['trailing']));
+
         $point = [
             'type' => 'tag',
             'tag_id' => $element['tag_id'],
@@ -35,16 +39,16 @@ class TagProcessor
             throw new CreateScoreProcessorException('no_option');
         }
 
-        foreach($data['tags'] as $item)
+        foreach($data as $item)
         {
             if($item->tag_id == $element['tag_id'])
             {
                 // if tagged properties are included
-                if($element['tags']['tagged']&& $item->deleted_at == null)
+                if($element['tags']['tagged'] != 'false' && $item->deleted_at == null)
                     $scores[$item->tagables_id]['tags'][] = $point;
 
                 // if trashed properties are included
-                if($element['tags']['trashed'] && $item->deleted_at != null)
+                if($element['tags']['trashed'] != 'false' && $item->deleted_at != null)
                     $scores[$item->tagables_id]['tags'][] = $point;
             }
         }

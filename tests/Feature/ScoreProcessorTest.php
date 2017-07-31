@@ -48,6 +48,7 @@ class ScoreProcessorTest extends TestCase
                 [
                     'type' => 'tag',
                     'tag_id' => $tag->id,
+                    'trailing' => 365,
                     'timeRange' => [
                         'to' => null,
                         'from' => null,
@@ -69,7 +70,7 @@ class ScoreProcessorTest extends TestCase
         $actual = $this->invokeMethod($this->processor, 'preLoadData', [$score]);
 
         $expected = [
-            'tags' => [$tag->id],
+            'tags' => [$tag->id => 0],
             'datasets' => []
         ];
 
@@ -94,6 +95,7 @@ class ScoreProcessorTest extends TestCase
                     [
                         'type' => 'tag',
                         'tag_id' => $tag->id,
+                        'trailing' => 365,
                         'timeRange' => [
                             'to' => null,
                             'from' => null,
@@ -109,24 +111,26 @@ class ScoreProcessorTest extends TestCase
                             'taggedRange' => false,
                         ]
                     ],
-                    [
-                    'type' => 'tag',
-                    'tag_id' => $tag2->id,
-                    'timeRange' => [
-                        'to' => null,
-                        'from' => null,
-                    ],
-                    'effect' => [
-                        'type' => 'add',
-                        'factor' => 1,
-                    ],
-                    'tags' => [
-                        'tagged' => true,
-                        'trashed' => false,
-                        'trashedRange' => false,
-                        'taggedRange' => false,
+                        [
+                        'type' => 'tag',
+                        'tag_id' => $tag2->id,
+                            'trailing' => 365,
+
+                            'timeRange' => [
+                            'to' => null,
+                            'from' => null,
+                        ],
+                        'effect' => [
+                            'type' => 'add',
+                            'factor' => 1,
+                        ],
+                        'tags' => [
+                            'tagged' => true,
+                            'trashed' => false,
+                            'trashedRange' => false,
+                            'taggedRange' => false,
+                        ]
                     ]
-                ]
                 ]]
         );
 
@@ -150,6 +154,7 @@ class ScoreProcessorTest extends TestCase
                     [
                         'type' => 'tag',
                         'tag_id' => $tag->id,
+                        'trailing' => 365,
                         'timeRange' => [
                             'to' => null,
                             'from' => null,
@@ -168,7 +173,9 @@ class ScoreProcessorTest extends TestCase
                     [
                     'type' => 'tag',
                     'tag_id' => $tag->id,
-                    'timeRange' => [
+                        'trailing' => 365,
+
+                        'timeRange' => [
                         'to' => null,
                         'from' => null,
                         ],
@@ -208,10 +215,7 @@ class ScoreProcessorTest extends TestCase
                     [
                         'type' => 'tag',
                         'tag_id' => $tag->id,
-                        'timeRange' => [
-                            'to' => null,
-                            'from' => null,
-                        ],
+                        'trailing' => 365,
                         'effect' => [
                             'type' => 'add',
                             'factor' => 2,
@@ -226,10 +230,8 @@ class ScoreProcessorTest extends TestCase
                     [
                         'type' => 'tag',
                         'tag_id' => $tag->id,
-                        'timeRange' => [
-                            'to' => null,
-                            'from' => null,
-                        ],
+                        'trailing' => 365,
+
                         'effect' => [
                             'type' => 'subtract',
                             'factor' => 1,

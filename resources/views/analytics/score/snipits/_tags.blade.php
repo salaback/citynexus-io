@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Create Tag Score Element</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Select Tag</label>
                     <div class="col-sm-9">
@@ -18,10 +18,33 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-sm-12 hidden" id="counts">
-                        <div class="col-md-12">
-                            <label>Trailing Period</label>
+                <div class="hidden" id="counts">
+                    <div class='togglebutton'>
+                        <label>
+                            <input type="checkbox" name="tagged" id="tagged" checked="" value="true">
+                            <span id="properties-count"></span> properties tagged</label>
+                    </div>
+                    <div class="togglebutton">
+                        <label>
+                            <input type="checkbox" name="tagged_range" id="tagged_range" value="true">
+                            Properties within <input type="number" class="range-field" name="tag_range" id="tag_range" value="50"> meters of tagged properties</label>
+                    </div>
+                    <div class="togglebutton">
+                        <label>
+                            <input type="checkbox" name="trashed" id="trashed" value="true">
+                            <span id="properties-trashed"></span> previously tagged properties</label>
+                    </div>
+                    <div class="togglebutton">
+                        <label>
+                            <input type="checkbox" name="trashed_range" id="trashed_range" value="true">
+                            Properties within <input type="number" class="range-field" name="trash_range" id="trash_range" value="50"> meters of previously tagged properties</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Trailing Period</label>
+
+                        <div class="col-md-9">
                             <select name="dp_trailing" class="form-control" id="tag_trailing">
                                 <option value="">Select One</option>
                                 <option value="1">One day</option>
@@ -37,48 +60,29 @@
                                 <option value="1825">Five years</option>
                             </select>
                         </div>
-                        <div class='togglebutton'>
-                            <label>
-                                <input type="checkbox" name="tagged" id="tagged" checked="" value="true">
-                                <span id="properties-count"></span> properties tagged</label>
-                        </div>
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox" name="tagged_range" id="tagged_range" value="true">
-                                Properties within <input type="number" class="range-field" name="tag_range" id="tag_range" value="50"> meters of tagged properties</label>
-                        </div>
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox" name="trashed" id="trashed" value="true">
-                                <span id="properties-trashed"></span> previously tagged properties</label>
-                        </div>
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox" name="trashed_range" id="trashed_range" value="true">
-                                Properties within <input type="number" class="range-field" name="trash_range" id="trash_range" value="50"> meters of previously tagged properties</label>
-                        </div>
-                        <div class="col-sm-12">
-                            <strong>Score Effect</strong><br>
-                            <div class="form-group">
-                                <label>Effect Type</label>
-                                <select name="scoreEffect" class="form-control" id="scoreEffect">
-                                    <option value="">Select one</option>
-                                    <option value="ignore">Ignore Properties</option>
-                                    <option value="add">Add to Score</option>
-                                    <option value="subtract">Subtract from Score</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group hidden" id="factorWrapper">
-                                    <label for="factor"> Amount</label>
-                                    <input type="number" name="factor" id="factor" class="form-control" value="1">
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Effect Type</label>
+                        <div class="col-md-9">
+                            <select name="scoreEffect" class="form-control" id="scoreEffect">
+                                <option value="">Select one</option>
+                                <option value="ignore">Ignore Properties</option>
+                                <option value="add">Add to Score</option>
+                                <option value="subtract">Subtract from Score</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="factorWrapper">
+                        <label class="col-sm-3 control-label">Amount</label>
+                        <div class="col-md-9">
+                            <input type="number" name="factor" id="factor" class="form-control" value="1">
+                        </div>
+                    </div>
                 </div>
+
+
+
             </div>
             <div class="row"></div>
 
@@ -87,8 +91,10 @@
                     <button class="btn btn-primary btn-raised" onclick="addTagElement()">Add Element to Score</button>
                 </div>
             </div>
-            <div class="row"></div>
 
+            <div class="row">
+
+            </div>
         </div>
     </div>
 </div>
