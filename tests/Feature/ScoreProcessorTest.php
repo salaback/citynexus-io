@@ -58,10 +58,10 @@ class ScoreProcessorTest extends TestCase
                         'factor' => 1,
                     ],
                     'tags' => [
-                        'tagged' => true,
-                        'trashed' => false,
-                        'trashedRange' => false,
-                        'taggedRange' => false,
+                        'tagged' => "true",
+                        'trashed' => "false",
+                        'trashedRange' => "false",
+                        'taggedRange' => "false",
                     ]
                 ]
             ]]
@@ -105,10 +105,10 @@ class ScoreProcessorTest extends TestCase
                             'factor' => 1,
                         ],
                         'tags' => [
-                            'tagged' => true,
-                            'trashed' => false,
-                            'trashedRange' => false,
-                            'taggedRange' => false,
+                            'tagged' => "true",
+                            'trashed' => "false",
+                            'trashedRange' => "false",
+                            'taggedRange' => "false",
                         ]
                     ],
                         [
@@ -125,10 +125,10 @@ class ScoreProcessorTest extends TestCase
                             'factor' => 1,
                         ],
                         'tags' => [
-                            'tagged' => true,
-                            'trashed' => false,
-                            'trashedRange' => false,
-                            'taggedRange' => false,
+                            'tagged' => "true",
+                            'trashed' => "false",
+                            'trashedRange' => "false",
+                            'taggedRange' => "false",
                         ]
                     ]
                 ]]
@@ -164,10 +164,10 @@ class ScoreProcessorTest extends TestCase
                             'factor' => 2,
                         ],
                         'tags' => [
-                            'tagged' => true,
-                            'trashed' => false,
-                            'trashedRange' => false,
-                            'taggedRange' => false,
+                            'tagged' => "true",
+                            'trashed' => "false",
+                            'trashedRange' => "false",
+                            'taggedRange' => "false",
                         ]
                     ],
                     [
@@ -184,10 +184,10 @@ class ScoreProcessorTest extends TestCase
                         'factor' => 1,
                         ],
                     'tags' => [
-                        'tagged' => true,
-                        'trashed' => false,
-                        'trashedRange' => false,
-                        'taggedRange' => false,
+                        'tagged' => "true",
+                        'trashed' => "false",
+                        'trashedRange' => "false",
+                        'taggedRange' => "false",
                         ]
                     ]
                 ]
@@ -221,15 +221,15 @@ class ScoreProcessorTest extends TestCase
                             'factor' => 2,
                         ],
                         'tags' => [
-                            'tagged' => true,
-                            'trashed' => false,
-                            'trashedRange' => false,
-                            'taggedRange' => false,
+                            'tagged' => "true",
+                            'trashed' => "false",
+                            'trashedRange' => "false",
+                            'taggedRange' => "false",
                         ]
                     ],
                     [
                         'type' => 'tag',
-                        'tag_id' => $tag->id,
+                        'tag_id' => $tag2->id,
                         'trailing' => 365,
 
                         'effect' => [
@@ -237,10 +237,10 @@ class ScoreProcessorTest extends TestCase
                             'factor' => 1,
                         ],
                         'tags' => [
-                            'tagged' => true,
-                            'trashed' => false,
-                            'trashedRange' => false,
-                            'taggedRange' => false,
+                            'tagged' => "true",
+                            'trashed' => "false",
+                            'trashedRange' => "false",
+                            'taggedRange' => "false",
                         ]
                     ]
                 ]

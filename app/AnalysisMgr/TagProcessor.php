@@ -10,15 +10,20 @@ namespace App\AnalysisMgr;
 
 
 use App\Exceptions\TableBuilder\CreateScoreProcessorException;
+use App\PropertyMgr\Model\Property;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TagProcessor
 {
     public function process($scores, $element, $data)
     {
+
+        // limit data to the trailing time period
         if($element['trailing'] != 'false')
             $data = $data['tags']->where('created_at', '>', Carbon::now()->subDays($element['trailing']));
 
+        // start building the point array
         $point = [
             'type' => 'tag',
             'tag_id' => $element['tag_id'],
@@ -39,17 +44,51 @@ class TagProcessor
             throw new CreateScoreProcessorException('no_option');
         }
 
-        foreach($data as $item)
+        if($element['tags']['tagged_range'] != 'false')
         {
-            if($item->tag_id == $element['tag_id'])
-            {
-                // if tagged properties are included
-                if($element['tags']['tagged'] != 'false' && $item->deleted_at == null)
-                    $scores[$item->tagables_id]['tags'][] = $point;
+            $tagged = $data->where('deleted_at', '==', null)->pluck('tagables_id');
 
-                // if trashed properties are included
-                if($element['tags']['trashed'] != 'false' && $item->deleted_at != null)
-                    $scores[$item->tagables_id]['tags'][] = $point;
+            DB::statement('SET SEARCH_PATH = ' . config('schema') . ',public');
+
+            $close = [];
+            $tagged = Property::find($tagged);
+
+            foreach($tagged as $property)
+            {
+                $npid = Property::where(DB::raw('ST_Distance(location, ST_makepoint(' . $property->location->getLng() . ',' . $property->location->getLat() . '))'), '<', $element['tags']['tagged_range'])->pluck('id')->toArray();
+                if(isset($inTaggedRange))
+                {
+                    array_merge($inTaggedRange, $npid);
+                }
+                else
+                {
+                    $inTaggedRange = $npid;
+                }
+            }
+
+            if(isset($inTaggedRange))
+            {
+                foreach($inTaggedRange as $item)
+                {
+                    $scores[$item]['tags'][] = $point;
+                }
+            }
+        }
+
+        else
+        {
+            foreach($data as $item)
+            {
+                if($item->tag_id == $element['tag_id'])
+                {
+                    // if tagged properties are included
+                    if($element['tags']['tagged'] != "false" && $item->deleted_at == null)
+                        $scores[$item->tagables_id]['tags'][] = $point;
+
+                    // if trashed properties are included
+                    if($element['tags']['trashed'] != "false" && $item->deleted_at != null)
+                        $scores[$item->tagables_id]['tags'][] = $point;
+                }
             }
         }
 

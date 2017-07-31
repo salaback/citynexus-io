@@ -18,17 +18,19 @@ class DataLoader
     {
         if(isset($preload[$element['tag_id']]))
         {
-
-            if($element['tags']['taggedRange'] != 'false' && $element['tags']['taggedRange'] > $preload[$element['tag_id']])
+            if($element['tags']['tagged_range'] != 'false' && ((int) $element['tags']['tagged_range']) > $preload[$element['tag_id']])
                 $preload[$element['tag_id']] = $element['tags']['trashedRange'];
 
-            if($element['tags']['trashedRange'] != 'false' && $element['tags']['trashedRange'] > $preload[$element['tag_id']])
-                $preload[$element['tag_id']] = $element['tags']['trashedRange'];
+            if($element['tags']['trashed_range'] != 'false' && ((int) $element['tags']['trashed_range']) > $preload[$element['tag_id']])
+                $preload[$element['tag_id']] = $element['tags']['trashed_range'];
 
         }
         else
         {
-            $preload[$element['tag_id']] = 0;
+            if((int) $element['tags']['tagged_range'] > 0)
+                $preload[$element['tag_id']] = (int) $element['tags']['tagged_range'];
+            else
+                $preload[$element['tag_id']] = false;
         }
 
         return $preload;
