@@ -27,8 +27,10 @@ class DataLoader
         }
         else
         {
-            if((int) $element['tags']['tagged_range'] > 0)
+            if(isset($element['tags']['tagged_range']) && (int) $element['tags']['tagged_range'] > 0)
                 $preload[$element['tag_id']] = (int) $element['tags']['tagged_range'];
+            elseif(isset($element['tags']['trashed_range']) && (int) $element['tags']['trashed_range'] > 0)
+                $preload[$element['tag_id']] = (int) $element['tags']['trashed'];
             else
                 $preload[$element['tag_id']] = false;
         }

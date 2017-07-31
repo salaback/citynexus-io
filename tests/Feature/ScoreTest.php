@@ -704,7 +704,7 @@ class ScoreTest extends TestCase
 
         DB::table('cn_tagables')->insert(['tagables_type' => 'App\\PropertyMgr\\Model\\Property', 'tagables_id' => $property_1, 'tag_id' => $tag->id, 'created_at' => Carbon::now(), 'deleted_at' => Carbon::now()]);
 
-        $elements = json_decode('[{"type":"tag","tag_id":"' . $tag->id . '","trailing":"365","effect":{"type":"add","factor":"5"},"tags":{"tagged":"true","trashed":"false","tagged_range":"500","trashed_range":"false"}}]', true);
+        $elements = json_decode('[{"type":"tag","tag_id":"' . $tag->id . '","trailing":"365","effect":{"type":"add","factor":"5"},"tags":{"tagged":"true","trashed":"false","tagged_range":"false","trashed_range":"500"}}]', true);
 
         $score = Score::create([
             'elements' => $elements,

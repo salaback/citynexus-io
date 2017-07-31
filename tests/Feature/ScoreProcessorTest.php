@@ -60,8 +60,8 @@ class ScoreProcessorTest extends TestCase
                     'tags' => [
                         'tagged' => "true",
                         'trashed' => "false",
-                        'trashedRange' => "false",
-                        'taggedRange' => "false",
+                        'trashed_range' => "false",
+                        'tagged_range' => "false",
                     ]
                 ]
             ]]
@@ -70,7 +70,7 @@ class ScoreProcessorTest extends TestCase
         $actual = $this->invokeMethod($this->processor, 'preLoadData', [$score]);
 
         $expected = [
-            'tags' => [$tag->id => 0],
+            'tags' => [$tag->id => false],
             'datasets' => []
         ];
 
@@ -107,8 +107,8 @@ class ScoreProcessorTest extends TestCase
                         'tags' => [
                             'tagged' => "true",
                             'trashed' => "false",
-                            'trashedRange' => "false",
-                            'taggedRange' => "false",
+                            'trashed_range' => "false",
+                            'tagged_range' => "false",
                         ]
                     ],
                         [
@@ -127,8 +127,8 @@ class ScoreProcessorTest extends TestCase
                         'tags' => [
                             'tagged' => "true",
                             'trashed' => "false",
-                            'trashedRange' => "false",
-                            'taggedRange' => "false",
+                            'trashed_range' => "false",
+                            'tagged_range' => "false",
                         ]
                     ]
                 ]]
@@ -166,8 +166,8 @@ class ScoreProcessorTest extends TestCase
                         'tags' => [
                             'tagged' => "true",
                             'trashed' => "false",
-                            'trashedRange' => "false",
-                            'taggedRange' => "false",
+                            'trashed_range' => "false",
+                            'tagged_range' => "false",
                         ]
                     ],
                     [
@@ -186,8 +186,8 @@ class ScoreProcessorTest extends TestCase
                     'tags' => [
                         'tagged' => "true",
                         'trashed' => "false",
-                        'trashedRange' => "false",
-                        'taggedRange' => "false",
+                        'trashed_range' => "false",
+                        'tagged_range' => "false",
                         ]
                     ]
                 ]
@@ -223,8 +223,8 @@ class ScoreProcessorTest extends TestCase
                         'tags' => [
                             'tagged' => "true",
                             'trashed' => "false",
-                            'trashedRange' => "false",
-                            'taggedRange' => "false",
+                            'trashed_range' => "false",
+                            'tagged_range' => "false",
                         ]
                     ],
                     [
@@ -239,8 +239,8 @@ class ScoreProcessorTest extends TestCase
                         'tags' => [
                             'tagged' => "true",
                             'trashed' => "false",
-                            'trashedRange' => "false",
-                            'taggedRange' => "false",
+                            'trashed_range' => "false",
+                            'tagged_range' => "false",
                         ]
                     ]
                 ]
