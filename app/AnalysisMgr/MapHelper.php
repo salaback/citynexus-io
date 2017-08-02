@@ -21,8 +21,8 @@ class MapHelper
 
         $results = DB::table($dataset->table_name)
             ->where($key, '>', '0')
-            ->orderBy($dataset->table_name . '.created_at')
-            ->join('cn_properties', $dataset->table_name . '.property_id', '=', 'cn_properties.id')
+            ->orderBy($dataset->table_name . '.__created_at')
+            ->join('cn_properties', $dataset->table_name . '.__property_id', '=', 'cn_properties.id')
             ->select($dataset->table_name . '.' . $key, 'cn_properties.id', 'cn_properties.address', 'cn_properties.unit', 'cn_properties.cords')
             ->get();
 
