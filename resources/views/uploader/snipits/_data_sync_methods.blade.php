@@ -7,6 +7,8 @@
                         <li><a href="{{route('uploader.addressSync', [$uploader->id])}}"> Create Address Sync</a></li>
                         <li><a href="{{route('uploader.entitySync', [$uploader->id])}}"> Create Entity Sync</a></li>
                         <li><a href="{{route('uploader.tagSync', [$uploader->id])}}"> Create Tag Sync</a></li>
+                        <li><a href="{{route('uploader.primaryIdSync', [$uploader->id])}}"> Create Primary ID Sync</a></li>
+                        <li><a href="{{route('uploader.timestampSync', [$uploader->id])}}"> Create Date Time Sync</a></li>
                     </ul>
                 </li>
             </ul>
@@ -24,6 +26,7 @@
                                 <input type="hidden" name="key" value="{{$key}}">
                             </form>
                             <div class="col-xs-2">
+
                                 @if($sync['class'] == 'address')
                                     <span class="fa fa-building fa-2x inbox-item-img"></span><br>
                                 @elseif($sync['class'] == 'entity')
@@ -37,7 +40,6 @@
                                 @elseif($sync['class'] == 'unique_id')
                                     <span class="fa fa-key fa-2x inbox-item-img"></span><br>
                                 @endif
-
 
                             </div>
                             <div class="col-xs-10">
@@ -72,13 +74,20 @@
                                     Use values in <span class="label label-default">{{$sync['dataPoint'] ?: 'NULL'}}</span> as property tags.
                                 @elseif($sync['class'] == 'created_at')
                                     <p class="inbox-item-author">Created Time Stamp</p>
-                                    Using <span class="label label-default">{{$sync['created_at'] ?: 'NULL'}}</span> as a created at timestamp.
+                                    Using <span class="label label-default">{{$sync['datetime'] ?: $sync['date'] . ' ' . $sync['time']}}</span> as a created at timestamp.
                                 @elseif($sync['class'] == 'updated_at')
                                     <p class="inbox-item-author">Edit Time Stamp</p>
                                     Using <span class="label label-default">{{$sync['updated_at'] ?: 'NULL'}}</span> as a edited at timestamp
                                 @elseif($sync['class'] == 'unique_id')
                                     <p class="inbox-item-author">Unique ID</p>
-                                    Using <span class="label label-default">{{$sync['unique_id'] ?: 'NULL'}}</span> as unique ID.
+                                    Using
+                                        @foreach($sync['unique_id'] as $key)
+                                            <span class="label label-default">
+                                                {{$key}}
+                                            </span>
+
+                                        @endforeach
+                                    as unique ID.
                                 @endif
 
 

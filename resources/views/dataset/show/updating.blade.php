@@ -34,6 +34,10 @@
                                 <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
                                     <li><a href="{{route('uploader.create')}}?dataset_id={{$dataset->id}}&type=csv"> CSV/Excel Uploader</a></li>
                                     <li><a href="{{route('uploader.create')}}?dataset_id={{$dataset->id}}&type=sql"> SQL Uploader</a></li>
+                                    <li><a href='https://www.dropbox.com/oauth2/authorize?response_type=code&client_id=yn3kwol8tef5ozi&redirect_uri=http://localhost:8000/response/dropbox&state={"client_id":"{{config('client.id')}}","dataset_id":"{{$dataset->id}}","created_by":"{{\Illuminate\Support\Facades\Auth::id()}}"}'>
+                                        Drop Box
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         @endcan

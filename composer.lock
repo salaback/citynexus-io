@@ -4,8 +4,115 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "99e63a5c1b6a26d6f0bd82189a283796",
+    "content-hash": "233e0645c7c7d507a15073c4de5b3854",
     "packages": [
+        {
+            "name": "aloframework/common",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aloframework/common.git",
+                "reference": "484ef76ea5e1b99b2758e5c35c76229572dc27cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aloframework/common/zipball/484ef76ea5e1b99b2758e5c35c76229572dc27cb",
+                "reference": "484ef76ea5e1b99b2758e5c35c76229572dc27cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "suggest": {
+                "ext-openssl": "Makes randomiser functions cryptographically secure"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AloFramework\\Common\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Art",
+                    "email": "a.molcanovas@gmail.com",
+                    "homepage": "https://github.com/Alorel",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Common elements of AloFramework",
+            "homepage": "https://github.com/aloframework/common",
+            "keywords": [
+                "5.4",
+                "AloFramework",
+                "common",
+                "components",
+                "php"
+            ],
+            "time": "2016-11-07T21:08:56+00:00"
+        },
+        {
+            "name": "alorel/dropbox-v2-php",
+            "version": "0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alorel/dropbox-v2-php.git",
+                "reference": "d789f2f84b7f177b3ac0fc74c55d85c611e11a33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alorel/dropbox-v2-php/zipball/d789f2f84b7f177b3ac0fc74c55d85c611e11a33",
+                "reference": "d789f2f84b7f177b3ac0fc74c55d85c611e11a33",
+                "shasum": ""
+            },
+            "require": {
+                "aloframework/common": "^1.3 || ^2.0",
+                "guzzlehttp/guzzle": "^6.0",
+                "guzzlehttp/psr7": "^1.0"
+            },
+            "require-dev": {
+                "alorel/phpunit-auto-rerun": "^0.1",
+                "phpunit/phpunit": "^5.0",
+                "ramsey/uuid": "^3.5",
+                "raveren/kint": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-dev-retriable-tests": "0.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alorel\\Dropbox\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Art",
+                    "email": "a.molcanovas@gmail.com",
+                    "homepage": "https://github.com/Alorel",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP SDK for Dropbox's v2 API",
+            "homepage": "https://github.com/Alorel/dropbox-v2-php",
+            "keywords": [
+                "api",
+                "dropbox",
+                "php",
+                "sdk"
+            ],
+            "time": "2017-03-17T14:21:49+00:00"
+        },
         {
             "name": "aws/aws-sdk-php",
             "version": "3.31.5",
