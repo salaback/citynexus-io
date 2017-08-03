@@ -48,6 +48,24 @@ class TableBuilderTest extends TestCase
      *
      * @return void
      */
+    public function testUpdatedDatasetUpdatesTable()
+    {
+        $this->client->logInAsClient();
+        $dataset = factory(DataSet::class)->create();
+
+        $dataset->schema = json_decode('{"log":{"show":"on","name":"Log","key":"log","type":"integer"},"report_date":{"show":"on","name":"Report_date","key":"report_date","type":"string"},"address":{"show":"on","name":"Address","key":"address","type":"string"},"crime":{"show":"on","name":"Crime","key":"crime","type":"string"}}');
+        $dataset->save();
+
+        $this->assertTrue(DB::statement('SELECT log FROM ' . $dataset->table_name));
+
+
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
     public function testAddNewToTable()
     {
         $this->client->logInAsClient();

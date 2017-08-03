@@ -3,12 +3,20 @@
 @section('title', "Edit Uploader: " . $uploader->name)
 
 @section('main')
+
     <div class="col-md-12">
         <a href="{{route('dataset.show', [$uploader->dataset_id])}}" class="btn btn-raised btn-primary"><span class="fa fa-angle-left"></span> Back to Data Set</a>
 
         @if($uploader->frequency == 'intermittent')
             <button class="btn btn-raised btn-primary pull-right"  data-toggle="modal" data-target="#newImportModal"><span class="glyphicon glyphicon-import"></span> New Import</button>
         @endif
+
+        <h1 class="font-thin h3 m-0">
+            <a href="{{route('dataset.show', [$uploader->dataset_id])}}">{{$uploader->dataset->name}}</a> > {{$uploader->name}}
+        </h1>
+
+    </div>
+    <div class="row">
 
     </div>
     <div class="col-md-12">

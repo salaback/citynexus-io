@@ -57,13 +57,14 @@ class DatasetController extends Controller
     {
 
         $this->authorize('citynexus', ['datasets', 'view']);
+
         $dataset = DataSet::find($id);
 
-        return Datatables::of(DB::table($dataset->table)->query())
-            ->addColumn('property', function($set) {
-                return '<a href="' . route('property.show', [$set->property_id]) . '" class="btn btn-raised btn-primary btn-sm">Settings</a>';
+        return Datatables::of(DB::table($dataset->table_name)->select('*'))
+            ->addColumn('__profile', function($set) {
+                return '<a href="' . route('properties.show', [$set->__property_id]) . '" class="btn btn-raised btn-primary btn-sm">Profile</a>';
             })
-            ->rawColumns(['settings'])
+            ->rawColumns(['__profile'])
             ->make(true);
     }
 

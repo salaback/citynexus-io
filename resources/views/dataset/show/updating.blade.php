@@ -80,88 +80,113 @@
 
             </section>
         </div>
-        <div class="col-sm-6" style="max-height: 400px; overflow: scroll">
-            <section class="boxs">
-                <div class="boxs-header dvd dvd-btm">
-                    <h1 class="custom-font">
-                        Data Fields
-                    </h1>
-                </div>
-                <div class="boxs-body">
-                    <table class="table m-b-0">
-                        <thead>
-                        <tr>
-                            <th>Visible</th>
-                            <th>Field Name</th>
-                            <th>Key</th>
-                            <th>Type</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @if(count($dataset->schema) > 0)
-                        @foreach($dataset->schema as $item)
-                            <tr class="">
-                                <td>@if(isset($item['show']) && $item['show'] =='on') <i class="fa fa-check"></i> @endif</td>
-                                <td>{{$item['name']}}</td>
-                                <td>{{$item['key']}}</td>
-                                <td>{{$item['type']}}</td>
-                            </tr>
-                        @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    {{--<div class="row">--}}
-        {{--<div class="col-md-12">--}}
-            {{--<section class="boxs ">--}}
+        {{--<div class="col-sm-6" style="max-height: 400px; overflow: scroll">--}}
+            {{--<section class="boxs">--}}
                 {{--<div class="boxs-header dvd dvd-btm">--}}
-                    {{--<h1 class="custom-font"><strong>Raw </strong>data</h1>--}}
-
+                    {{--<h1 class="custom-font">--}}
+                        {{--Data Fields--}}
+                    {{--</h1>--}}
                 {{--</div>--}}
                 {{--<div class="boxs-body">--}}
-                    {{--<table id="propertiesTable" class="table table-custom">--}}
+                    {{--<table class="table m-b-0">--}}
                         {{--<thead>--}}
                         {{--<tr>--}}
-                            {{--@foreach($dataset->schema as $row)--}}
-                            {{--<th>{{$row['name']}}</th>--}}
-                            {{--@endforeach--}}
+                            {{--<th>Visible</th>--}}
+                            {{--<th>Field Name</th>--}}
+                            {{--<th>Key</th>--}}
+                            {{--<th>Type</th>--}}
                         {{--</tr>--}}
                         {{--</thead>--}}
                         {{--<tbody>--}}
+                        {{--@if(count($dataset->schema) > 0)--}}
+                        {{--@foreach($dataset->schema as $item)--}}
+                            {{--<tr class="">--}}
+                                {{--<td>@if(isset($item['show']) && $item['show'] =='on') <i class="fa fa-check"></i> @endif</td>--}}
+                                {{--<td>{{$item['name']}}</td>--}}
+                                {{--<td>{{$item['key']}}</td>--}}
+                                {{--<td>{{$item['type']}}</td>--}}
+                            {{--</tr>--}}
+                        {{--@endforeach--}}
+                            {{--@endif--}}
                         {{--</tbody>--}}
                     {{--</table>--}}
                 {{--</div>--}}
             {{--</section>--}}
         {{--</div>--}}
-    {{--</div>--}}
+
+    @if(count($dataset->schema) > 0)
+        <div class="col-md-12">
+            <section class="boxs ">
+                <div class="boxs-header dvd dvd-btm">
+                    <h1 class="custom-font"><strong>{{$dataset->name}}</strong> Data</h1>
+                </div>
+                <div class="boxs-body">
+                    <table id="rawdata" class="table table-custom">
+                        <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Time Stamp</th>
+                            @foreach($dataset->schema as $element)
+                                @if($element['show'] == 'on')
+                                    <th>{{$element['name']}}</th>
+                                @endif
+                            @endforeach
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </section>
+        </div>
+    @endif
 @endsection
+@push('style')
 
-{{--@push('style')--}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
 
-{{--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">--}}
+@endpush
 
-{{--@endpush--}}
+@push('scripts')
 
-{{--@push('scripts')--}}
+@if(count($dataset->schema) > 0)
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 
-{{--<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>--}}
-{{--<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>--}}
+    @php
 
-{{--<script>--}}
-    {{--$(function() {--}}
-        {{--$('#propertiesTable').DataTable({--}}
-            {{--processing: true,--}}
-            {{--serverSide: true,--}}
-            {{--ajax: '{!! route('dataset.rawData', [$dataset->id]) !!}',--}}
-            {{--columns: [--}}
-                {{--{ data: 'property', name: 'property' }--}}
-            {{--]--}}
-        {{--});--}}
-    {{--});--}}
-{{--</script>--}}
+    @endphp
 
-{{--@endpush--}}
+    <script>
+        $(function() {
+            $("#rawdata").DataTable({
+                processing:     true,
+                serverSide:     true,
+                scrollY:        400,
+                scrollX:        true,
+                deferRender:    true,
+                scroller:       true,
+                ajax: {
+                    url: '{{route('dataset.rawData', [$dataset->id])}}',
+                    data: function(d) {d._token = '{{csrf_token()}}'},
+                    type: 'post'
+                },
+                columns: [
+                        {data: "__profile", name: "__profile"},
+                        {data: "__created_at", name: "__created_at"},
+                    @foreach($dataset->schema as $element)
+                        @if($element['show'] == 'on')
+                        {data: "{{$element['key']}}", name: "{{$element['key']}}"},
+                        @endif
+                    @endforeach
+                ],
+                dom: "Bfrtip",
+                buttons: [{extend: "copy", className: "btn-sm"}, {extend: "csv", className: "btn-sm"}, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {extend: "pdf", className: "btn-sm"}, {extend: "print", className: "btn-sm"}],
+
+            });
+        });
+    </script>
+
+@endif
+@endpush

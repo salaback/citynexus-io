@@ -55,7 +55,7 @@ class DataAccess
         try
         {
             $results = DB::table($table)
-                ->whereIn('property_id', $ids)
+                ->whereIn('__property_id', $ids)
                 ->get();
         }
         catch(QueryException $exception)

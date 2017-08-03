@@ -139,7 +139,18 @@ class UploaderController extends Controller
                 $newfields = [];
                 foreach($request->get('new_fields') as $field)
                 {
+<<<<<<< HEAD
                     if($field != null && $map[$field]['key'] != null && $map[$field]['key'] != '__ignore') $newfields[$field] = $map[$field];
+=======
+                    if($map[$field]['key'] != '__ignore')
+                    {
+                        if($field != null && $map[$field]['key'] != null) $newfields[$field] = $map[$field];
+                    }
+                    else
+                    {
+                        unset($map[$field]);
+                    }
+>>>>>>> master
                 }
 
                 if(count($newfields) > 0)
@@ -147,12 +158,6 @@ class UploaderController extends Controller
                     $tableBuilder = new TableBuilder();
                     $tableBuilder->addToTable($uploader->dataset, $newfields);
                 }
-            }
-
-            foreach($map as $key => $value)
-            {
-                if($value['key'] == "__ignore")
-                    unset($map[$key]);
             }
 
             $uploader->map = $map;

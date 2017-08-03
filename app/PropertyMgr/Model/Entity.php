@@ -66,7 +66,7 @@ class Entity extends Model
 
         foreach(DataSet::all() as $dataset)
         {
-            $query = DB::table($dataset->table_name)->whereIn('property_id', $ids)->get();
+            $query = DB::table($dataset->table_name)->whereIn('__property_id', $ids)->get();
 
             if($query->count() != 0)
             {
