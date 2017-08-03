@@ -173,7 +173,7 @@
                         {data: "__profile", name: "__profile"},
                         {data: "__created_at", name: "__created_at"},
                     @foreach($dataset->schema as $element)
-                        @if($element['show'] == 'on')
+                        @if(isset($element['show']) && $element['show'] == 'on')
                         {data: "{{$element['key']}}", name: "{{$element['key']}}"},
                         @endif
                     @endforeach
