@@ -191,8 +191,6 @@ class CityNexusUpgrade
 
         foreach($tagables as $i)
         {
-            print $i->created_at . ' - ';
-
             if(isset($userIds[$i->created_by]))
                $uid = $userIds[$i->created_by];
             else

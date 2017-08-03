@@ -139,9 +139,8 @@ class UploaderController extends Controller
                 $newfields = [];
                 foreach($request->get('new_fields') as $field)
                 {
-<<<<<<< HEAD
                     if($field != null && $map[$field]['key'] != null && $map[$field]['key'] != '__ignore') $newfields[$field] = $map[$field];
-=======
+
                     if($map[$field]['key'] != '__ignore')
                     {
                         if($field != null && $map[$field]['key'] != null) $newfields[$field] = $map[$field];
@@ -150,7 +149,6 @@ class UploaderController extends Controller
                     {
                         unset($map[$field]);
                     }
->>>>>>> master
                 }
 
                 if(count($newfields) > 0)
