@@ -192,11 +192,17 @@ class CityNexusUpgrade
         foreach($tagables as $i)
         {
             print $i->created_at . ' - ';
+
+            if(isset($userIds[$i->created_by]))
+               $uid = $userIds[$i->created_by];
+            else
+                $uid = 1;
+
             $insert[] = [
                 'tagables_type' => 'App\PropertyMgr\Model\Property',
                 'tag_id' => $i->tag_id,
                 'tagables_id' => $propertyIds[$i->property_id],
-                'created_by' => $userIds[$i->created_by],
+                'created_by' => $uid,
                 'created_at' => $i->created_at,
                 'deleted_at' => $i->deleted_at
             ];
