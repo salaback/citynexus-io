@@ -127,7 +127,7 @@
                             <th>Profile</th>
                             <th>Time Stamp</th>
                             @foreach($dataset->schema as $element)
-                                @if($element['show'] == 'on')
+                                @if(isset($element['show']) && $element['show'] == 'on')
                                     <th>{{$element['name']}}</th>
                                 @endif
                             @endforeach
