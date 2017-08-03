@@ -191,7 +191,7 @@ class CityNexusUpgrade
 
         foreach($tagables as $i)
         {
-            print $i->tag_id . ' - ';
+            print $i->created_at . ' - ';
             $insert[] = [
                 'tagables_type' => 'App\PropertyMgr\Model\Property',
                 'tag_id' => $i->tag_id,
