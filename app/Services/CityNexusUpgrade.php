@@ -25,8 +25,8 @@ class CityNexusUpgrade
         $this->client->logInAsClient();
         if(!isset($this->client->settings['user_ids'])) $this->migrateUsers();
         if(!isset($this->client->settings['property_ids'])) $this->migrateProperties();
-        $this->migrateComments();
-        $this->migrateTags();
+        if(!isset($this->client->settings['comments']))$this->migrateComments();
+        if(!isset($this->client->settings['tags']))$this->migrateTags();
         $this->resetIds();
     }
 
@@ -156,10 +156,19 @@ class CityNexusUpgrade
 
         DB::connection('tenant')->table('cn_comments')->insert($insert);
 
+        $settings = $this->client->settings;
+        $settings['comments'] = 'done';
+        $this->client->settings = $settings;
+        $this->client->save();
     }
+
+
 
     public function migrateTags()
     {
+
+        DB::connection('tenant')->table('cn_tags')->truncate();
+
         $userIds = $this->client->settings['user_ids'];
         $propertyIds = $this->client->settings['property_ids'];
 
@@ -194,5 +203,10 @@ class CityNexusUpgrade
         }
 
         DB::connection('tenant')->table('cn_tagables')->insert($insert);
+
+        $settings = $this->client->settings;
+        $settings['tags'] = 'done';
+        $this->client->settings = $settings;
+        $this->client->save();
     }
 }
