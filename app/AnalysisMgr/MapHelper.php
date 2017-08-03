@@ -9,8 +9,10 @@
 namespace App\AnalysisMgr;
 
 
+use App\AnalysisMgr\Model\Score;
 use App\DataStore\Model\DataSet;
 use App\PropertyMgr\Model\Property;
+use App\PropertyMgr\Model\Tag;
 use Illuminate\Support\Facades\DB;
 
 class MapHelper
@@ -58,6 +60,81 @@ class MapHelper
         return $return;
     }
 
+    public function createScorePoints($id)
+    {
+
+        $results = DB::table('cn_score_' . $id)
+            ->join('cn_properties', 'cn_score_' . $id . '.property_id', '=', 'cn_properties.id')
+            ->select('cn_score_' . $id . '.score', 'cn_properties.id', 'cn_properties.address', 'cn_properties.cords')
+            ->get();
+
+        $max = 0;
+
+        $points = [];
+
+        foreach($results as $i)
+        {
+            if($i->cords != null)
+            {
+                $cords = json_decode($i->cords, true);
+                $address = $i->address;
+                $points[$i->id] = [
+                    'name' => ucwords($address),
+                    'value' => $i->score,
+                    'url' => route('properties.show', [$i->id]),
+                    'lat' => $cords['lat'],
+                    'lng' => $cords['lng'],
+                ];
+            }
+            if($max < $i->score) $max = $i->score;
+        }
+
+        $points = $this->createInfoFlags($points);
+
+        $return['points'] = array_values($points);
+        $return['max'] = $max;
+        $return['title'] = Score::find($id)->name;
+        $return['handle'] = 'score_' . $id;
+
+        return $return;
+    }
+
+    public function createTagPoints($id)
+    {
+
+        $results = DB::table('cn_tagables')
+            ->where('tagables_type', 'App\\PropertyMgr\\Model\\Property')
+            ->join('cn_properties', 'cn_tagables.tagables_id', '=', 'cn_properties.id')
+            ->select('cn_properties.id', 'cn_properties.address', 'cn_properties.cords')
+            ->get();
+
+        $points = [];
+
+        foreach($results as $i)
+        {
+            if($i->cords != null)
+            {
+                $cords = json_decode($i->cords, true);
+                $address = $i->address;
+                $points[$i->id] = [
+                    'name' => ucwords($address),
+                    'url' => route('properties.show', [$i->id]),
+                    'lat' => $cords['lat'],
+                    'lng' => $cords['lng'],
+                ];
+            }
+        }
+
+        $points = $this->createInfoFlags($points);
+
+        $return['points'] = array_values($points);
+        $return['max'] = null;
+        $return['title'] = Tag::find($id)->tag . ' Tag';
+        $return['handle'] = 'tag_' . $id;
+
+        return $return;
+    }
+
 
     private function createInfoFlags($points)
     {
@@ -67,17 +144,23 @@ class MapHelper
         {
             if(isset($return[$point['lat'] . '-' . $point['lng']]['value']))
             {
-                $return[$point['lat'] . '-' . $point['lng']]['value'] = ($return[$point['lat'] . '-' . $point['lng']]['value'] / $return[$point['lat'] . '-' . $point['lng']]['count']) + ($point['value'] / $return[$point['lat'] . '-' . $point['lng']]['count']) ;
+                if(isset($point['value']))
+                    $return[$point['lat'] . '-' . $point['lng']]['value'] = ($return[$point['lat'] . '-' . $point['lng']]['value'] / $return[$point['lat'] . '-' . $point['lng']]['count']) + ($point['value'] / $return[$point['lat'] . '-' . $point['lng']]['count']) ;
+
                 $return[$point['lat'] . '-' . $point['lng']]['message'] = $return[$point['lat'] . '-' . $point['lng']]['message'] . '(' . $point['value'] . ')' . ' - <a href="' . $point['url'] . '" target="_blank">' . $point['name'] . '</a></br>';
                 $return[$point['lat'] . '-' . $point['lng']]['count'] = $return[$point['lat'] . '-' . $point['lng']]['count'] + 1;
             }
             else
             {
+                if(isset($point['value']))
                 $return[$point['lat'] . '-' . $point['lng']]['value'] = $point['value'];
                 $return[$point['lat'] . '-' . $point['lng']]['count'] = 1;
                 $return[$point['lat'] . '-' . $point['lng']]['lat'] = $point['lat'];
                 $return[$point['lat'] . '-' . $point['lng']]['lng'] = $point['lng'];
-                $return[$point['lat'] . '-' . $point['lng']]['message'] = '(' . $point['value'] . ')' . ' - <a href="' . $point['url'] . '" target="_blank">' . $point['name'] . '</a></br>';
+                if(isset($point['value']))
+                    $return[$point['lat'] . '-' . $point['lng']]['message'] = '(' . $point['value'] . ')' . ' - <a href="' . $point['url'] . '" target="_blank">' . $point['name'] . '</a></br>';
+                else
+                    $return[$point['lat'] . '-' . $point['lng']]['message'] = '<a href="' . $point['url'] . '" target="_blank">' . $point['name'] . '</a></br>';
             }
         }
 

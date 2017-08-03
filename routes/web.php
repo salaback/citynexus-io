@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 
     Route::get('view/map', 'Frontend\ViewController@map')->name('map');
-    Route::post('view/map', 'Frontend\ViewController@mapData');
+    Route::post('view/map', 'Frontend\ViewController@mapData')->name('mapData');
 
     Route::get('/get-notification/{id}', function($id){
 

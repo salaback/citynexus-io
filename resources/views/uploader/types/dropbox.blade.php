@@ -85,7 +85,7 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <form action="{{route('upload.store')}}" method="post">
+            <form action="{{route('upload.store')}}" class="horizontal-form" method="post">
             {{csrf_field()}}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -94,62 +94,17 @@
             </div>
             <div class="modal-body">
                     <input type="hidden" name="uploader_id" value="{{$uploader->id}}">
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="settings[scope]" id="scope_all" value="all" checked>
-                                Sync all records with source database
-                            </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="settings[scope]" id="scope_sinceLast" value="sinceLast">
-                                Sync changes since last upload
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="settings[scope]" id="scope_added_between" value="addedBetween">
-                            Sync records added between dates
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input type="text" name='settings[created_start]' class="form-control">
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <input type="text" name='settings[created_end]' class="form-control">
-                                </div>
+                    <div class="row">
+                        <div class="from-group">
+                            <label for="description" class="control-label col-sm-3">Description</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="note" value="{{\Illuminate\Support\Facades\Auth::user()->fullname}}'s upload from {{date('D d M y')}}">
                             </div>
-                        </label>
+                        </div>
                     </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="settings[scope]" id="scope_edited_between" value="editedBetween">
-                            Sync records edited between dates:
-                            <div class="row">
-                               <div class="col-sm-6">
-                                   <input type="text" name='settings[edited_start]' class="form-control">
-                               </div>
 
-                                <div class="col-sm-6">
-                                <input type="text" name='settings[edited_end]' class="form-control">
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="settings[scope]" id="scope_unique_between" value="uniqueBetween">
-                            Sync records with an unique ID between
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input type="number" name='settings[unique_start]' class="form-control">
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <input type="number" name='settings[unique_end]' class="form-control">
-                                </div>
-                            </div>
-                        </label>
+                    <div class="row">
+                        <div class="form-group" id="fileList"></div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -185,6 +140,41 @@
             }
         })
     }
+
+    // Get file list
+
+    var data = "{\"path\": \"{{$uploader->settings['path']}}\"}";
+
+    $.ajax({
+        url: "https://api.dropboxapi.com/2/files/list_folder",
+        type: 'POST',
+        headers: {
+            "Authorization": "Bearer {{\App\DataStore\Model\Connection::find($uploader->settings['connection_id'])->settings['access_token']}}",
+            "Content-Type": "application/json"
+        },
+        data: data,
+        success: function( returnData ) {
+
+            var files = returnData.entries;
+
+            var listGroup = $('#fileList');
+
+            listGroup.html("");
+
+            for(var i = 0; i < files.length; i++)
+            {
+                if (files[i]['.tag'] == 'file')
+                {
+                    var newItem = '<div class="list-group-item"><input type="checkbox" name="settings[files][]" value="' + files[i]['path_lower'] +'"> ' + files[i]['name'] + '</div>';
+                }
+                listGroup.append(newItem);
+
+            }
+        },
+        error: function (data) {
+            alert(JSON.stringify(data));
+        }
+    });
 
 </script>
 @endpush

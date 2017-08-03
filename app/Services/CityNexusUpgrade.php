@@ -182,6 +182,7 @@ class CityNexusUpgrade
 
         foreach($tagables as $i)
         {
+            print $i->tag_id . ' - ';
             $insert[] = [
                 'tagables_type' => 'App\PropertyMgr\Model\Property',
                 'tag_id' => $i->tag_id,

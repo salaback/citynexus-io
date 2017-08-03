@@ -11,6 +11,7 @@ namespace App\DataStore;
 
 use App\DataStore\Jobs\ImportChunk;
 use App\DataStore\Jobs\ImportFromCsv;
+use App\DataStore\Model\Connection;
 use App\DataStore\Model\Upload;
 use App\PropertyMgr\Sync;
 use Carbon\Carbon;
@@ -29,11 +30,76 @@ class Importer
         $this->clearUpload($upload);
 
         // Use correct import method for type
-        if($upload->file_type == 'text/csv') $this->processCSV($upload);
-        elseif($upload->file_type == 'sql') $this->processSQL($upload);
-        elseif(str_contains($upload->file_type, 'spreadsheetml')) $this->processExcel($upload);
+        if($upload->source != null)
+        {
+            if($upload->file_type == 'text/csv') $this->processCSV($upload);
+            elseif($upload->file_type == 'sql') $this->processSQL($upload);
+            elseif(str_contains($upload->file_type, 'spreadsheetml')) $this->processExcel($upload);
+        }
+        else
+        {
+            if($upload->uploader->type == 'dropbox') $this->processDropbox($upload);
+        }
 
     }
+
+    public function processDropbox(Upload $upload)
+    {
+        // get token
+        $token = Connection::find($upload->uploader->settings['connection_id'])->settings['access_token'];
+        // build headers
+
+        foreach($upload->settings['files'] as $path)
+        {
+            $headers = [
+                "Authorization: Bearer " . $token,
+                "Dropbox-API-Arg: " . json_encode(['path' => $path])
+            ];
+
+            $meta = $this->getDropboxMeta($path, $token);
+
+            $output = $this->runCurl('https://content.dropboxapi.com/2/files/download', false, $headers);
+
+            $fileName = config('schema') . '/dropbox-files/' . Carbon::now()->timestamp . '/' . $meta->name;
+
+            $file = Storage::disk('s3')->put($fileName, $output);
+
+            $uploads[] = [
+                'uploader_id' => $upload->uploader_id,
+                'source' => $fileName,
+                'note' => $upload->note . ' [' . $meta->name . ']',
+                'file_type' => $this->typeFromName($meta->name),
+                'user_id' => $upload->user_id,
+                'size' => $meta->size
+            ];
+        }
+        foreach($uploads as $item)
+            Upload::create($item);
+
+        $upload->delete();
+    }
+
+    public function typeFromName($name)
+    {
+        $parts = explode('.', $name);
+
+        switch (end($parts))
+        {
+            case 'csv':
+                return 'text/csv';
+
+            case 'xlsx':
+                return 'spreadsheetml';
+
+            case 'xls':
+                return 'spreadsheetml';
+
+            default:
+                return 'text/csv';
+        }
+    }
+
+
 
     public function processCSV(Upload $upload, $path = null)
     {
@@ -191,6 +257,47 @@ class Importer
         file_put_contents($tempname, Storage::disk('s3')->get($source));
 
         return $tempname;
+    }
+
+    private function getDropboxMeta($path, $token)
+    {
+
+        // build headers
+        $headers = [
+            "Authorization: Bearer " . $token,
+            "Content-Type: application/json"
+        ];
+
+        $data =  json_encode([
+            'path' => $path
+        ]);
+
+        return json_decode($this->runCurl('https://api.dropboxapi.com/2/files/get_metadata', $data, $headers));
+    }
+
+    private function runCurl($url, $data = false, $headers = false)
+    {
+        $ch = curl_init();
+
+        // set url
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        if($headers)
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        if($data)
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // $output contains the output string
+        $output = curl_exec($ch);
+
+        // close curl resource to free up system resources
+        curl_close($ch);
+
+        return $output;
     }
 
 }

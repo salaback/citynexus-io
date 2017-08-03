@@ -75,6 +75,10 @@ class ScoreProcessorTest extends TestCase
         ];
 
         $this->assertSame($expected, $actual);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
+
+
     }
 
     public function testLoadDataTags()
@@ -137,6 +141,9 @@ class ScoreProcessorTest extends TestCase
         $result = $this->invokeMethod($this->processor, 'loadData', [$score]);
 
         $this->assertTrue(count($result['tags']) == 3);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
+
     }
 
     public function testCreateTagScoreElement()
@@ -197,6 +204,9 @@ class ScoreProcessorTest extends TestCase
         $result = $this->invokeMethod($this->processor, 'createScore', [$score]);
 
         $this->assertTrue(count($result[$property->id]['tags']) == 2);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
+
     }
 
     public function testProcessTagScoreElement()
@@ -252,6 +262,8 @@ class ScoreProcessorTest extends TestCase
 
         $this->assertEquals($result->score, 1);
 
+        Schema::dropIfExists('cn_score_' . $score->id);
+
     }
 
     public function testUpdateScore()
@@ -291,6 +303,9 @@ class ScoreProcessorTest extends TestCase
         $result = $this->invokeMethod($this->processor, 'updateScore', [$old, $new]);
 
         $this->assertSame($result['score'], 1);
+
+        Schema::dropIfExists('cn_score_' . $score->id);
+
     }
 
     public function testMakeScore()
@@ -313,6 +328,7 @@ class ScoreProcessorTest extends TestCase
         $result = $this->invokeMethod($this->processor, 'makeScore', [$elements]);
 
         $this->assertSame($result, 1);
+
     }
 
     public function testMakeScoreWithAnIgnoreElement()
@@ -349,5 +365,6 @@ class ScoreProcessorTest extends TestCase
         $result = $this->invokeMethod($this->processor, 'makeScore', [$elements]);
 
         $this->assertSame($result, null);
+
     }
 }

@@ -13,6 +13,7 @@ use App\PropertyMgr\Model\Property;
 use App\User;
 use App\UserGroup;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
@@ -82,7 +83,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -127,7 +128,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -193,7 +194,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas($dataset->table_name, ['bldg_val' => 169900]);
         $this->assertDatabaseHas($dataset->table_name, ['land_val' => 56900]);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -270,7 +271,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_properties', ['address' => '51 FARNHAM ST']);
         $this->assertDatabaseHas('cn_entities', ['first_name' => 'JOHN', 'last_name' => 'DREW']);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -355,7 +356,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity1->id, 'entitables_id' => $property->id]);
         $this->assertSame(DB::table('cn_entities')->where('first_name', 'GERALD')->where('last_name', 'WHITE')->count(), 1);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -436,7 +437,7 @@ class ProcessUploadTest extends TestCase
         $this->assertDatabaseHas('cn_entitables', ['entity_id' => $entity1->id, 'entitables_id' => $property->id]);
         $this->assertSame(DB::table('cn_entities')->where('first_name', 'GERALD')->where('last_name', 'WHITE')->count(), 1);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
 
     }
 
@@ -498,7 +499,7 @@ class ProcessUploadTest extends TestCase
         $this->assertTrue($_20130320->__property_id == null);
         $this->assertTrue($_20131011->__property_id == null);
 
-        DB::table($dataset->table_name)->delete();
+        Schema::dropIfExists($dataset->table_name);
     }
 
 

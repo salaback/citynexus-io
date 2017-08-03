@@ -305,17 +305,12 @@ class UploaderController extends Controller
 
         $connection = Connection::find($uploader->settings['connection_id']);
 
-        $meta = $this->getDropboxMeta($uploader->settings['sampleFile'], $connection->settings['access_token']);
-        $fileData = $this->getDropboxFile($uploader->settings['sampleFile'], $connection->settings['access_token']);
-
-        $filename = storage_path() . "/" . random_int(1000,99999) . '_' . $meta->name;
-
-        $file = fopen($filename, "w");
-        fwrite($file, $fileData);
-        fclose($file);
+        $filename = $this->getDropboxFile($uploader->settings['sampleFile'], $connection->settings['access_token']);
 
         $uploader->map = $this->store->analyzeFile($filename, 'spreadsheetml', true);
         $uploader->save();
+
+        unlink($filename);
         return redirect(route('uploader.createMap', [$uploader->id]));
 
     }
@@ -328,8 +323,17 @@ class UploaderController extends Controller
             "Dropbox-API-Arg: " . json_encode(['path' => $path])
         ];
 
+        $meta = $this->getDropboxMeta($path, $token);
 
-        return $this->runCurl('https://content.dropboxapi.com/2/files/download', false, $headers);
+        $output = $this->runCurl('https://content.dropboxapi.com/2/files/download', false, $headers);
+
+        $filename = storage_path() . "/" . random_int(1000,99999) . '_' . $meta->name;
+
+        $file = fopen($filename, "w");
+        fwrite($file, $output);
+        fclose($file);
+
+        return $filename;
     }
 
     private function getDropboxMeta($path, $token)

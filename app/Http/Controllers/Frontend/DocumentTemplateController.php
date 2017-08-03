@@ -117,21 +117,27 @@ class DocumentTemplateController extends Controller
             $entity = null;
 
 
-        foreach(Entity::all() as $item)
-            $entity_data[] = ['id' => $item->id, 'text' => $item->name];
+        if($property != null && $property->entities->count() > 0)
+            foreach($property->entities as $item)
+                $entity_data[] = ['id' => $item->id, 'text' => $item->name];
+        else
+            $entity_data = [];
 
-        foreach(Property::where('is_building', true)->get(['id', 'address']) as $item)
+        if($entity != null && $entity->properties->count() > 0)
+        foreach($entity->properties->where('is_building', true)->get(['id', 'address']) as $item)
             $building_data[] = ['id' => $item->id, 'text' => $item->address];
+        else
+            $building_data = [];
 
         $user = new User();
         $users = $user->fromClient();
+        $sender_data = array();
         foreach($users as $item)
             $sender_data[] = ['id' => $item->id, 'text' => $item->fullname];
 
         $data = $documentBuilder->createDataArray($template->body);
 
         $data = $documentBuilder->loadDataArray($data, ['template' => $template, 'property' => $property, 'entity' => $entity]);
-
         return view('snipits._document_template_form', compact('template', 'property', 'entity', 'data', 'entity_data', 'building_data', 'sender_data'));
     }
 }
