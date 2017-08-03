@@ -33,6 +33,7 @@ class UploadController extends Controller
      */
     public function store(Request $request)
     {
+
         $upload = $request->all();
         $upload['user_id'] = Auth::id();
         $upload = Upload::create($upload);

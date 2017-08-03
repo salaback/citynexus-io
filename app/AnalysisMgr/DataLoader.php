@@ -16,8 +16,24 @@ class DataLoader
 {
     public function preLoadTagData($preload, $element)
     {
+        if(isset($preload[$element['tag_id']]))
+        {
+            if($element['tags']['tagged_range'] != 'false' && ((int) $element['tags']['tagged_range']) > $preload[$element['tag_id']])
+                $preload[$element['tag_id']] = $element['tags']['trashedRange'];
 
-        $preload[] = $element['tag_id'];
+            if($element['tags']['trashed_range'] != 'false' && ((int) $element['tags']['trashed_range']) > $preload[$element['tag_id']])
+                $preload[$element['tag_id']] = $element['tags']['trashed_range'];
+
+        }
+        else
+        {
+            if(isset($element['tags']['tagged_range']) && (int) $element['tags']['tagged_range'] > 0)
+                $preload[$element['tag_id']] = (int) $element['tags']['tagged_range'];
+            elseif(isset($element['tags']['trashed_range']) && (int) $element['tags']['trashed_range'] > 0)
+                $preload[$element['tag_id']] = (int) $element['tags']['trashed'];
+            else
+                $preload[$element['tag_id']] = false;
+        }
 
         return $preload;
     }
@@ -31,10 +47,10 @@ class DataLoader
 
     public function loadTagData($tags)
     {
-        return (array) DB::table('cn_tagables')
-            ->whereIn('tag_id', $tags)
+        return DB::table('cn_tagables')
+            ->whereIn('tag_id', array_keys($tags))
             ->where('tagables_type', 'App\PropertyMgr\Model\Property')
-            ->get(['tag_id', 'tagables_id', 'created_at', 'deleted_at'])->toArray();
+            ->get(['tag_id', 'tagables_id', 'created_at', 'deleted_at']);
     }
 
     public function loadDatasets($datasets, $buildings = 'buildings')

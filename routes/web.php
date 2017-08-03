@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'organization'], function(){
 
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('response/dropbox', 'Backend\ApiAuthController@dropbox')->name('apiAuth.dropbox');
     Route::resource('admin/client', 'Admin\ClientController');
     Route::get('admin/client/reset-db/{id}', 'Admin\ClientController@resetDb')->name('admin.client.resetDb');
     Route::post('admin/client/import-db/', 'Admin\ClientController@importDb')->name('admin.client.importDb');
@@ -107,6 +108,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/uploader/address-sync/{id}', 'Frontend\UploaderController@addressSync')->name('uploader.addressSync');
     Route::get('/uploader/entity-sync/{id}', 'Frontend\UploaderController@entitySync')->name('uploader.entitySync');
     Route::get('/uploader/tag-sync/{id}', 'Frontend\UploaderController@tagSync')->name('uploader.tagSync');
+    Route::get('/uploader/timestamp-sync/{id}', 'Frontend\UploaderController@timestampSync')->name('uploader.timestampSync');
+    Route::get('/uploader/primary-id-sync/{id}', 'Frontend\UploaderController@primaryIdSync')->name('uploader.primaryIdSync');
     Route::get('/uploader/filters/{id}', 'Frontend\UploaderController@filters')->name('uploader.filters');
 
     Route::post('/uploader/store-sync', 'Frontend\UploaderController@storeSync')->name('uploader.storeSync');
@@ -127,7 +130,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/upload/process/{id?}', 'Frontend\UploadController@process')->name('upload.process');
 
     Route::get('view/map', 'Frontend\ViewController@map')->name('map');
-    Route::post('view/map', 'Frontend\ViewController@mapData');
+    Route::post('view/map', 'Frontend\ViewController@mapData')->name('mapData');
 
     Route::get('/get-notification/{id}', function($id){
 

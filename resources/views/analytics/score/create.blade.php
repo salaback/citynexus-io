@@ -47,18 +47,17 @@
             </div>
             <div class="boxs-body">
 
-                {{-- Start Updating Record --}}
-                {{--<div class="option-tile col-sm-4" data-toggle="modal" data-target="#tagModal" id="tag">--}}
-                    {{--<div class="option-wrapper">--}}
-                        {{--<div class="option-header">--}}
-                            {{--Tag--}}
-                        {{--</div>--}}
-                        {{--<div class="option-icon">--}}
-                            {{--<i class="fa fa-tag fa-2x"></i><br>--}}
-                            {{--Score element based on tag--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+                <div class="option-tile col-sm-4" data-toggle="modal" data-target="#tagModal" id="tag">
+                    <div class="option-wrapper">
+                        <div class="option-header">
+                            Tag
+                        </div>
+                        <div class="option-icon">
+                            <i class="fa fa-tag fa-2x"></i><br>
+                            Score element based on tag
+                        </div>
+                    </div>
+                </div>
                 <div class="option-tile col-sm-4" data-toggle="modal" data-target="#datapointModal" id="datapoint">
                     <div class="option-wrapper">
                         <div class="option-header">

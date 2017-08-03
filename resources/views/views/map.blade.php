@@ -141,8 +141,8 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#datasets" aria-controls="datasets" role="tab" data-toggle="tab">Data Sets</a></li>
-                    {{--<li role="presentation"><a href="#datasets" aria-controls="computed" role="tab" data-toggle="tab">Computed</a></li>--}}
-                    {{--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>--}}
+                    <li role="presentation"><a href="#scores" aria-controls="scores" role="tab" data-toggle="tab">Scores</a></li>
+                    <li role="presentation"><a href="#tags" aria-controls="tags" role="tab" data-toggle="tab">Tags</a></li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -173,85 +173,31 @@
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="computed">
-
+                    <div role="tabpanel" class="tab-pane" id="scores">
+                        <div class="boxs-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                @foreach($scores as $item)
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="optionsCheckboxes" onclick="loadData({{$item->id}}, 'score')"><span class="checkbox-material"></span>
+                                            {{$item->name}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="settings">
-                        <h6>Chat Settings</h6>
-                        <ul class="settings">
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">Show Offline Users</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" checked="">
-                                            </label>
-                                        </div>
+                    <div role="tabpanel" class="tab-pane" id="tags">
+                        <div class="boxs-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                @foreach($tags as $item)
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="optionsCheckboxes" onclick="loadData({{$item->id}}, 'tag')"><span class="checkbox-material"></span>
+                                            {{$item->tag}}</label>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">Show Fullname</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" >
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">History Enable</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" checked="">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">Show Locations</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" checked="">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">Notifications</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" >
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="form-group">
-                                    <label class="col-xs-8 control-label">Show Undread Count</label>
-                                    <div class="col-xs-4 control-label text-right">
-                                        <div class="togglebutton">
-                                            <label>
-                                                <input type="checkbox" >
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,7 +266,7 @@
             $(".fa-gear").addClass('fa-spin');
             $.ajax({
                 type: 'post',
-                url: '{{route('map')}}',
+                url: '{{route('mapData')}}',
                 data: {
                     _token: "{{csrf_token()}}",
                     type: 'datapoint',
@@ -341,16 +287,16 @@
 
     };
 
-    var loadDataset = function (dataset_id) {
+    var loadData = function (id, type = 'dataset') {
         $(".fa-gear").addClass('fa-spin');
 
         $.ajax({
             type: 'post',
-            url: '/citynexus/reports/views/dot-map',
+            url: "{{route('mapData')}}",
             data: {
                 _token: "{{csrf_token()}}",
-                type: 'dataset',
-                dataset_id: dataset_id
+                type: type,
+                id: id
 
             },
             success: function(data) {
@@ -364,28 +310,27 @@
 
     };
 
-    {{--var loadScore = function (id) {--}}
-        {{--$("#settings_cog").addClass('fa-spin');--}}
+    var loadScore = function (id) {
+        $("#settings_cog").addClass('fa-spin');
 
-        {{--$.ajax({--}}
-            {{--type: 'post',--}}
-            {{--url: '/citynexus/reports/views/dot-map',--}}
-            {{--data: {--}}
-                {{--_token: "{{csrf_token()}}",--}}
-                {{--type: 'score',--}}
-                {{--id: id,--}}
-            {{--},--}}
-            {{--success: function(data) {--}}
-                {{--reloadMap(data['points'], data['title'], data['max'], data['handle'])--}}
-            {{--},--}}
-            {{--error: function(data){--}}
-                {{--$("#settings_cog").removeClass('fa-spin');--}}
-                {{--alert('Oh oh, something went wrong.');--}}
-            {{--}--}}
-        {{--});--}}
+        $.ajax({
+            type: 'post',
+            url: '/citynexus/reports/views/dot-map',
+            data: {
+                _token: "{{csrf_token()}}",
+                type: 'score',
+                id: id,
+            },
+            success: function(data) {
+                reloadMap(data['points'], data['title'], data['max'], data['handle'])
+            },
+            error: function(data){
+                $("#settings_cog").removeClass('fa-spin');
+                alert('Oh oh, something went wrong.');
+            }
+        });
 
-    {{--};--}}
-
+    };
 
     var colors = {
         0: {
