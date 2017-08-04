@@ -39,6 +39,9 @@ class TenantCheck
             $client->logInAsClient();
         }
 
+        if(function_exists('newrelic_add_custom_parameter'))
+            newrelic_add_custom_parameter('client_id', $client->id);
+
         return $next($request);
     }
 }
